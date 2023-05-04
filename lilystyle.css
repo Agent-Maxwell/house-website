@@ -14,9 +14,16 @@ a:visited {
   color: darkslateblue;
 }
 
+.column {
+  float: left;
+  width: 150px;
+  padding: 10px;
+}
+
 .paragraph {
   max-width: 900px;
-  margin:0 auto;
+  margin-top: 0;
+  margin-bottom: 0;
   line-height: normal;
   letter-spacing: normal;
 }
@@ -25,4 +32,6 @@ a:visited {
   text-align: left;
   background-color: rgba(153, 50, 204, 0.308);
   border-style: double;
+  line-height: normal;
+  letter-spacing: normal;
 }
