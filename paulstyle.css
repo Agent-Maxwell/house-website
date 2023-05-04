@@ -19,12 +19,3 @@ ul, ol{
     margin: 0 auto;
     text-align:left;
 }
-
-.navbar a:hover, .dropbtn a:hover, .dropdown-content a:hover, .dropbtn:hover{
-  background-color: rgb(53, 53, 53);
-}
-
-.navbar a.active {
-  background-color: rgb(0, 0, 0);
-  color: white;
-}
