@@ -1,0 +1,30 @@
+body{
+  text-align: center;
+  background-color: #000000;
+  color: rgb(255, 0, 230);
+  font-family:courier,arial,helvetica,sans-serif;
+  font-size: 135%;
+  margin: 0px;
+}
+
+.paragraph {
+  max-width: 900px;
+  margin:0 auto;
+  line-height: 1.25em;
+  letter-spacing: .05em
+}
+
+ul, ol{
+    max-width: 350px;
+    margin: 0 auto;
+    text-align:left;
+}
+
+.navbar a:hover, .dropbtn a:hover, .dropdown-content a:hover, .dropbtn:hover{
+  background-color: rgb(53, 53, 53);
+}
+
+.navbar a.active {
+  background-color: rgb(114, 114, 114);
+  color: white;
+}
