@@ -1,20 +1,28 @@
 body{
   text-align: center;
-  background-color: #2e0211;
-  color: rgb(93, 201, 209);
+  background-color: #7a001f;
+  color: rgb(93, 139, 209);
   font-family:courier,helvetica,sans-serif;
   font-size: 135%;
   margin: 0px;
 }
 
+a:link {
+  color: aqua;
+}
+a:visited {
+  color: darkslateblue;
+}
+
 .paragraph {
   max-width: 900px;
   margin:0 auto;
-  line-height: 1.25em;
-  letter-spacing: .05em
+  line-height: normal;
+  letter-spacing: normal;
 }
 
 .socials {
   text-align: left;
-  
+  background-color: rgba(153, 50, 204, 0.308);
+  border-style: double;
 }
