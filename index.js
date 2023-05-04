@@ -6,6 +6,7 @@ template.innerHTML = `
 <a href="faculty">Faculty</a>
 <a href="paulsroom.html">Paul's Room</a>
 <a href="adriansroom.html">Adrian's Room</a>
+<a href="lilysroom.html">Lily's Room</a>
 </div>
 
 <br>
