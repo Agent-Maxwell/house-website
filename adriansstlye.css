@@ -1,0 +1,15 @@
+body{
+  text-align: center;
+  background-color: #150124;
+  color: white;
+  font-family:courier,arial,helvetica,sans-serif;
+  font-size: 135%;
+  margin: 0px;
+}
+
+.paragraph {
+  max-width: 900px;
+  margin:0 auto;
+  line-height: 1.25em;
+  letter-spacing: .05em
+}
