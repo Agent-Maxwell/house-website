@@ -9,4 +9,4 @@ template.innerHTML = `
 </div>
 `;
 
-document.body.prependChild(template.content);
+document.body.appendChild(template.content);
