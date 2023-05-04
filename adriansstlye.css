@@ -13,3 +13,9 @@ body{
   line-height: 1.25em;
   letter-spacing: .05em
 }
+
+ul, ol{
+  max-width: 350px;
+  margin: 0 auto;
+  text-align:left;
+}
