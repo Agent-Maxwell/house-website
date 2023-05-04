@@ -7,6 +7,8 @@ template.innerHTML = `
 <a href="paulsroom.html">Paul's Room</a>
 <a href="adriansroom.html">Adrian's Room</a>
 </div>
+
+<br>
 `;
 
-document.body.appendChild(template.content);
+document.body.prepend(template.content);
