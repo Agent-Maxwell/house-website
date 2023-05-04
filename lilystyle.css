@@ -1,6 +1,6 @@
 body{
   text-align: center;
-  background-color: #7a001f;
+  background-color: #1d0008;
   color: rgb(93, 139, 209);
   font-family:courier,helvetica,sans-serif;
   font-size: 135%;
@@ -16,7 +16,7 @@ a:visited {
 
 .column {
   float: left;
-  width: 150px;
+  width: 175px;
   padding: 10px;
 }
 
@@ -29,9 +29,10 @@ a:visited {
 }
 
 .socials {
-  text-align: left;
+  text-align: center;
   background-color: rgba(153, 50, 204, 0.308);
   border-style: double;
+  padding: 10px;
   line-height: normal;
   letter-spacing: normal;
 }
