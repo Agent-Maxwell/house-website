@@ -8,7 +8,7 @@ template.innerHTML = `
 <a href="paulsroom.html">Paul's Room</a>
 <a href="adriansroom.html">Adrian's Room</a>
 <a href="lilysroom.html">Lily's Room</a>
-<a href="davidsroom.html">davids room</a>
+<a href="davidpages/davidsroom.html">davids room</a>
 </div>
 
 <br>
