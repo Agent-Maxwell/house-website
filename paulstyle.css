@@ -7,6 +7,13 @@ body{
   margin: 0px;
 }
 
+a:visited { 
+  text-decoration: none; 
+  color: orange; 
+}
+
+a:hover { text-decoration: none; color:yellow;  }
+
 .paragraph {
   max-width: 900px;
   margin:0 auto;
