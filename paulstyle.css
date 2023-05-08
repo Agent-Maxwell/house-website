@@ -9,7 +9,7 @@ body{
 
 a:visited { 
   text-decoration: none; 
-  color: orange; 
+  color: rgb(13, 0, 255); 
 }
 
 a:hover { text-decoration: none; color:yellow;  }
