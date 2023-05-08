@@ -4,8 +4,18 @@
 }
 
 @font-face {
-  font-family: "PUNKBABE";
-  src: url('../fonts/PUNKBABE.ttf');
+  font-family: "hamrky";
+  src: url('../fonts/hamrky.TTF');
+}
+
+@font-face {
+  font-family: "mwriter";
+  src: url('../fonts/Mwriter.ttf');
+}
+
+@font-face {
+  font-family: "pwriter";
+  src: url('../fonts/Pwriter.otf');
 }
 
 body{
@@ -18,15 +28,22 @@ body{
 
 
 p {
-  font-family: "OldNewspaperTypes", Times, serif;
+  font-family: "mwriter", Times, serif;
 }
 
 h1 {
-  font-family: "PUNKBABE", Helvetica, sans-serif;
+  font-family: "pwriter", Helvetica, sans-serif;
+}
+
+h2 {
+  font-family: "hamrky", Helvetica, sans-serif;
+  font-size: 400%;
 }
 
 a {
-  font-family: "OldNewspaperTypes", Times, serif;
+  font-family: "pwriter", Times, serif;
+  font-size: 250%;
+
 }
 
 a:visited { 
