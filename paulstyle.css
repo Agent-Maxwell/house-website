@@ -12,7 +12,7 @@ a:visited {
   color: orange; 
 }
 
-a:hover { text-decoration: none; color:yellow; }
+a:hover { text-decoration: none; color:yellow;  }
 
 .paragraph {
   max-width: 900px;
