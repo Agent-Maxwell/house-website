@@ -1,10 +1,32 @@
+@font-face {
+  font-family: "OldNewspaperTypes";
+  src: url('../fonts/OldNewspaperTypes.ttf');
+}
+
+@font-face {
+  font-family: "PUNKBABE";
+  src: url('../fonts/PUNKBABE.ttf');
+}
+
 body{
   text-align: center;
   background-color: #000000;
   color: rgb(255, 0, 230);
-  font-family:courier,arial,helvetica,sans-serif;
   font-size: 135%;
   margin: 0px;
+}
+
+
+p {
+  font-family: "OldNewspaperTypes", Times, serif;
+}
+
+h1 {
+  font-family: "PUNKBABE", Helvetica, sans-serif;
+}
+
+a {
+  font-family: "OldNewspaperTypes", Times, serif;
 }
 
 a:visited { 
