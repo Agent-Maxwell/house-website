@@ -9,16 +9,26 @@
     <link href="davidstyle.css" rel="stylesheet" type="text/css" />
     <script src="/index.js" type="text/javascript" defer></script>
     <style>
-
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        .imgbox {
+            display: grid;
+            height: 100%;
+        }
+        .center-fit {
+            max-width: 100%;
+            max-height: 100vh;
+            margin: auto;
+        }
     </style>
   </head>
   <body>
     <h3>(i am aDavid)</h3>
-
-    <a href="https://gayhouse.online/davidpages/davidsroom.html"><img src="../davidimages/gaze.jpg" title="that is me"></a>
     
-    <div class="box"> 
-      <img src="../davidimages/gaze.jpg"> 
+    <div class="imgbox">
+      <img class="center-fit" src='../davidimages/gaze.jpg'>
     </div>
 
     <p>i am:</p>
@@ -31,6 +41,7 @@
     <p>visual representation of this information;</p>
     <a href="https://gayhouse.online/davidimages/davidcomposition.jpg"><img src="../davidimages/davidcomposition.jpg" title="david composition" style="width:900px;height:400px;"></a>
 
-    <p>(bye the way here is a handy reference for the game MineCraft):</p><a href="https://www.minecraft.net"><img style="width:300px;height:200px;" src="../davidimages/2045318.png" title="itse to know what the blocks are"></a>
+    <p style="font-size: 14px">(bye the way here is a handy reference for the game MineCraft):</p>
+    <a href="https://www.minecraft.net"><img style="width:300px;height:200px;" src="../davidimages/2045318.png" title="itse to know what the blocks are"></a>
   </body>
 </html>
