@@ -3,5 +3,5 @@ website for the house
 
 
 
-Yoooo read the fuck outta me
-what if I ruin this
+a group of insane people doing insane things
+trying to find some way to do something creative
