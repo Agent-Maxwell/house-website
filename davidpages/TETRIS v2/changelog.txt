@@ -1,0 +1,8 @@
+colors changed to be awesome
+rotation system overhaul: tldr SZI only have two rotation states,
+
+key repeat / input logic changed
+
+-manually holding down no longer freezes pieces; now they can now only be frozen by hard drop or normal game steps
+
+sopme other stuff idk
