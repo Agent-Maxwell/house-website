@@ -365,10 +365,12 @@ document.addEventListener('DOMContentLoaded', function () {
                 source.buffer = myBuffer;                  // tell the source which sound to play
                 source.connect(context.destination);       // connect the source to the context's destination (the speakers)
                 source.start();                            // play the source now
+                console.log("source started: " + source);
             }
         };
 
         var moveBuffer = new soundClip("tetris v3 sounds/line clear.wav");
+        console.log("playing moveBuffer");
         moveBuffer.play();
         //var rotateBuffer = null;
         //var freezeBuffer = null;
