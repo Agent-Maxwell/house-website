@@ -309,7 +309,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
     //(re)start game
-    function startGame() {
+    async function startGame() {
+
+        
 
         // audio web api setup stuff
         var context;
@@ -329,23 +331,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
         var soundClip = function(url) { //async??
             var myBuffer;
-    
-            //attempt 1 to load the audio
-
-            //// load audio into buffer
-            //var request = new XMLHttpRequest();
-            //request.open('GET', url, true);
-            //request.responseType = 'arraybuffer';
-
-            //// Decode asynchronously TODO: decodeAudioData erroring
-            //request.onload = function() {
-            //context.decodeAudioData(request.response, function(buffer) {
-            //    myBuffer = buffer;
-            //}, console.error("decode uadoio errorr"));
-            //}
-            //request.send();
-            
-            //attempt 2 to load the audio
 
             this.loadAudio = async function() {
                 try {
@@ -358,9 +343,15 @@ document.addEventListener('DOMContentLoaded', function () {
                     console.error(`Unable to fetch the audio file. Error: ${err.message}`);
                 }
             }
+
+            //async example from internet
+            //const secondFunction = async () => {
+            //    const result = await firstFunction()
+            //    // do something else here after firstFunction completes
+            //  }
             
-            console.log("myBuffer before loadAudio(): " + myBuffer);
-            this.loadAudio();
+            //console.log("myBuffer before loadAudio(): " + myBuffer);
+            //this.loadAudio();
             console.log("myBuffer after loadAudio(): " + myBuffer);
 
             this.play = function() {
@@ -374,7 +365,9 @@ document.addEventListener('DOMContentLoaded', function () {
         };
 
         var moveBuffer = new soundClip("tetris v3 sounds/line clear.wav");
-        console.log("playing moveBuffer");
+        console.log("awaiting moveBuffer loadAudio");
+        await moveBuffer.loadAudio();
+        console.log("moveBuffer loadAudio conmpleteed, playing moveBuffer");
         moveBuffer.play();
         //var rotateBuffer = null;
         //var freezeBuffer = null;
