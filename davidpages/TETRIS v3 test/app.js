@@ -351,7 +351,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         };
 
-        var moveBuffer = new soundClip("davidpages\TETRIS v3 test\tetris v3 sounds\move.wav");
+        var moveBuffer = new soundClip("davidpages/TETRIS v3 test/tetris v3 sounds/move.wav");
         moveBuffer.play();
         //var rotateBuffer = null;
         //var freezeBuffer = null;
