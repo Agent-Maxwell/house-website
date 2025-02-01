@@ -339,7 +339,7 @@ document.addEventListener('DOMContentLoaded', function () {
             request.onload = function() {
             context.decodeAudioData(request.response, function(buffer) {
                 myBuffer = buffer;
-            }, onError);
+            }, console.log("decode uadoio errorr"));
             }
             request.send();
 
