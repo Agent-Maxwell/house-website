@@ -327,7 +327,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         var context = new AudioContext();
 
-        var soundClip = function(url) { //async??
+        var soundClip = async function(url) { //async??
             var myBuffer;
     
             //attempt 1 to load the audio
@@ -358,9 +358,10 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             }
             
-            this.loadAudio();
+            await this.loadAudio();
 
             this.play = function() {
+                console.log("play(): myBuffer is " + myBuffer);
                 var source = context.createBufferSource(); // creates a sound source
                 source.buffer = myBuffer;                  // tell the source which sound to play
                 source.connect(context.destination);       // connect the source to the context's destination (the speakers)
