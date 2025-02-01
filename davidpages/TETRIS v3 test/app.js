@@ -353,6 +353,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     const response = await fetch(url);
                     // Decode it
                     myBuffer = await context.decodeAudioData(await response.arrayBuffer());
+                    console.log("loadAudio success; myBuffer = " + myBuffer);
                 } catch (err) {
                     console.error(`Unable to fetch the audio file. Error: ${err.message}`);
                 }
