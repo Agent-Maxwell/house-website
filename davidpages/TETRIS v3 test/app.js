@@ -353,7 +353,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         //TODO url not working, cant find file, 404
 
-        var moveBuffer = new soundClip("tetris v3 sounds/move.wav");
+        var moveBuffer = new soundClip("tetris v3 sounds/line clear.wav");
         moveBuffer.play();
         //var rotateBuffer = null;
         //var freezeBuffer = null;
