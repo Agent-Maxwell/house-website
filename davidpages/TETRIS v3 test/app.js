@@ -327,7 +327,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         var context = new AudioContext();
 
-        var soundClip = async function(url) { //async??
+        var soundClip = function(url) { //async??
             var myBuffer;
     
             //attempt 1 to load the audio
@@ -358,7 +358,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             }
             
-            await this.loadAudio();
+            console.log("myBuffer before loadAudio(): " + myBuffer);
+            this.loadAudio();
+            console.log("myBuffer after loadAudio(): " + myBuffer);
 
             this.play = function() {
                 console.log("play(): myBuffer is " + myBuffer);
