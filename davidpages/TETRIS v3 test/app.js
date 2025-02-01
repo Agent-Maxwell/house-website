@@ -327,31 +327,46 @@ document.addEventListener('DOMContentLoaded', function () {
 
         var context = new AudioContext();
 
-        var soundClip = function(url) {
+        var soundClip = function(url) { //async??
             var myBuffer;
     
-            // load audio into buffer
-            var request = new XMLHttpRequest();
-            request.open('GET', url, true);
-            request.responseType = 'arraybuffer';
+            //attempt 1 to load the audio
 
-            // Decode asynchronously
-            request.onload = function() {
-            context.decodeAudioData(request.response, function(buffer) {
-                myBuffer = buffer;
-            }, console.log("decode uadoio errorr"));
+            //// load audio into buffer
+            //var request = new XMLHttpRequest();
+            //request.open('GET', url, true);
+            //request.responseType = 'arraybuffer';
+
+            //// Decode asynchronously TODO: decodeAudioData erroring
+            //request.onload = function() {
+            //context.decodeAudioData(request.response, function(buffer) {
+            //    myBuffer = buffer;
+            //}, console.error("decode uadoio errorr"));
+            //}
+            //request.send();
+            
+            //attempt 2 to load the audio
+
+            this.loadAudio = async function() {
+                try {
+                    // Load an audio file
+                    const response = await fetch(url);
+                    // Decode it
+                    myBuffer = await context.decodeAudioData(await response.arrayBuffer());
+                } catch (err) {
+                    console.error(`Unable to fetch the audio file. Error: ${err.message}`);
+                }
             }
-            request.send();
+            
+            this.loadAudio();
 
             this.play = function() {
                 var source = context.createBufferSource(); // creates a sound source
                 source.buffer = myBuffer;                  // tell the source which sound to play
                 source.connect(context.destination);       // connect the source to the context's destination (the speakers)
-                source.start(0);                          // play the source now
+                source.start();                            // play the source now
             }
         };
-
-        //TODO url not working, cant find file, 404
 
         var moveBuffer = new soundClip("tetris v3 sounds/line clear.wav");
         moveBuffer.play();

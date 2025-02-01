@@ -1,3 +1,5 @@
 TODO: down key repeat make fast
 
 TODO: sounds
+
+btw, this is current development version, local file one is outdated version of tthis
