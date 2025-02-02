@@ -311,8 +311,6 @@ document.addEventListener('DOMContentLoaded', function () {
     //(re)start game
     async function startGame() {
 
-        
-
         // audio web api setup stuff
         var context;
         window.addEventListener('load', init, false);
@@ -349,56 +347,26 @@ document.addEventListener('DOMContentLoaded', function () {
             //    const result = await firstFunction()
             //    // do something else here after firstFunction completes
             //  }
-            
-            //console.log("myBuffer before loadAudio(): " + myBuffer);
-            //this.loadAudio();
-            console.log("myBuffer after loadAudio(): " + myBuffer);
 
             this.play = function() {
-                console.log("play(): myBuffer is " + myBuffer);
                 var source = context.createBufferSource(); // creates a sound source
                 source.buffer = myBuffer;                  // tell the source which sound to play
                 source.connect(context.destination);       // connect the source to the context's destination (the speakers)
                 source.start();                            // play the source now
-                console.log("source started: " + source);
             }
         };
 
-        var moveBuffer = new soundClip("tetris v3 sounds/line clear.wav");
-        console.log("awaiting moveBuffer loadAudio");
-        await moveBuffer.loadAudio();
-        console.log("moveBuffer loadAudio conmpleteed, playing moveBuffer");
-        moveBuffer.play();
-        //var rotateBuffer = null;
-        //var freezeBuffer = null;
-        //var clearBuffer = null;
-        //var tetrisBuffer = null;
+        var moveSound = new soundClip("tetris v3 sounds/move.wav");
+        var rotateSound = new soundClip("tetris v3 sounds/rotate.wav");
+        var freezeSound = new soundClip("tetris v3 sounds/fuzzy 8bit impact.wav");
+        var clearSound = new soundClip("tetris v3 sounds/line clear.wav");
+        var tetrisSound = new soundClip("tetris v3 sounds/tetris sound.wav");
 
-
-
-
-        // copypasted from web audiio api tutorrial
-
-        //function loadSound(url) {
-        //    var request = new XMLHttpRequest();
-        //    request.open('GET', url, true);
-        //    request.responseType = 'arraybuffer';
-
-        //    // Decode asynchronously
-        //    request.onload = function() {
-        //    context.decodeAudioData(request.response, function(buffer) {
-        //        moveBuffer = buffer;
-        //    }, onError);
-        //    }
-        //    request.send();
-        //}
-
-
-
-
-
-
-
+        await moveSound.loadAudio();
+        await rotateSound.loadAudio();
+        await freezeSound.loadAudio();
+        await clearSound.loadAudio();
+        await tetrisSound.loadAudio();
 
         //clear entire grid
         for (let i = 0; i < 200; i += 1) {
@@ -586,6 +554,7 @@ document.addEventListener('DOMContentLoaded', function () {
         if (current.some(index => squares[currentPosition + index + width].classList.contains("taken"))) { //if touching ground:
             // if this move is allowed to freeze, freeze and spawn new one (otherwise do nothing)
             if (canFreeze) {
+                freezeSound.play();
                 timer.restart(); // Reset game step timer
                 current.forEach(index => squares[currentPosition + index].classList.add("taken"))
                 addScore()
@@ -625,7 +594,10 @@ document.addEventListener('DOMContentLoaded', function () {
         undraw()
         const touchingLeftEdge = current.some(index => (currentPosition + index) % width == 0)
         const touchingTakenOnLeft = current.some(index => squares[currentPosition + index - 1].classList.contains("taken"))
-        if (!touchingLeftEdge && !touchingTakenOnLeft) currentPosition -= 1
+        if (!touchingLeftEdge && !touchingTakenOnLeft) {
+            moveSound.play();
+            currentPosition -= 1
+        }
         draw()
     }
 
@@ -639,12 +611,18 @@ document.addEventListener('DOMContentLoaded', function () {
         undraw()
         const touchingRightEdge = current.some(index => (currentPosition + index) % width == width - 1)
         const touchingTakenOnRight = current.some(index => squares[currentPosition + index + 1].classList.contains("taken"))
-        if (!touchingRightEdge && !touchingTakenOnRight) currentPosition += 1
+        if (!touchingRightEdge && !touchingTakenOnRight) {
+            moveSound.play();
+            currentPosition += 1
+        }
         draw()
     }
 
     function rotate() {
         console.log("BEGIN ROTATION for shape" + currentShape)
+
+        // for now: play sound regardless of shape or rotation success
+        rotateSound.play();
 
         //O cant rotate
         if (currentShape == 6) {
@@ -840,10 +818,14 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     })
 
+    //todo: add tetris detection for special sound/score
+    //todo: combo scoring
     function addScore() {
         for (let i = 0; i < 200; i += width) {
             const row = [i, i + 1, i + 2, i + 3, i + 4, i + 5, i + 6, i + 7, i + 8, i + 9]
             if (row.every(index => squares[index].classList.contains("taken"))) {
+                // Line clear
+                clearSound.play();
                 score += 1;
                 scoreDisplay.innerHTML = score;
                 row.forEach(index => {
