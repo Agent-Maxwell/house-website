@@ -327,8 +327,18 @@ document.addEventListener('DOMContentLoaded', function () {
 
         var context = new AudioContext();
 
+
+
+        
         var soundClip = function(url) { //async??
             var myBuffer;
+            
+            var moveSound;
+            var rotateSound;
+            var freezeSound;
+            var clearSound;
+            var tetrisSound;
+
 
             this.loadAudio = async function() {
                 try {
@@ -356,11 +366,11 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         };
 
-        var moveSound = new soundClip("tetris v3 sounds/move.wav");
-        var rotateSound = new soundClip("tetris v3 sounds/rotate.wav");
-        var freezeSound = new soundClip("tetris v3 sounds/fuzzy 8bit impact.wav");
-        var clearSound = new soundClip("tetris v3 sounds/line clear.wav");
-        var tetrisSound = new soundClip("tetris v3 sounds/tetris sound.wav");
+        moveSound = new soundClip("tetris v3 sounds/move.wav");
+        rotateSound = new soundClip("tetris v3 sounds/rotate.wav");
+        freezeSound = new soundClip("tetris v3 sounds/fuzzy 8bit impact.wav");
+        clearSound = new soundClip("tetris v3 sounds/line clear.wav");
+        tetrisSound = new soundClip("tetris v3 sounds/tetris sound.wav");
 
         await moveSound.loadAudio();
         await rotateSound.loadAudio();
