@@ -306,7 +306,43 @@ document.addEventListener('DOMContentLoaded', function () {
     ]
 
 
+    var context = new AudioContext();
 
+    var soundClip = function(url) { //async??
+        var myBuffer;
+        
+        var moveSound;
+        var rotateSound;
+        var freezeSound;
+        var clearSound;
+        var tetrisSound;
+
+
+        this.loadAudio = async function() {
+            try {
+                // Load an audio file
+                const response = await fetch(url);
+                // Decode it
+                myBuffer = await context.decodeAudioData(await response.arrayBuffer());
+                console.log("loadAudio success; myBuffer = " + myBuffer);
+            } catch (err) {
+                console.error(`Unable to fetch the audio file. Error: ${err.message}`);
+            }
+        }
+
+        //async example from internet
+        //const secondFunction = async () => {
+        //    const result = await firstFunction()
+        //    // do something else here after firstFunction completes
+        //  }
+
+        this.play = function() {
+            var source = context.createBufferSource(); // creates a sound source
+            source.buffer = myBuffer;                  // tell the source which sound to play
+            source.connect(context.destination);       // connect the source to the context's destination (the speakers)
+            source.start();                            // play the source now
+        }
+    };
 
     //(re)start game
     async function startGame() {
@@ -324,47 +360,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         // load sounds ----------------------------
-
-        var context = new AudioContext();
-
-
-
-        
-        var soundClip = function(url) { //async??
-            var myBuffer;
-            
-            var moveSound;
-            var rotateSound;
-            var freezeSound;
-            var clearSound;
-            var tetrisSound;
-
-
-            this.loadAudio = async function() {
-                try {
-                    // Load an audio file
-                    const response = await fetch(url);
-                    // Decode it
-                    myBuffer = await context.decodeAudioData(await response.arrayBuffer());
-                    console.log("loadAudio success; myBuffer = " + myBuffer);
-                } catch (err) {
-                    console.error(`Unable to fetch the audio file. Error: ${err.message}`);
-                }
-            }
-
-            //async example from internet
-            //const secondFunction = async () => {
-            //    const result = await firstFunction()
-            //    // do something else here after firstFunction completes
-            //  }
-
-            this.play = function() {
-                var source = context.createBufferSource(); // creates a sound source
-                source.buffer = myBuffer;                  // tell the source which sound to play
-                source.connect(context.destination);       // connect the source to the context's destination (the speakers)
-                source.start();                            // play the source now
-            }
-        };
 
         moveSound = new soundClip("tetris v3 sounds/move.wav");
         rotateSound = new soundClip("tetris v3 sounds/rotate.wav");

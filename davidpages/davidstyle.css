@@ -14,7 +14,7 @@ body{
   letter-spacing: .05em
 }
 
-ul, ol{
+ul, ol {
     max-width: 350px;
     margin: 0 auto;
     text-align:left;
