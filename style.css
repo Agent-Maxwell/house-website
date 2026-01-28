@@ -19,3 +19,27 @@ ul, ol{
     margin: 0 auto;
     text-align:left;
 }
+
+#logos {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  flex-wrap: wrap;
+  border-style: dashed;
+  border-width: 2px 0px 2px 0px;
+  margin: .5rem;
+}
+
+h1 {
+  font-size: xx-large;
+}
+
+h2 {
+  font-size: x-large;
+}
+
+#manifesto {
+  border-style: dashed;
+  margin: 2rem .5rem 2rem .5rem;
+  border-width: 2px 0px 2px 0px;
+}
