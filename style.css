@@ -43,3 +43,14 @@ h2 {
   margin: 2rem .5rem 2rem .5rem;
   border-width: 2px 0px 2px 0px;
 }
+
+@media (max-width:550px) {
+  
+  * {
+    display: none;
+  }
+  
+}
+
+
+
