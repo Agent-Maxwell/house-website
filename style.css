@@ -44,10 +44,18 @@ h2 {
   border-width: 2px 0px 2px 0px;
 }
 
+.troll {
+  display:none;
+}
+
 @media (max-width:550px) {
   
-  * {
+  body * {
     display: none;
+  }
+
+  .troll {
+    display: inline;
   }
   
 }
