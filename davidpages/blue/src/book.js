@@ -1,44 +1,99 @@
 const Comic = {
-
-    // SECRET
-    // secret page filepaths
-    secretPages: [
-        "/img/secret_test_pages/p1.png",
-        "/img/secret_test_pages/p2.jpg",
-        "/img/secret_test_pages/p3.jpg",
-        "/img/secret_test_pages/p4.jpg",
-        "/img/secret_test_pages/p5.jpg",
-    ],
-
-    // secet hover text
-    secretTitles: [
-        "awesome old pixel font i think its like DOS",
-        "me",
-        "recursive drawing",
-        "",
-        "my house!!",
-    ],
-
-    // page filepaths; populated in init()
-    pages: [],
-
-    // corresponding hover text
-    titles: [
-        "cover",
-        "p0-1",
-        "p2-3",
-        "etc",
-    ],
-
     // current index
     // (index 0 is cover, index 1 is pages 0-1, index 2 is p2-3, index 3 is p4-5)
     currentIndex: 0,
 
     SoundEngine: {},
 
-    // todo sounds
+    ImageLoader: {},
 
     init() {
+        // LOAD IMAGES
+        this.ImageLoader = {
+            totalImages: 75,
+            images: [],
+            status: [],
+            isProcessing: false,
+
+            init() {
+                // set starting status for images
+                for (let i = 0; i < this.totalImages; i++) {
+                    this.images[i] = null;
+                    this.status[i] = "pending";
+                }
+
+                // start loading right away
+                this.processQueue();
+            },
+
+            updatePriority() {
+                // if we arent already loading, start
+                if (!this.isProcessing) this.processQueue();
+            },
+
+            async processQueue() {
+                // mark that we are loading
+                this.isProcessing = true;
+
+                // find all indices that arent done or loading
+                let pendingIndices = [];
+                for (let i = 0; i < this.totalImages; i++) {
+                    if (this.status[i] === "pending") pendingIndices.push(i);
+                }
+
+                // check for completion
+                if (pendingIndices.length === 0) {
+                    this.isProcessing = false;
+                    console.log("all " + this.totalImages + "images loaded!!")
+                    return;
+                }
+
+                // for now just process first unloaded one
+                const nextToLoad = pendingIndices[0];
+                await this.loadSingleImage(nextToLoad);
+
+                // recurse
+                this.processQueue();
+            },
+
+            async loadSingleImage(index) {
+                console.log(`begin load singleimg; currentindex=` + Comic.currentIndex);
+
+                this.status[index] = "loading";
+
+                const paddedIndex = ('0' + index).slice(-2); // 00 01 02 ... 09 10 11 ...
+                const url = ('img/blue/blue' + paddedIndex + '.jpg');
+
+                try {
+                    const img = await this.loadImagePromise(url);
+                    //no hover texts for now
+//                    img.title = Comic.hoverTexts[index];
+                    this.images[index] = img;
+                    this.status[index] = "done";
+                    console.log(`loaded image at index ${index}`);
+
+                    // If the user is currently looking at THIS page, update the view!
+                    if (index === Comic.currentIndex) {
+                        console.log("yes");
+                        Comic.updateDisplay();
+                    }
+                } catch (e) {
+                    console.error(`failed loading image at index ${index}`, e);
+                    this.status[index] = "pending"; // try again later
+                }
+            },
+
+            loadImagePromise(url) {
+                return new Promise((resolve, reject) => {
+                    const img = new Image();
+                    img.onload = () => resolve(img);
+                    img.onerror = reject;
+                    img.src = url;
+                });
+            }
+        }
+        this.ImageLoader.init();
+
         // LOAD SOUNDSS
         this.SoundEngine = {
             turnOpenSounds: [],
@@ -87,10 +142,9 @@ const Comic = {
             },
 
             async loadSound(name, url) {
-//                console.log("loading sound" + name + " at " + url);
                 try {
                     const response = await fetch(url);
-                    console.log(`${name} file size: ${response.headers.get('content-length')} bytes`);
+//                    console.log(`${name} file size: ${response.headers.get('content-length')} bytes`);
 
                     const arrayBuffer = await response.arrayBuffer();
 
@@ -98,20 +152,19 @@ const Comic = {
                     const audioBuffer = await this.context.decodeAudioData(arrayBuffer);
 
                     this.cache[name] = audioBuffer;
-                    console.log(`Decoded: ${name}`);
+//                    console.log(`Decoded: ${name}`);
                 } catch (e) {
                     console.error(`Failed to load sound: ${name}`, e);
                 }
             },
 
             play(name) {
-                console.log(name);
+                console.log("playing sound " + name);
                 if (!this.cache[name]) return;
 
                 // In Web Audio, you create a "Source Node" every time you play
                 const source = this.context.createBufferSource()
                 source.buffer = this.cache[name];
-//                console.log(source.buffer);
 
                 // Connect it to the "Speakers" (destination)
                 source.connect(this.context.destination);
@@ -148,15 +201,6 @@ const Comic = {
             },
         }
         this.SoundEngine.loadSounds();
-//        console.log(this.SoundEngine);
-
-
-        // populate pages with blue00-blue74
-        for (let i = 0; i <= 74; i++) {
-            const paddedIndex = ('0' + i).slice(-2); // 00 01 02 ... 09 10 11 ...
-            const path = ('img/blue/blue' + paddedIndex + '.jpg');
-            this.pages.push(path);
-        }
 
         // link buttons to their actions
         document.getElementById('btn-first').onclick = () => this.firstButton();
@@ -179,80 +223,85 @@ const Comic = {
     },
 
     prevButton() {
-        initialIndex = this.currentIndex;
-        this.changePage(-1);
-        if (initialIndex == 1) {
+        if (this.currentIndex == 1) {
             this.SoundEngine.playSound("turnClosed");
+        } else if (this.currentIndex == this.ImageLoader.totalImages - 1) {
+            this.SoundEngine.playSound("turnOpen");
         } else {
             this.SoundEngine.playSound("turnPage");
         }
+        this.changePage(-1);
     },
 
     nextButton() {
-        initialIndex = this.currentIndex;
-        this.changePage(1);
-        if (initialIndex == this.pages.length - 2) {
+        if (this.currentIndex == this.ImageLoader.totalImages - 2) {
             this.SoundEngine.playSound("turnClosed");
+        } else if (this.currentIndex == 0) {
+            this.SoundEngine.playSound("turnOpen");
         } else {
             this.SoundEngine.playSound("turnPage");
         }
+        this.changePage(1);
     },
 
     firstButton() {
-        initialIndex = this.currentIndex;
-        this.goTo(0)
-        if (initialIndex == this.pages.length - 1) {
+        if (this.currentIndex == this.ImageLoader.totalImages - 1) {
             this.SoundEngine.playSound("flipCoverToCover");
-        } else if (initialIndex > 1) {
+        } else if (this.currentIndex > 1) {
             this.SoundEngine.playSound("flipPageToCover");
         } else {
             this.SoundEngine.playSound("turnClosed");
         }
+        this.goTo(0);
     },
 
     lastButton() {
-        initialIndex = this.currentIndex;
-        this.goTo(this.pages.length - 1);
-        if (initialIndex == 0) {
+        if (this.currentIndex == 0) {
             this.SoundEngine.playSound("flipCoverToCover");
-        } else if (initialIndex < this.pages.length - 2) {
+        } else if (this.currentIndex < this.ImageLoader.totalImages - 2) {
             this.SoundEngine.playSound("flipPageToCover");
         } else {
             this.SoundEngine.playSound("turnClosed");
         }
+        this.goTo(this.ImageLoader.totalImages - 1);
     },
 
     // prev/next page
     changePage(step) {
         const newIndex = this.currentIndex + step;
         // Clamp the index so it doesn't go out of bounds (NaN protection!)
-        if (newIndex >= 0 && newIndex < this.pages.length) {
+        if (newIndex >= 0 && newIndex < this.ImageLoader.totalImages) {
             this.goTo(newIndex);
         }
     },
 
     goTo(index) {
         this.currentIndex = index;
+//        console.log("go to " + this.currentIndex);
         this.updateDisplay();
-//        window.location.hash = "#" + this.currentIndex;
         history.replaceState(null, "", "#" + this.currentIndex)
     },
 
     updateDisplay() {
-        // get page elements
-        const img = document.getElementById('page-image');
-        const text = document.getElementById('page-label');
+        // set image (if loaded)
+        const container = document.getElementById('stage');
+        const loadedImage = this.ImageLoader.images[this.currentIndex];
+        if (loadedImage) {
+            // Clear the old image and drop in the pre-loaded one
+            container.innerHTML = '';
+            container.appendChild(loadedImage);
 
-        // set image and hovertext
-        img.src = this.pages[this.currentIndex];
-        img.title = this.titles[this.currentIndex];
+            // Ensure it still fits your layout
+            loadedImage.id = "page-image";
+        }
 
         // set page number display
+        const text = document.getElementById('page-label');
         switch (this.currentIndex) {
             case 0:
                 text.innerText = "front";
                 break;
-            case this.pages.length - 1:
+            case this.ImageLoader.totalImages - 1:
                 text.innerText = "back";
                 break;
             default:
@@ -265,8 +314,8 @@ const Comic = {
         // disable buttons at the edges
         document.getElementById('btn-prev').disabled = (this.currentIndex === 0);
         document.getElementById('btn-first').disabled = (this.currentIndex === 0);
-        document.getElementById('btn-next').disabled = (this.currentIndex === this.pages.length - 1);
-        document.getElementById('btn-last').disabled = (this.currentIndex === this.pages.length - 1);
+        document.getElementById('btn-next').disabled = (this.currentIndex === this.ImageLoader.totalImages - 1);
+        document.getElementById('btn-last').disabled = (this.currentIndex === this.ImageLoader.totalImages - 1);
     }
 };
 
@@ -274,4 +323,14 @@ Comic.init();
 
 // scrapyard ---------------------------------------------------
 
-// todo maybe bonus elements under comic page, links to relevan tsuff, longer descripions
+// todo maybe bonus elements under comic page
+
+// SECRET
+// secret page filepaths
+//secretPages: [
+//    "/img/secret_test_pages/p1.png",
+//    "/img/secret_test_pages/p2.jpg",
+//    "/img/secret_test_pages/p3.jpg",
+//    "/img/secret_test_pages/p4.jpg",
+//    "/img/secret_test_pages/p5.jpg",
+//],

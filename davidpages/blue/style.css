@@ -19,6 +19,8 @@ html, body {
     padding: 0;
     height: 100%;
     overflow: hidden; /* Prevents the body itself from ever scrolling */
+
+    background-color: lightsteelblue;
 }
 
 #book-container {
