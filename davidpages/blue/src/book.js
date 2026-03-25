@@ -154,7 +154,7 @@ const Comic = {
         // populate pages with blue00-blue74
         for (let i = 0; i <= 74; i++) {
             const paddedIndex = ('0' + i).slice(-2); // 00 01 02 ... 09 10 11 ...
-            const path = ('/img/blue/blue' + paddedIndex + '.jpg');
+            const path = ('img/blue/blue' + paddedIndex + '.jpg');
             this.pages.push(path);
         }
 
