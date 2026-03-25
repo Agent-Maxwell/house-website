@@ -48,6 +48,15 @@ const Comic = {
                     return;
                 }
 
+                pendingIndices.sort((a, b) => {
+                    // load immediate vicinity at top priority, then stuff near beginning/end in case they jump
+                    const weightA = Math.min(Math.abs(a - 0) * 3, Math.abs(a - Comic.currentIndex), Math.abs(a - this.totalImages + 1) * 3);
+                    const weightB = Math.min(Math.abs(b - 0) * 3, Math.abs(b - Comic.currentIndex), Math.abs(b - this.totalImages + 1) * 3);
+                    return weightA - weightB;
+                });
+
+                console.log(pendingIndices.toString());
+
                 // for now just process first unloaded one
                 const nextToLoad = pendingIndices[0];
                 await this.loadSingleImage(nextToLoad);
@@ -57,8 +66,6 @@ const Comic = {
             },
 
             async loadSingleImage(index) {
-                console.log(`begin load singleimg; currentindex=` + Comic.currentIndex);
-
                 this.status[index] = "loading";
 
                 const paddedIndex = ('0' + index).slice(-2); // 00 01 02 ... 09 10 11 ...
@@ -74,7 +81,6 @@ const Comic = {
 
                     // If the user is currently looking at THIS page, update the view!
                     if (index === Comic.currentIndex) {
-                        console.log("yes");
                         Comic.updateDisplay();
                     }
                 } catch (e) {
