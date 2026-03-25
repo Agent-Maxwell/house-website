@@ -229,6 +229,7 @@ const Comic = {
     },
 
     prevButton() {
+        if (this.currentIndex == 0) return; // dont play sound if arrow key pressed
         if (this.currentIndex == 1) {
             this.SoundEngine.playSound("turnClosed");
         } else if (this.currentIndex == this.ImageLoader.totalImages - 1) {
@@ -240,6 +241,7 @@ const Comic = {
     },
 
     nextButton() {
+        if (this.currentIndex == this.ImageLoader.totalImages - 1) return; // dont play sound if arrow key pressed
         if (this.currentIndex == this.ImageLoader.totalImages - 2) {
             this.SoundEngine.playSound("turnClosed");
         } else if (this.currentIndex == 0) {
