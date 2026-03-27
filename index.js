@@ -8,7 +8,7 @@ template.innerHTML = `
 <a href="https://gayhouse.online/paulpages/paulsroom.html">Paul's Room</a>
 <a href="https://gayhouse.online/adrianpages/adriansroom.html">Adrian's Room</a>
 <a href="https://gayhouse.online/lilypages/lilysroom.html">Lily's Room</a>
-<a href="https://gayhouse.online/davidpages/davidsroom.html">davids room</a>
+<a href="https://gayhouse.online/davidpages/index.html">David's Room</a>
 </div>
 
 <br>
