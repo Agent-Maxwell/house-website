@@ -1,3 +1,8 @@
 body {
+    background-color:powderblue;
     font-family: 'Zodiak', serif;
+}
+
+blockquote {
+    color: steelblue;
 }

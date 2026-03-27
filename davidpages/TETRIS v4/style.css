@@ -1,0 +1,45 @@
+.container {
+    display: flex;
+}
+
+.grid {
+    width: 200px;
+    height: 400px;
+    display: flex;
+    flex-wrap: wrap;
+    background-color:#ffffff
+    /*background-color: rgb(255, 255, 255);*/
+}
+
+.grid div {
+    height: 20px;
+    width: 20px;
+    /*background-color: red;*/
+}
+
+.mini-grid {
+    margin-left: 50px;
+    width: 80px;
+    height: 80px;
+    display: flex;
+    flex-wrap: wrap;
+    background-color:#ffffff
+    /*background-color: gray;*/
+}
+
+.mini-grid div {
+    height: 20px;
+    width: 20px;
+    /*background-color: red;*/
+}
+
+body {
+    background-color:black;
+    color: #ffffff;
+}
+
+
+
+/*.tetromino {
+    background-color: blue;
+}*/
