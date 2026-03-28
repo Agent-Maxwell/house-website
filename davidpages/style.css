@@ -11,6 +11,10 @@ i  {
     color: steelblue;
 }
 
+img  {
+    color: steelblue;
+}
+
 .card-container {
     display: flex;
     justify-content: space-evenly;
@@ -21,4 +25,9 @@ i  {
 .card {
     padding: 1rem;
     background-color: skyblue;
+}
+
+.photo {
+    width:100%;
+    max-width:1200px;
 }
