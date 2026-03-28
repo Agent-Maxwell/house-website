@@ -6,3 +6,19 @@ body {
 blockquote {
     color: steelblue;
 }
+
+i  {
+    color: steelblue;
+}
+
+.card-container {
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.card {
+    padding: 1rem;
+    background-color: skyblue;
+}
