@@ -13,6 +13,8 @@ i  {
 
 img  {
     color: steelblue;
+    margin: auto; width:100%;
+    max-width:500px;
 }
 
 .card-container {
