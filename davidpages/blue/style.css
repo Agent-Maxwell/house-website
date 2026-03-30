@@ -1,18 +1,8 @@
-/*#page-image {*/
-/*    *//* 1. Clamp to the container/screen width */
-/*    max-width: 100vw;*/
-/*    max-height: 95vh;*/
-
-/*    *//* scale down to fit */
-/*    object-fit: contain;*/
-
-/*    *//* 3. Keep it centered */
-/*    display: block;*/
-/*    margin: 0 auto;*/
-
-/*    *//* wtf */
-/*    transition: opacity 0.2s ease-in-out;*/
-/*}*/
+/*davids font*/
+@font-face {
+    font-family: 'Davids3x3';
+    src: url('/davidpages/font/Vols3x3.ttf') format('truetype');
+}
 
 html, body {
     margin: 0;
@@ -44,8 +34,10 @@ html, body {
     /* Keep the numbers centered */
     text-align: center;
 
-    /* Optional: use a monospaced font so '1' is as wide as '8' */
-    font-family: 'Courier New', monospace;
+/*    font-family: 'Courier New', monospace;*/
+    font-family: 'Davids3x3', monospace;
+    font-size: 40px;
+    margin-top: -20px;
 }
 
 #stage {

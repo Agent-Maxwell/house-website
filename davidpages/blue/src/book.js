@@ -1,4 +1,7 @@
 const Comic = {
+    // which notebook
+    notebookID: null,
+
     // current index
     // (index 0 is cover, index 1 is pages 0-1, index 2 is p2-3, index 3 is p4-5)
     currentIndex: 0,
@@ -8,14 +11,29 @@ const Comic = {
     ImageLoader: {},
 
     init() {
+        // todo check notebook id, load images
+        this.notebookID = document.body.getAttribute("data-notebookID");
+//        console.log("notebookid: " + this.notebookID);
+
+
         // LOAD IMAGES
         this.ImageLoader = {
-            totalImages: 75,
+            totalImages: null,
             images: [],
             status: [],
             isProcessing: false,
 
             init() {
+                // totalimages depends on notebook:
+                switch (Comic.notebookID) {
+                    case "blue":
+                        this.totalImages = 75;
+                        break;
+//                    case "blue":
+//                        totalImages = 75;
+//                        break;
+                }
+
                 // set starting status for images
                 for (let i = 0; i < this.totalImages; i++) {
                     this.images[i] = null;
@@ -55,7 +73,8 @@ const Comic = {
                     return weightA - weightB;
                 });
 
-                console.log(pendingIndices.toString());
+                // see what order images are being loaded in
+//                console.log(pendingIndices.toString());
 
                 // for now just process first unloaded one
                 const nextToLoad = pendingIndices[0];
@@ -68,8 +87,21 @@ const Comic = {
             async loadSingleImage(index) {
                 this.status[index] = "loading";
 
-                const paddedIndex = ('0' + index).slice(-2); // 00 01 02 ... 09 10 11 ...
-                const url = ('img/blue/blue' + paddedIndex + '.jpg');
+                let paddedIndex = null;
+                let url = null;
+
+                // split logic here depending on which notebook:
+                switch (Comic.notebookID) {
+                    case "blue":
+                        paddedIndex = ('0' + index).slice(-2); // 00 01 02 ... 09 10 11 ...
+                        url = ('img/blue/blue' + paddedIndex + '.jpg');
+//                        console.log("loadsingleimage url: " + url);////////////////////////////////////////
+                        break;
+//                    case "blue":
+//                        const paddedIndex = ('0' + index).slice(-2); // 00 01 02 ... 09 10 11 ...
+//                        const url = ('img/blue/blue' + paddedIndex + '.jpg');
+//                        break;
+                }
 
                 try {
                     const img = await this.loadImagePromise(url);
@@ -214,18 +246,24 @@ const Comic = {
         document.getElementById('btn-prev').onclick = () => this.prevButton();
         document.getElementById('btn-next').onclick = () => this.nextButton();
 
-        // Check if there is a hash in the URL on load; go to that page, otherwise default to page 1
-        const hash = window.location.hash.substring(1); // remove the '#'
-        const startingIndex = hash ? parseInt(hash) : 0;
-        this.goTo(startingIndex);
-
         // link left/right arrows to actions
         window.addEventListener('keydown', (e) => {
             if (e.key === "ArrowLeft") this.prevButton();
             if (e.key === "ArrowRight") this.nextButton();
         });
 
-        this.updateDisplay();
+        // Check if there is a hash in the URL on load; go to that page, otherwise default to page 1
+        const hash = window.location.hash.substring(1); // remove the '#'
+        const startingIndex = hash ? parseInt(hash) : 0;
+        this.goTo(startingIndex);
+
+        // also update page when user types new id in url
+        window.addEventListener('hashchange', (event) => {
+            const hash = window.location.hash.substring(1); // remove the '#'
+            const indexFromUrl = hash ? parseInt(hash) : 0;
+            console.log("url change detected: " + indexFromUrl);
+            Comic.goTo(indexFromUrl);
+        });
     },
 
     prevButton() {
@@ -330,6 +368,14 @@ const Comic = {
 Comic.init();
 
 // scrapyard ---------------------------------------------------
+
+// todo stuff that will be different across notebooks:
+// perhaps background color
+// images, total num of images
+// page turn sounds
+// perhaps page display? although for now i really like just "p0-1"
+
+// encapsulate this notebook-dependent stuff in functions so logic can stay general
 
 // todo maybe bonus elements under comic page
 
