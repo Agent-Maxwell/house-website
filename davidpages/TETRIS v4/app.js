@@ -851,6 +851,14 @@ document.addEventListener('DOMContentLoaded', function () {
         startBtn.blur(); //prevent subsequent spacebar clicks from pausing
     })
 
+    // prevent space and arrows from scrolling
+    window.addEventListener('keydown', function(e) {
+        spaceOrUpDownArrow = e.keyCode == 32 || e.keyCode == 38 || e.keyCode == 40
+        if(spaceOrUpDownArrow && e.target == document.body) {
+            e.preventDefault();
+        }
+    });
+
     //todo: add tetris detection for special sound/score
     //todo: combo scoring
     function addScore() {

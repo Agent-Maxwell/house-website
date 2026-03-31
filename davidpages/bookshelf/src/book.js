@@ -11,28 +11,20 @@ const Comic = {
     ImageLoader: {},
 
     init() {
-        // todo check notebook id, load images
         this.notebookID = document.body.getAttribute("data-notebookID");
 //        console.log("notebookid: " + this.notebookID);
 
-
         // LOAD IMAGES
         this.ImageLoader = {
+            urlTemplate: null,
             totalImages: null,
             images: [],
             status: [],
             isProcessing: false,
 
             init() {
-                // totalimages depends on notebook:
-                switch (Comic.notebookID) {
-                    case "blue":
-                        this.totalImages = 75;
-                        break;
-//                    case "blue":
-//                        totalImages = 75;
-//                        break;
-                }
+                // set totalImages and urlTemplate
+                this.setupThisNotebook();
 
                 // set starting status for images
                 for (let i = 0; i < this.totalImages; i++) {
@@ -42,11 +34,6 @@ const Comic = {
 
                 // start loading right away
                 this.processQueue();
-            },
-
-            updatePriority() {
-                // if we arent already loading, start
-                if (!this.isProcessing) this.processQueue();
             },
 
             async processQueue() {
@@ -76,7 +63,7 @@ const Comic = {
                 // see what order images are being loaded in
 //                console.log(pendingIndices.toString());
 
-                // for now just process first unloaded one
+                // process highest priority (lowest weight) unloaded one
                 const nextToLoad = pendingIndices[0];
                 await this.loadSingleImage(nextToLoad);
 
@@ -90,18 +77,8 @@ const Comic = {
                 let paddedIndex = null;
                 let url = null;
 
-                // split logic here depending on which notebook:
-                switch (Comic.notebookID) {
-                    case "blue":
-                        paddedIndex = ('0' + index).slice(-2); // 00 01 02 ... 09 10 11 ...
-                        url = ('img/blue/blue' + paddedIndex + '.jpg');
-//                        console.log("loadsingleimage url: " + url);////////////////////////////////////////
-                        break;
-//                    case "blue":
-//                        const paddedIndex = ('0' + index).slice(-2); // 00 01 02 ... 09 10 11 ...
-//                        const url = ('img/blue/blue' + paddedIndex + '.jpg');
-//                        break;
-                }
+                paddedIndex = ('0' + index).slice(-2); // 00 01 02 ... 09 10 11 ...
+                url = (this.urlTemplate + paddedIndex + '.jpg');
 
                 try {
                     const img = await this.loadImagePromise(url);
@@ -128,6 +105,20 @@ const Comic = {
                     img.onerror = reject;
                     img.src = url;
                 });
+            },
+
+            // NOTEBOOK DEPENDENT ----------------------------------
+            setupThisNotebook() {
+                switch (Comic.notebookID) {
+                    case "blue":
+                        this.totalImages = 75;
+                        this.urlTemplate = "img/blue/blue";
+                        break;
+                    case "spiral":
+                        this.totalImages = 50;
+                        this.urlTemplate = "img/spiral/spiral";
+                        break;
+                }
             }
         }
         this.ImageLoader.init();
@@ -140,40 +131,43 @@ const Comic = {
             flipCoverToCoverSounds: [],
             flipPageToCoverSounds: [],
 
-            total: 25,
+            urlTemplate: null,
+            total: null, //25 for blue
             loaded: 0,
 
             context: new (window.AudioContext || window.webkitAudioContext)(),
             cache: {},
 
             loadSounds() {
+                this.setupThisNotebook();
+
                 // turnOpenSounds
                 for (let i = 1; i <= 4; i++) {
-                    const sound = {name: 'turnOpen' + i, url: 'aud/turn_open_' + i + '.wav'};
+                    const sound = {name: 'turnOpen' + i, url: this.urlTemplate + 'turn_open_' + i + '.wav'};
                     this.turnOpenSounds.push(sound);
                     this.loadSound(sound.name, sound.url)
                 }
                 // turnClosedSounds
                 for (let i = 1; i <= 4; i++) {
-                    const sound = {name: 'turnClosed' + i, url: 'aud/turn_closed_' + i + '.wav'};
+                    const sound = {name: 'turnClosed' + i, url: this.urlTemplate + 'turn_closed_' + i + '.wav'};
                     this.turnClosedSounds.push(sound);
                     this.loadSound(sound.name, sound.url)
                 }
                 // turnPageSounds
                 for (let i = 1; i <= 11; i++) {
-                    const sound = {name: 'turnPage' + i, url: 'aud/turn_page_' + i + '.wav'};
+                    const sound = {name: 'turnPage' + i, url: this.urlTemplate + 'turn_page_' + i + '.wav'};
                     this.turnPageSounds.push(sound);
                     this.loadSound(sound.name, sound.url)
                 }
                 // flipCoverToCoverSounds
                 for (let i = 1; i <= 2; i++) {
-                    const sound = {name: 'flipCoverToCover' + i, url: 'aud/flip_cover_to_cover_' + i + '.wav'};
+                    const sound = {name: 'flipCoverToCover' + i, url: this.urlTemplate + 'flip_cover_to_cover_' + i + '.wav'};
                     this.flipCoverToCoverSounds.push(sound);
                     this.loadSound(sound.name, sound.url)
                 }
                 // flipPageToCoverSounds
                 for (let i = 1; i <= 3; i++) {
-                    const sound = {name: 'flipPageToCover' + i, url: 'aud/flip_page_to_cover_' + i + '.wav'};
+                    const sound = {name: 'flipPageToCover' + i, url: this.urlTemplate + 'flip_page_to_cover_' + i + '.wav'};
                     this.flipPageToCoverSounds.push(sound);
                     this.loadSound(sound.name, sound.url)
                 }
@@ -196,6 +190,7 @@ const Comic = {
                 }
             },
 
+            // plays literal sound file
             play(name) {
                 console.log("playing sound " + name);
                 if (!this.cache[name]) return;
@@ -211,6 +206,7 @@ const Comic = {
                 source.start(0);
             },
 
+            // input sound category, play one of its variations
             playSound(type) {
                 let randomIndex = 0;
                 //currerntly playing sound 1 nio matter what rand index is
@@ -237,6 +233,20 @@ const Comic = {
                         break;
                 }
             },
+
+            // NOTEBOOK DEPENDENt --------------------------------
+            setupThisNotebook() {
+                switch (Comic.notebookID) {
+                    case "blue":
+                        this.total = 25;
+                        this.urlTemplate = "aud/blue/";
+                        break;
+                    case "spiral":
+                        this.total = 25;
+                        this.urlTemplate = "aud/blue/";
+                        break;
+                }
+            }
         }
         this.SoundEngine.loadSounds();
 
@@ -322,8 +332,8 @@ const Comic = {
     },
 
     goTo(index) {
-        this.currentIndex = index;
-//        console.log("go to " + this.currentIndex);
+        clampedIndex = this.clampIndex(index);
+        this.currentIndex = clampedIndex;
         this.updateDisplay();
         history.replaceState(null, "", "#" + this.currentIndex)
     },
@@ -362,6 +372,13 @@ const Comic = {
         document.getElementById('btn-first').disabled = (this.currentIndex === 0);
         document.getElementById('btn-next').disabled = (this.currentIndex === this.ImageLoader.totalImages - 1);
         document.getElementById('btn-last').disabled = (this.currentIndex === this.ImageLoader.totalImages - 1);
+    },
+
+    clampIndex(input) {
+        if (input < 0) return 0;
+        const lastIndex = this.ImageLoader.totalImages - 1;
+        if (input > lastIndex) return lastIndex;
+        return input;
     }
 };
 

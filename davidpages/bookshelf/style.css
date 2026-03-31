@@ -34,10 +34,10 @@ html, body {
     /* Keep the numbers centered */
     text-align: center;
 
-/*    font-family: 'Courier New', monospace;*/
-    font-family: 'Davids3x3', monospace;
-    font-size: 40px;
-    margin-top: -20px;
+    font-family: 'Courier New', monospace;
+/*    font-family: 'Davids3x3', monospace;*/
+/*    font-size: 40px;*/
+/*    margin-top: -20px;*/
 }
 
 #stage {
