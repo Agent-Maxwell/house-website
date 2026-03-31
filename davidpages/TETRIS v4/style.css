@@ -1,5 +1,6 @@
 .container {
     display: flex;
+    justify-content: center;
 }
 
 .grid {
@@ -7,8 +8,9 @@
     height: 400px;
     display: flex;
     flex-wrap: wrap;
-    background-color:#ffffff
+    background-color:#ffffff;
     /*background-color: rgb(255, 255, 255);*/
+    margin: 10px;
 }
 
 .grid div {
@@ -18,7 +20,8 @@
 }
 
 .mini-grid {
-    margin-left: 50px;
+    margin: 10px;
+/*    margin-left: 50px;*/
     width: 80px;
     height: 80px;
     display: flex;
@@ -38,8 +41,12 @@ body {
     color: #ffffff;
 }
 
+.instructions {
+    justify-self: center;
+    color: darkgray;
+}
 
-
-/*.tetromino {
-    background-color: blue;
-}*/
+#score-text, #start-button {
+    display: flex;
+    justify-self: center;
+}

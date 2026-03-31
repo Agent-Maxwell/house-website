@@ -559,7 +559,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     let leftRepeatTimer = new keyRepeatTimer(() => {moveLeft()}, 200, 100);
     let rightRepeatTimer = new keyRepeatTimer(() => {moveRight()}, 200, 100);
-    let downRepeatTimer = new keyRepeatTimer(() => {moveDown(false)}, 200, 100);
+    let downRepeatTimer = new keyRepeatTimer(() => {moveDown(false)}, 50, 50); // down repeats immediately
 
     //draw current
     function draw() {

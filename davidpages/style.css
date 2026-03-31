@@ -7,8 +7,10 @@ blockquote {
     color: steelblue;
 }
 
-i  {
+/* grayed-out, very lowkey notes */
+.note  {
     color: steelblue;
+    font-style: italic;
 }
 
 img  {
@@ -32,4 +34,17 @@ img  {
 .photo {
     width:100%;
     max-width:1200px;
+}
+
+.blue-text {
+    color: #0056eb;
+}
+
+.red-suit {
+/*    color: #c40000;*/
+    color: red;
+}
+
+.black-suit {
+    color: black;
 }
