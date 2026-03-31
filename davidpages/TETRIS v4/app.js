@@ -76,26 +76,26 @@ document.addEventListener('DOMContentLoaded', function () {
 //        "#3B6161"
 //    ]
 
-    //const colors = [
-    //    "black",
-    //    "black",
-    //    "black",
-    //    "black",
-    //    "black",
-    //    "black",
-    //    "black"
-    //]
+//    const colors = [
+//        "black",
+//        "black",
+//        "black",
+//        "black",
+//        "black",
+//        "black",
+//        "black"
+//    ]
 
     // "more color"
-        const colors = [
-            "#7D4563",
-            "#54C989",
-            "#80D0D9",
-            "#6E97AE",
-            "#1E85AB",
-            "#7DAC35",
-            "#D6E181"
-        ]
+    const colors = [
+        "#7D4563",
+        "#54C989",
+        "#80D0D9",
+        "#6E97AE",
+        "#1E85AB",
+        "#7DAC35",
+        "#D6E181"
+    ]
     
     //shuffleArray(colors);
 
