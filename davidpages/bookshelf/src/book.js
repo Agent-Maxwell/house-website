@@ -123,7 +123,7 @@ const Comic = {
         }
         this.ImageLoader.init();
 
-        // LOAD SOUNDSS
+        // LOAD SOUNDS
         this.SoundEngine = {
             turnOpenSounds: [],
             turnClosedSounds: [],
@@ -241,7 +241,7 @@ const Comic = {
                         this.total = 25;
                         this.urlTemplate = "aud/blue/";
                         break;
-                    case "spiral":
+                    default:
                         this.total = 25;
                         this.urlTemplate = "aud/blue/";
                         break;

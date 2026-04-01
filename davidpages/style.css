@@ -14,9 +14,10 @@ blockquote {
 }
 
 img  {
-    color: steelblue;
+/*    color: steelblue;*/
     margin: auto; width:100%;
-    max-width:500px;
+    max-width:700px;
+    box-shadow: 0px 0px 31px rgba(0, 0, 0, 0.5);
 }
 
 .card-container {
@@ -29,6 +30,7 @@ img  {
 .card {
     padding: 1rem;
     background-color: skyblue;
+    box-shadow: 10px 10px 0px deepskyblue;
 }
 
 .photo {
@@ -36,15 +38,22 @@ img  {
     max-width:1200px;
 }
 
+a {
+    color: #008071;
+}
+
 .blue-text {
-    color: #0056eb;
+    color: #0051ff;
 }
 
 .red-suit {
-/*    color: #c40000;*/
     color: red;
 }
 
 .black-suit {
     color: black;
+}
+
+body {
+    font-size: 1.5em
 }
