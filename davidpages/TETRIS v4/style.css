@@ -39,6 +39,9 @@
 body {
     background-color:black;
     color: #ffffff;
+
+/*    center text on mac? maybe?*/
+    text-align: center;
 }
 
 .instructions {
