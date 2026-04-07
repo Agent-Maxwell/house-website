@@ -88,3 +88,43 @@ body {
     -webkit-filter: drop-shadow(0px 0px 21px rgba(0, 0, 0, 0.5));
     filter: drop-shadow(0px 0px 21px rgba(0, 0, 0, 0.5));
 }
+
+.emoji-container {
+    display: flex;
+    flex-flow: row wrap;
+}
+
+.emoji {
+
+    /*    resets css from img default*/
+    all: initial;
+
+    max-width: 200px;
+    width: 200%; /* Or a specific px value larger than original */
+    height: auto;
+
+    display: flex;
+    margin: auto;
+    padding-block: 100px;
+
+    /*image-rendering: crisp-edges;*/
+
+    /* The modern standard */
+    image-rendering: pixelated;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
