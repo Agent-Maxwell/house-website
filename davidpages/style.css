@@ -1,6 +1,8 @@
 body {
     background-color:powderblue;
     font-family: 'Zodiak', serif;
+    font-size: 1.5em;
+
 }
 
 blockquote {
@@ -56,10 +58,6 @@ a {
     color: black;
     font-weight: bold;
     text-decoration: none;
-}
-
-body {
-    font-size: 1.5em;
 }
 
 /*centered, capped width for comfortable reading*/
@@ -140,20 +138,3 @@ body {
 
     font-size: 40px;
 }
-
-.card-button-text {
-
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
