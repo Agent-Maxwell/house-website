@@ -101,13 +101,6 @@ a {
     width: 200%;
     height: auto;
 
-    display: flex;
-    margin: auto;
-    padding: 5px;
-
-    /*image-rendering: crisp-edges;*/
-
-    /* The modern standard */
     image-rendering: pixelated;
 }
 

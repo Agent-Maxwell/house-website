@@ -1,0 +1,75 @@
+.container {
+    display: flex;
+    justify-content: center;
+}
+
+.grid {
+    width: 200px;
+    height: 400px;
+    display: flex;
+    flex-wrap: wrap;
+    background-color:#ffffff;
+    /*background-color: rgb(255, 255, 255);*/
+    margin: 10px;
+}
+
+.grid div {
+    height: 20px;
+    width: 20px;
+    /*background-color: red;*/
+}
+
+.mini-grid {
+    margin: 10px;
+/*    margin-left: 50px;*/
+    width: 80px;
+    height: 80px;
+    display: flex;
+    flex-wrap: wrap;
+    background-color:#ffffff
+    /*background-color: gray;*/
+}
+
+.mini-grid div {
+    height: 20px;
+    width: 20px;
+    /*background-color: red;*/
+}
+
+body {
+    background-color:black;
+    color: #ffffff;
+
+/*    center text on mac? maybe?*/
+    text-align: center;
+}
+
+.instructions {
+    display: none;
+    /* justify-self: center;
+    color: darkgray; */
+}
+
+#start-button {
+    display: none;
+    /* display: flex;
+    justify-self: center; */
+}
+
+@font-face {
+  font-family: 'Davids3x3';
+  src: url('/davidpages/font/Vols3x3.ttf') format('truetype');
+}
+
+#score-text {
+    font-family: "Davids3x3";
+    font-size: 5em;
+    font-style: normal;
+
+    margin: 0;
+    margin-bottom: 0.4em;
+
+
+    display: flex;
+    justify-self: center;
+}
