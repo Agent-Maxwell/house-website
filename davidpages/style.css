@@ -99,13 +99,13 @@ body {
     /*    resets css from img default*/
     all: initial;
 
-    max-width: 200px;
-    width: 200%; /* Or a specific px value larger than original */
+    max-width: 50px;
+    width: 200%;
     height: auto;
 
     display: flex;
     margin: auto;
-    padding-block: 100px;
+    padding: 5px;
 
     /*image-rendering: crisp-edges;*/
 
@@ -113,8 +113,37 @@ body {
     image-rendering: pixelated;
 }
 
+#card-button-container {
+    display: flex;
+    flex-flow: column wrap;
+    width: calc(70px*4);
+    height: calc(70px*13);
 
+    justify-items: space-evenly;
 
+/*    overflow: hidden;*/
+}
+
+.card-button {
+    display: flex;
+
+    width: 70px;
+    height: 70px;
+    box-sizing: border-box;
+
+/*    background-color: royalblue;*/
+/*    border: 10px solid black;*/
+/*    border-radius: 11px 11px 11px 11px;*/
+
+    justify-content: center;
+    align-items: center;
+
+    font-size: 40px;
+}
+
+.card-button-text {
+
+}
 
 
 
