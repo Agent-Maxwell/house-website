@@ -1,0 +1,41 @@
+/* This is where you can style each type of element, or elements
+    with a specific tag ("class") that you give them! */
+
+/* Applies to everything */
+:root {
+    background-color: rgb(161, 112, 216);
+    /* Text */
+    color: midnightblue;
+    font-family: 'Trebuchet MS', Arial, sans-serif
+}
+
+/* Applies to links */
+a {
+    /* link color */
+    color: chartreuse;
+}
+
+/* Applies to anything with the "example-class" class */
+.example-class {
+    /* Just showing off whats possible with the CSS I've been learning <3 */
+
+    /* Background color */
+    background-color: orchid;
+
+    /* Text */
+    font-size: 2em; /* Twice as big as normal text */
+    color: silver;
+    font-family: serif;
+    font-style: italic;
+    text-align: center;
+    text-shadow: 5px 5px 5px gray; /* x offset, y offset, blur radius, color 
+
+    /* Gives the text some breathing room */
+    padding: 20px;
+
+    /* Border */
+    border: 10px dashed mediumorchid;
+
+    /* I'm addicted to these cute rounded corners */
+    border-radius: 100px;
+}

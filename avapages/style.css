@@ -3,16 +3,16 @@
 
 /* Applies to everything */
 :root {
-    background-color: bisque;
+    background-color:#ffb3cc;
     /* Text */
-    color: saddlebrown;
-    font-family: Cochin, serif;
+    color: rebeccapurple;
+    font-family: fantasy;
 }
 
 /* Applies to links */
 a {
     /* link color */
-    color: olive;
+    color: magenta;
 }
 
 /* Applies to anything with the "example-class" class */
@@ -20,18 +20,19 @@ a {
     /* Just showing off whats possible with the CSS I've been learning <3 */
 
     /* Background color */
-    background-color: darkolivegreen;
+    background-color: darkgoldenrod;
 
     /* Text */
-    color: rgb(194, 225, 145);
-    font-family: 'Courier New', monospace;
+    color: rgb(119, 45, 145);
+    font-family: sans-serif;
     font-weight: bold;
+    text-align: center;
 
-    /* Gives the contents some breathing room */
-    padding: 10px;
+    /* Gives the contents a bunch of space */
+    padding: 50px;
 
-    /* Border */
-    border: 10px groove brown;
+    /* Silly HUGE border */
+    border: 50px dotted goldenrod;
 
     /* I'm addicted to these cute rounded corners */
     border-radius: 25px;
