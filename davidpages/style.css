@@ -2,16 +2,36 @@ body {
     background-color:powderblue;
     font-family: 'Zodiak', serif;
     font-size: 1.5em;
+}
 
+.navbar {
+    /* align-self: center; */
+
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+
+    background-color: skyblue;
+    padding: 0px;
+    border: 2px solid #006e6e;
+    border-radius: 30px;
+}
+
+.navbar a {
+    margin: 5px;
+    text-decoration: none;
 }
 
 blockquote {
+    padding: 5px;
     color: steelblue;
+    background-color: skyblue;
+
 }
 
 /* grayed-out, very lowkey notes */
 .note  {
-    color: steelblue;
+    color: rgb(58, 104, 146);
     font-style: italic;
 }
 

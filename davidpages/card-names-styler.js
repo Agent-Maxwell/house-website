@@ -1,6 +1,6 @@
 // depends on idToName, nameToId
 
-export async function formatHTML(rawHTML) {
+export async function styleCardNames(rawHTML) {
     // load json that lists all the card ids ---------------------------------
     // get json file
     const response = await fetch("/davidpages/card-ids.json");

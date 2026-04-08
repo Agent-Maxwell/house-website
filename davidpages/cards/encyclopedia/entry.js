@@ -28,7 +28,7 @@ async function loadPage() {
         } else {
             const rawHTML = await response.text();
 
-            const formattedHTML = await formatHTML(rawHTML);
+            const formattedHTML = await styleCardNames(rawHTML);
 
             document.getElementById("content").innerHTML = formattedHTML;
         }
@@ -40,8 +40,8 @@ async function loadPage() {
 loadPage();
 
 // THEN style card names
-import {formatHTML} from "/davidpages/card-names-styler.js";
+import {styleCardNames} from "/davidpages/card-names-styler.js";
 
 const rawHTML = document.body.innerHTML;
-const formattedHTML = await formatHTML(rawHTML);
+const formattedHTML = await styleCardNames(rawHTML);
 document.body.innerHTML = formattedHTML;
