@@ -1,0 +1,54 @@
+/* making webpage guide */
+
+#sidebar-diagram {
+    display: flex;
+    align-items: flex-start;
+}
+
+#sidebar-img {
+    width: auto;
+    height: auto;
+    max-width: min(50%, 500px);
+    max-height: calc(100vh - 20px); /* For the margin */
+    margin: 0;
+
+    position: sticky;
+    top: 10px;
+    left: 10px;
+
+    /* if the container acts up.i guess this helps  */
+    object-fit: contain;
+}
+
+.small-caps {
+    font-variant: small-caps;
+}
+
+.funny-button {
+    background-color:rgb(0, 128, 255);
+    border:none;
+    border-radius: 5px;
+    color: white;
+    padding: 0.7em;
+}
+
+.funny-button:hover {
+    background-color:rgb(48, 151, 255);
+}
+
+table, th, td {
+    overflow-wrap: break-word; 
+    /* word-break: break-word; */
+    padding: 5px;
+    border: 2px solid darkcyan;
+}
+
+.example-1 {
+    background-color: blue;
+    border: 9px dashed chartreuse;
+    color: magenta;
+    box-shadow: 5px -25px 4px orangered, -50px 17px 40px lightgoldenrodyellow;
+    rotate: 34rad;
+    font-family: Impact, sans-serif;
+    text-shadow: -5px -10px 0px black;
+}

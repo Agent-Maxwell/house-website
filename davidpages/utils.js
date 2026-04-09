@@ -1,3 +1,15 @@
+
+
+// translate id -> just rank number
+function extractRankFromId(inputId) {
+    return inputId.slice(0, inputId.length - 1)
+}
+
+// translate id -> just the suit letter
+function extractSuitFromId(inputId) {
+    return inputId.slice(inputId.length - 1)
+}
+
 // translate card id -> name
 function idToName(inputId) {
     let name = inputId;
@@ -16,6 +28,11 @@ function idToName(inputId) {
 
 // translate card name -> id
 function nameToId(inputName) {
+    if (inputName == null) {
+        console.log("nameToId called with null");
+        return null;
+    }
+
     let id = inputName;
 
     // 14 -> A

@@ -4,7 +4,7 @@ const cardIds = await response.json();
 for (let cardId of cardIds) {
     const container = document.getElementById("card-button-container");
 
-    // BUTTON -------------------------------------------
+    // DIV -------------------------------------------
     // 1. CREATE the element
     const newButton = document.createElement('div');
     // 2. CONFIGURE (Class, Text, Attributes)
@@ -23,6 +23,7 @@ for (let cardId of cardIds) {
     newButton.appendChild(newText);
 }
 
+// todo dont use auto styler, instead make the entire white rounded buttons the links. maybe both for card style.
 // THEN style card names
 import {styleCardNames} from "/davidpages/card-names-styler.js";
 
