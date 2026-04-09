@@ -1,3 +1,17 @@
+@font-face {
+  font-family: 'Zodiak';
+  src: url('font/Zodiak/Zodiak-Variable.ttf');
+  font-display: swap;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Zodiak';
+  src: url('font/Zodiak/Zodiak-VariableItalic.ttf');
+  font-display: swap;
+  font-style: italic;
+}
+
 :root {
     --link-color: #006e6e;
     --link-hover-color: #009b7c;
@@ -6,24 +20,26 @@
 body {
     background-color:powderblue;
     font-family: 'Zodiak', serif;
-    font-size: 1.5em;
+    font-size: 1.2em;
 }
 
 .navbar {
-    /* align-self: center; */
+    font-size: smaller;
 
     display: flex;
     justify-content: space-evenly;
     flex-wrap: wrap;
 
+    padding: 2px;
+
     background-color: skyblue;
-    padding: 0px;
     border: 2px solid var(--link-color);
     border-radius: 30px;
 }
 
 .navbar a {
-    margin: 5px;
+    margin-left: 10px;
+    margin-right: 10px;
     text-decoration: none;
 }
 
@@ -38,6 +54,7 @@ blockquote {
 .note  {
     color: rgb(58, 104, 146);
     font-style: italic;
+    font-weight: 400;
 }
 
 img  {
@@ -161,4 +178,59 @@ a {
     align-items: center;
 
     font-size: 40px;
+}
+
+/* making webpage guide */
+
+#sidebar-diagram {
+    display: flex;
+    align-items: flex-start;
+}
+
+#sidebar-img {
+    width: auto;
+    height: auto;
+    max-width: min(50%, 500px);
+    max-height: calc(100vh - 20px); /* For the margin */
+    margin: 0;
+
+    position: sticky;
+    top: 10px;
+    left: 10px;
+
+    /* if the container acts up.i guess this helps  */
+    object-fit: contain;
+}
+
+.small-caps {
+    font-variant: small-caps;
+}
+
+.funny-button {
+    background-color:rgb(0, 128, 255);
+    border:none;
+    border-radius: 5px;
+    color: white;
+    padding: 0.7em;
+}
+
+.funny-button:hover {
+    background-color:rgb(48, 151, 255);
+}
+
+table, th, td {
+    overflow-wrap: break-word; 
+    /* word-break: break-word; */
+    padding: 5px;
+    border: 2px solid darkcyan;
+}
+
+.example-1 {
+    background-color: blue;
+    border: 9px dashed chartreuse;
+    color: magenta;
+    box-shadow: 5px -25px 4px orangered, -50px 17px 40px lightgoldenrodyellow;
+    rotate: 34rad;
+    font-family: Impact, sans-serif;
+    text-shadow: -5px -10px 0px black;
 }

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>◈DAVID's ROOM◈</title>
+    <link rel="icon" type="image/x-icon" href="/davidpages/vol.ico">
+    <meta name="description" content="David is Awesome">
+    <link rel="stylesheet" type="text/css" href="/davidpages/style.css">
+</head>
+<body>
+
+<h1>How to make your webpage</h1>
+<h2><i>Easy style. (by David)</i></h2>
+
+<p>Hello housemates!<img class="emoji" src="/davidpages/emoji/smile.gif"> In today's video we 
+will be making a simple webpage.</p>
+
+<h3><img class="emoji" src="/davidpages/emoji/download.gif">Programs to download <img class="emoji" src="/davidpages/emoji/download.gif"></h3>
+<ul>
+    <li>Some kind of editor. I really like <a href="https://code.visualstudio.com/">VS Code</a> so far.</li>
+    <li><a href="https://desktop.github.com/download/">Github Desktop</a> makes it really easy to upload ("push") your changes, just click the 
+    <button class="funny-button" type="button">blue buttons</button>.</li>
+</ul>
+
+<h3><img class="emoji" src="/davidpages/emoji/wrench.gif">Setup<img class="emoji" src="/davidpages/emoji/wrench.gif"></h3>
+
+<h4>In Github Desktop:</h4>
+<ul>
+    <li>Log in with your GitHub account</li>
+    <li>"Clone" the house website repository<ul>
+        <li><i>I think it's like File > Clone Repository...</i></li>
+    </ul></li>
+    <li>Open the "house-website" folder in your editor!</li>
+</ul>
+
+<h3><img class="emoji" src="/davidpages/emoji/head-scratch.gif">Wtf is all this shit...<img class="emoji" src="/davidpages/emoji/head-scratch.gif"></h3>
+
+<h4>You probably see something at least slightly resembling this:</h4>
+<p class="note">(if not then only God can save you now...)</p>
+
+<div id="sidebar-diagram">
+    <img id="sidebar-img" src="img/this-sidebar.png">
+    <div id="sidebar-text-column" style="margin: 15px;">
+        <h5>Ok so here's how we're sort of organizing everything:</h5>
+        <p>
+            <span class="small-caps">house-website</span> is the root directory, so when the website is live, the url to 
+            <span class="small-caps">house-website/whatever</span> will be 
+            <span class="small-caps">gayhouse.online/whatever</span>.
+        </p>
+        <p>
+            In the root directory, we have a bunch of shit rn, it's just the communal pages and resources and stuff.
+            <span class="note">(I'll probably do some organizing into folders later.)</span> Each person has a dedicated folder,
+            <span class="small-caps">/[yourname]pages</span>, where you can put whatever you want. A structure like this has been working well for me:
+        </p>
+        <ul>
+            <li><img class="emoji" src="/davidpages/emoji/file-closed.gif">davidpages<ul>
+                <li>index.html (homepage)</li>
+                <li>style.css (style)</li>
+                <li><img class="emoji" src="/davidpages/emoji/file-closed.gif">img directory (images)</li>
+                <li><img class="emoji" src="/davidpages/emoji/file-closed.gif">gallery (...then any other pages each get their own folder,)<ul>
+                    <li>index.html (with their own html,)</li>
+                    <li>style.css (css,)</li>
+                    <li><img class="emoji" src="/davidpages/emoji/file-closed.gif">img (etc.)</li>
+                </ul></li>
+            </ul></li>
+        </ul>
+    </div>
+</div>
+
+<h3><img class="emoji" src="/davidpages/emoji/nerd.gif">So here's how html works<img class="emoji" src="/davidpages/emoji/nerd.gif"></h3>
+
+<p>
+    An html file is where you list all the stuff ("elements") you want to appear on the page.
+    Theres a bunch of different kinds of elements like
+</p>
+
+<table>
+    <tr>
+        <th>Name</th>
+        <th>HTML code</th>
+        <th>Appearance on the webpage</th>
+    </tr>
+    <tr>
+        <td>Heading</td>
+        <td><code>&lth1&gtPHOTOS&lt/h1&gt</code> <span class="note">Note: h1 is biggest, h2 is smaller, h3, h4, etc.</span></td>
+        <td><h1>PHOTOS</h1></td>
+    </tr>
+    <tr>
+        <td>Paragraph</td>
+        <td><code>&ltp&gtI will now expound the virtues of barefootedness; ...&lt/p&gt</code></td>
+        <td><p>I will now expound the virtues of barefootedness; ...</p></td>
+    </tr>
+    <tr>
+        <td>Image</td>
+        <td><code>&ltimg src="img/meal.jpg"&gt</code> <span class="note">Note: no closing tag</span></td>
+        <td><img src="img/meal.jpg"></td>
+    </tr>
+    <tr>
+        <td>Link</td>
+        <td><code>&lta href="https://en.wikipedia.org/wiki/Special:Random"&gtrandom wikipedia article&lt/a&gt</code></td>
+        <td><a href="https://en.wikipedia.org/wiki/Special:Random">random wikipedia article</a></td>
+    </tr>
+</table>
+
+<h3><img class="emoji" src="/davidpages/emoji/palette.gif">The fun part: CSS<img class="emoji" src="/davidpages/emoji/palette.gif"></h3>
+
+<p>Basically check this shit out</p>
+
+<table>
+    <tr>
+        <th>HTML code</th>
+        <th>CSS code</th>
+        <th>Appearance on the webpage</th>
+    </tr>
+    <tr>
+        <td><code>&lth1&gtMy Awesome Text Here&lt/h1&gt</code></td>
+        <td><code style="white-space: pre-line">h1 {
+    background-color: blue;
+    border: 9px dashed chartreuse;
+    color: magenta;
+    box-shadow: 5px -25px 4px orangered, -50px 17px 40px lightgoldenrodyellow;
+    rotate: 34rad;
+    font-family: Impact, sans-serif;
+    text-shadow: -5px -10px 0px black;
+}</code></td>
+        <td><h1 class="example-1">My Awesome Text Here</h1></td>
+    </tr>
+</table>
+
+<hr>
+
+<p>So yeah I guess thats the basics. I made a template for each of you (<a href="/avapages/index.html">Ava</a> 
+    <a href="/opheliapages/index.html">Ophelia</a> <a href="/gavinpages/index.html">Gavin</a>) that shows some examples. 
+    Theres plenty of resources online, just google any issue you have. Just remember: you can put literally anything on there. 
+    No one can stop you. <img class="emoji" src="/davidpages/emoji/frog.gif">
+</p>
+
+<p style="text-align:right">--Sincerely, David <img class="emoji" src="/davidpages/emoji/wink.gif"></p>
+
+</body>
+</html>
