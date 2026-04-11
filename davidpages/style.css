@@ -132,7 +132,9 @@ img:not(.emoji)  {
     height: 1.3em;
     width: auto;
 
+
     vertical-align: -0.35em;
+    /* vertical-align: middle; */
 
     margin: 0px;
     image-rendering: pixelated;

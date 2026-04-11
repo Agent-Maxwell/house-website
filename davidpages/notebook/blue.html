@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="/davidpages/style.css">
     <link rel="stylesheet" href="style.css">
     <title>blue</title>
 <!--    todo icon-->
@@ -9,13 +10,14 @@
 <body data-notebookID="blue">
 <div id="book-container">
     <nav id="controls">
-        <button id="btn-first">⇤</button>
-        <button id="btn-prev">←</button>
+        <!-- note: using explicit img tag instead of ::phrase:: cuz easier here -->
+        <button id="btn-first" class="btn"><img class="emoji" src="/davidpages/emoji/blue-first.gif"></button>
+        <button id="btn-prev" class="btn"><img class="emoji" src="/davidpages/emoji/blue-prev.gif"></button>
         <div id="page-label-container">
             <span id="page-label">loading...</span>
         </div>
-        <button id="btn-next">→</button>
-        <button id="btn-last">⇥</button>
+        <button id="btn-next" class="btn"><img class="emoji" src="/davidpages/emoji/blue-next.gif"></button>
+        <button id="btn-last" class="btn"><img class="emoji" src="/davidpages/emoji/blue-last.gif"></button>
     </nav>
     <div id="stage">
         <img id="page-image" src="" alt="loading...">

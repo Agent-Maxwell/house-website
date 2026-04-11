@@ -1,3 +1,7 @@
+:root {
+    --blue-cover: rgb(70, 189, 211);
+}
+
 /*davids font*/
 @font-face {
     font-family: 'Davids3x3';
@@ -25,9 +29,27 @@ html, body {
     padding: 10px;
 }
 
+.btn {
+    width: 2.5em;
+    height: 2.5em;
+    /* justify-content: center; */
+    /* align-items: center; */
+
+    background-color: lightblue;
+    border: 2px outset var(--blue-cover);
+    border-radius: 5px;
+}
+
+.btn:active {
+    background-color: skyblue;
+    border: 2px inset var(--blue-cover);
+    border-radius: 5px;
+}
+
 #page-label-container {
     display: inline-block;
-    width: 80px;
+    /* width: 80px; */
+    width: 5em;
     vertical-align: middle;
     overflow: hidden;
     white-space: nowrap;
@@ -49,6 +71,9 @@ html, body {
 }
 
 #page-image {
+    /* Undo default img style */
+    all: revert;
+    
     display: block;
     max-width: 100%;
     max-height: 100%; /* Now 100% of the REMAINING stage space */

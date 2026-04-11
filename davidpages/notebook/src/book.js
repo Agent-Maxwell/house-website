@@ -209,7 +209,6 @@ const Comic = {
             // input sound category, play one of its variations
             playSound(type) {
                 let randomIndex = 0;
-                //currerntly playing sound 1 nio matter what rand index is
                 switch (type) {
                     case "turnOpen":
                         randomIndex = Math.floor(Math.random() * this.turnOpenSounds.length + 1);
@@ -250,11 +249,23 @@ const Comic = {
         }
         this.SoundEngine.loadSounds();
 
-        // link buttons to their actions
-        document.getElementById('btn-first').onclick = () => this.firstButton();
-        document.getElementById('btn-last').onclick = () => this.lastButton();
-        document.getElementById('btn-prev').onclick = () => this.prevButton();
-        document.getElementById('btn-next').onclick = () => this.nextButton();
+        // link buttons to their actions (also un-focus the button)
+        document.getElementById('btn-first').onclick = () => {
+            document.getElementById('btn-first').blur();
+            this.firstButton()
+        };
+        document.getElementById('btn-last').onclick = () => {
+            document.getElementById('btn-last').blur();
+            this.lastButton()
+        };
+        document.getElementById('btn-prev').onclick = () => {
+            document.getElementById('btn-prev').blur();
+            this.prevButton();
+        }
+        document.getElementById('btn-next').onclick = () => {
+            document.getElementById('btn-next').blur();
+            this.nextButton();
+        }
 
         // link left/right arrows to actions
         window.addEventListener('keydown', (e) => {
@@ -392,16 +403,4 @@ Comic.init();
 // page turn sounds
 // perhaps page display? although for now i really like just "p0-1"
 
-// encapsulate this notebook-dependent stuff in functions so logic can stay general
-
 // todo maybe bonus elements under comic page
-
-// SECRET
-// secret page filepaths
-//secretPages: [
-//    "/img/secret_test_pages/p1.png",
-//    "/img/secret_test_pages/p2.jpg",
-//    "/img/secret_test_pages/p3.jpg",
-//    "/img/secret_test_pages/p4.jpg",
-//    "/img/secret_test_pages/p5.jpg",
-//],
