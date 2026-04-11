@@ -72,7 +72,7 @@ blockquote {
     font-weight: 400;
 }
 
-img  {
+img:not(.emoji)  {
     /* color: steelblue; */
     margin: auto;
     width: 100%;
@@ -129,15 +129,11 @@ img  {
 }
 
 .emoji {
-    /*    resets css from img default*/
-    all: initial;
+    height: 1.3em;
+    width: auto;
 
-    width: 100%;
-    max-width: 1.5em;
-
-    vertical-align: middle;
+    vertical-align: -0.35em;
 
     margin: 0px;
-
     image-rendering: pixelated;
 }

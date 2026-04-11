@@ -24,14 +24,14 @@ async function loadPage() {
         // tab name
         document.title = cardName;
         // image
-        document.getElementById("card-img").src = "entry/img/" + id + ".png";
+        document.getElementById("card-img").src = "img/" + id + ".png";
 
         // get entry html
         let rawHTML = null;
-        const idHtmlResponse = await fetch("entry/html/" + id + ".html");
+        const idHtmlResponse = await fetch("html/" + id + ".html");
         if (idHtmlResponse.status === 404) {
             console.log("missing html for entryID " + id);
-            const response = await fetch("entry/html/default.html");
+            const response = await fetch("html/default.html");
             rawHTML = await response.text();
         } else {
             // get raw html from the [id].html file
@@ -67,7 +67,7 @@ async function loadPage() {
 
         console.error("invalid id: " + id);
 
-        const response = await fetch("entry/html/invalid-id.html");
+        const response = await fetch("html/invalid-id.html");
         const rawHTML = await response.text();
         
         // replace entire body with invalid-id html page

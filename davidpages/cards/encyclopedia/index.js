@@ -1,6 +1,6 @@
 import {styleCardNames} from "/davidpages/card-names-styler.js";
 import {idToName} from "/davidpages/utils.js";
-
+import {insertHome} from "/davidpages/script/insert-home.js";
 
 const response = await fetch("/davidpages/card-ids.json");
 const cardIds = await response.json();
@@ -27,3 +27,4 @@ for (let cardId of cardIds) {
 const rawHTML = document.body.innerHTML;
 const formattedHTML = await styleCardNames(rawHTML);
 document.body.innerHTML = formattedHTML;
+insertHome();
