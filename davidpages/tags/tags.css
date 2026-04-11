@@ -1,0 +1,119 @@
+/* @font-face {
+  font-family: 'Samba';
+  src: url('/davidpages/tags/font/samba/Samba.ttf');
+  font-display: swap;
+  font-style: normal;
+} */
+@font-face {
+  font-family: 'Samba';
+  src: URL('/davidpages/secret/font/Samba.ttf') format('truetype');
+  /* src: URL('/davidpages/tags/font/samba/Samba.ttf') format('truetype'); */
+}
+
+@font-face {
+  font-family: 'SecretScript';
+  src: url('/davidpages/secret/font/One Starry Night.ttf') format('truetype');
+}
+
+#tags-container {
+  font-size: 80px;
+  /* align-items: center; */
+  justify-content: center;
+}
+
+#tag1 {
+  display: flex;
+  max-width: 700px;
+
+  background-color: black;
+  padding: 5px;
+
+  align-items: center;
+
+  font-family: Samba;
+  color:rgb(221, 255, 0);
+  text-shadow:
+    05px 05px rgba(23, 211, 145, 1.0),
+    10px 10px rgba(23, 211, 145, 0.5),
+    15px 15px rgba(23, 211, 145, 0.25),
+    20px 20px rgba(23, 211, 145, 0.125),
+    25px 25px rgba(23, 211, 145, 0.0625);
+  /* border: 10px solid black; */
+}
+
+#red-border {
+  display: flex;
+  width: 100%;
+
+  border: 5px solid red;
+  box-sizing: border-box;
+  padding: 5px;
+}
+
+#turquoise-border {
+  display: flex;
+  width: 100%;
+
+  border: 5px solid rgb(23, 211, 145);
+  padding: 5px;
+}
+
+#green-border {
+  display: flex;
+  width: 100%;
+
+  border: 5px solid limegreen;
+  padding: 5px;
+
+  justify-content: center;
+  /* align-items: center; */
+}
+
+#tag1 h1 {
+  /* position: relative;
+  margin: 50px;
+  left: -10px; */
+}
+
+#tag2 {
+  margin: 20px;
+
+  background: linear-gradient(0deg,rgba(174, 0, 255, 1) 0%, rgba(0, 255, 111, 1) 50%, rgba(255, 229, 0, 1) 100%);
+  border: 5px solid white;
+  border-radius: 20px;
+
+  display: flex;
+
+  justify-content: space-evenly;
+  align-items:stretch;
+
+  font-weight:1000;
+  text-decoration: underline;
+
+  /* rotate: 2deg; */
+}
+
+#tag2 div {
+  rotate: 0.1rad;
+  padding: 10px;
+}
+
+#tag2 .v {
+  background-color: forestgreen;
+  text-shadow: 3px 3px 0px rgb(11, 85, 59);
+}
+
+#tag2 .o {
+  background-color: springgreen;
+  text-shadow: 3px 3px 0px rgb(0, 167, 108);
+}
+
+#tag2 .l {
+  background-color: Orchid;
+  text-shadow: 3px 3px 0px rgb(136, 49, 106);
+}
+
+#tag2 .h {
+  background-color: cornflowerblue;
+  text-shadow: 3px 3px 0px rgb(43, 53, 131);
+}

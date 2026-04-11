@@ -1,4 +1,4 @@
-// depends on idToName, nameToId
+import {idToName} from "/davidpages/utils.js";
 
 export async function styleCardNames(rawHTML) {
     // load json that lists all the card ids ---------------------------------

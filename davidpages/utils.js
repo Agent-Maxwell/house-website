@@ -1,17 +1,78 @@
+const validIds = [
+  "1s",
+  "2s",
+  "3s",
+  "4s",
+  "5s",
+  "6s",
+  "7s",
+  "8s",
+  "9s",
+  "10s",
+  "11s",
+  "12s",
+  "13s",
+  "1c",
+  "2c",
+  "3c",
+  "4c",
+  "5c",
+  "6c",
+  "7c",
+  "8c",
+  "9c",
+  "10c",
+  "11c",
+  "12c",
+  "13c",
+  "1h",
+  "2h",
+  "3h",
+  "4h",
+  "5h",
+  "6h",
+  "7h",
+  "8h",
+  "9h",
+  "10h",
+  "11h",
+  "12h",
+  "13h",
+  "1d",
+  "2d",
+  "3d",
+  "4d",
+  "5d",
+  "6d",
+  "7d",
+  "8d",
+  "9d",
+  "10d",
+  "11d",
+  "12d",
+  "13d"
+]
 
+// check if something is a valid id
+export function validId(inputId) {
+    return validIds.includes(inputId);
+}
 
 // translate id -> just rank number
-function extractRankFromId(inputId) {
+export function extractRankFromId(inputId) {
+    if (!validId(inputId)) console.log("extractRankFromId invalid ID: " + inputId);
     return inputId.slice(0, inputId.length - 1)
 }
 
 // translate id -> just the suit letter
-function extractSuitFromId(inputId) {
+export function extractSuitFromId(inputId) {
+    if (!validId(inputId)) console.log("extractSuitFromId invalid ID: " + inputId);
     return inputId.slice(inputId.length - 1)
 }
 
-// translate card id -> name
-function idToName(inputId) {
+// translate card id -> namez
+export function idToName(inputId) {
+    if (!validId(inputId)) console.log("extractSuitFromId invalid ID: " + inputId);
     let name = inputId;
     name = name.replace("s", "♠");
     name = name.replace("c", "♣");
@@ -27,7 +88,7 @@ function idToName(inputId) {
 }
 
 // translate card name -> id
-function nameToId(inputName) {
+export function nameToId(inputName) {
     if (inputName == null) {
         console.log("nameToId called with null");
         return null;
@@ -49,5 +110,7 @@ function nameToId(inputName) {
     id = id.replace("♥", "h");
     id = id.replace("♦", "d");
 
+    if (!validId(id)) console.log("nameToId invalid name: " + inputName);
+    // .. or at least whatever it was led to an invalid ID
     return id;
 }
