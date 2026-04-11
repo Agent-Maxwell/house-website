@@ -4,20 +4,12 @@
   src: url('/davidpages/font/Vols3x3.ttf') format('truetype');
 }
 
-.david-faculty-desc {
-  font-family: 'Davids3x3';
-  font-size: 80px;
-  line-height: 20px;
-  margin-top: 0px;
-  margin-bottom: 30px;
-}
-
 body {
   text-align: center;
   background-color: #ffffff;
   color: rgb(0, 0, 0);
   font-family:courier,arial,helvetica,sans-serif;
-  font-size: 135%;
+  font-size: 1.35em;
   margin: 0px;
 }
 
@@ -77,6 +69,3 @@ h2 {
 video {
   width: 100%;
 }
-
-
-

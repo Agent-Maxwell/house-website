@@ -1,0 +1,54 @@
+:root {
+  /* Master control for gutter size */
+  --gutter-size: 10px;
+}
+
+#faculty-container {
+  /* Gay background */
+  /* (You can make gradients like this here: https://cssgradient.io/) */
+  background: linear-gradient(135deg,rgba(255, 0, 0, 1) 0%, rgba(255, 119, 0, 1) 15%, rgba(251, 255, 0, 1) 30%, rgba(0, 255, 30, 1) 43%, rgba(0, 225, 255, 1) 58%, rgba(4, 0, 255, 1) 72%, rgba(157, 0, 255, 1) 86%, rgba(255, 0, 247, 1) 100%);
+  border: 1px solid black;
+
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+
+  /* Gap between faculty boxes and outer edge */
+  padding: var(--gutter-size);
+
+  /* Gap in between faculty boxes */
+  gap: var(--gutter-size);
+}
+
+.faculty-box {
+  /* (Include border in width) */
+  box-sizing: border-box;
+  /* Take up half the space, minus the middle gutter */
+  width: calc(50% - (var(--gutter-size) / 2));
+
+  background-color: white;
+  border: 1px solid black;
+}
+
+.faculty-box img {
+  /* Images expand to fill box, to a maximum of 350px */
+  width: min(100%, 350px);
+}
+
+/* DAVID */
+.david-font {
+  /* Undo heading boldness */
+  font-weight: normal;
+  
+  font-family: 'Davids3x3';
+  font-size: 80px;
+  line-height: 20px;
+  margin-top: 0px;
+  margin-bottom: 30px;
+}
+.david-link {
+  color:darkcyan;
+}
+.david-link:hover {
+  color:rgb(126, 107, 255);
+}
