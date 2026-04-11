@@ -7,46 +7,56 @@
     <title>Gay House</title>
     <link rel="shortcut icon" type="image/ico" href="favicon.ico"/>
     <link href="style.css" rel="stylesheet" type="text/css" />
-    <script src="index.js" type="text/javascript" defer></script>
   </head>
   <body>
+    <!-- TROLL -->
     <h1 class="troll">GO FUCK YOURSELF MOBILE USER LMAOOOOO</h1>
     <video width="1280" height="720" autoplay loop muted class="troll">
         <source src="globalvideos/You lose.mp4" type="video/mp4">
         Your browser does not support the video tag.
     </video> 
+
+    <!-- NORMAL -->
     <div id="logos">
       <img src="globalvideos/house.gif" alt="gay House">
       <img src="globalvideos/GayHouseBanner.gif" alt="gay House">
     </div>
 
-    <br>
-    <br>
+    <a href="https://www.youtube.com/@gayhouseonline" style="display:block; color:white; background-color:red;">Our Youtube Channel</a>
+    
+    <!-- Dry ice vid -->
+    <!-- <iframe width="500" height="281" src="https://www.youtube.com/embed/JILsSlkA5rE"></iframe> -->
 
-    <a href="https://www.youtube.com/@gayhouseonline" target="_blank" title="">Youtube</a>
-    <br>
-    <iframe width="500" height="281" src="https://www.youtube.com/embed/JILsSlkA5rE"></iframe>
-
-    <h2 title="help" >embed our latest youtube video attempt:</h4>
-    <iframe width="600" height="340" src="https://www.youtube.com/embed?max-results=1&controls=0&showinfo=0&rel=0&listType=user_uploads&list=gayhouseonline" frameborder="0" allowfullscreen></iframe>
-
-
-    <br>
+    <h2>Check out our latest youtube video!!</h2>
+    <div id="theater" style="background-image: url(/home/img/theater.jpg); background-size: cover; padding: 70px">
+      <!-- copy-pasted code from https://stackoverflow.com/questions/18267426/html-auto-embedding-recent-uploaded-videos-from-a-youtube-channel -->
+      <!-- (a script at the bottom makes it work) -->
+      <iframe id="latest-video" width="500" height="281" frameborder="0" allowfullscreen></iframe>
+    </div>
 
     <section id="manifesto">
-    <h1 title="soon....." >Manifesto</h2>
+    <h2 title="soon....." >Manifesto</h2>
 
     <p>At gayz haus, we believe i n beating up random people on the street, while advocating for every human right possible   ! ! ! !:):):)</p>
     </section>
 
-    <a href="mindwipe/gaytgame.html" target="_blank" title="">mindwipe (broken rn)</a>
-
-    <br>
-    <br>
-
     <iframe width="681" height="510" seamless frameborder="0" scrolling="no" src="https://docs.google.com/spreadsheets/d/e/2PACX-1vS7sSkjLPMfd0LQrg73pW9-dm9z5XkhbFRQJ3lgIXFFf8nPuy7yhyUiTGL8NEjuCT4i_5V9eNi7rbvN/pubchart?oid=708223441&amp;format=interactive"></iframe>
     <iframe width="2127" height="497" seamless frameborder="0" scrolling="no" src="https://docs.google.com/spreadsheets/d/e/2PACX-1vS7sSkjLPMfd0LQrg73pW9-dm9z5XkhbFRQJ3lgIXFFf8nPuy7yhyUiTGL8NEjuCT4i_5V9eNi7rbvN/pubchart?oid=1328654276&amp;format=interactive"></iframe>
 
+    <!-- SCRIPTS -->
+    <!-- Insert navbar -->
+    <script src="index.js" type="text/javascript" defer></script>
+    <!-- Load latest youtub evideo -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script>
+      var channelID = "UCKJkmZTo2P_FF70kmu187Hw";
+      var reqURL = "https://www.youtube.com/feeds/videos.xml?channel_id=";
+      $.getJSON("https://api.rss2json.com/v1/api.json?rss_url=" + encodeURIComponent(reqURL)+channelID, function(data) {
+        var link = data.items[0].link;
+        var id = link.substr(link.indexOf("=")+1);
+        $("#latest-video").attr("src","https://youtube.com/embed/"+id + "?controls=1&showinfo=0&rel=0");
+      });
+    </script>
 
   </body>
 </html>
