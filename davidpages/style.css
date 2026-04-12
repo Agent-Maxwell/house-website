@@ -137,5 +137,6 @@ img:not(.emoji)  {
     /* vertical-align: middle; */
 
     margin: 0px;
-    image-rendering: pixelated;
+    /* hmm i kinda like them blurry actually */
+    /* image-rendering: pixelated; */
 }

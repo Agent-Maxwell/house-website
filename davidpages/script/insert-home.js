@@ -1,7 +1,7 @@
 export function insertHome() {
     // if this isn't the homepage:
-    const isHome = document.getElementById("home");
-    if (!isHome) {
+    const noHomeLink = document.getElementById("no-home-link");
+    if (!noHomeLink) {
         // create home link
         const home = document.createElement("a");
         home.innerText = "Back to Room";
