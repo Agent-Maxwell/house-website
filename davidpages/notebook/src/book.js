@@ -379,6 +379,7 @@ const Comic = {
         }
 
         // disable buttons at the edges
+
         document.getElementById('btn-prev').disabled = (this.currentIndex === 0);
         document.getElementById('btn-first').disabled = (this.currentIndex === 0);
         document.getElementById('btn-next').disabled = (this.currentIndex === this.ImageLoader.totalImages - 1);

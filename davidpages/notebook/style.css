@@ -46,6 +46,12 @@ html, body {
     border-radius: 5px;
 }
 
+.btn:disabled {
+    background-color: silver;
+    border: 2px inset lightgray;
+    border-radius: 5px;
+}
+
 #page-label-container {
     display: inline-block;
     /* width: 80px; */
