@@ -13,7 +13,7 @@ async function loadPage() {
     // tab name
     document.title = id;
 
-    // get entry html (or default html if invalid id)
+    // get game html (or default html if invalid id)
     let rawHTML = null;
     const response = await fetch("html/" + id + ".html");
     if (response.status === 404) {
@@ -27,8 +27,8 @@ async function loadPage() {
 
     // RENDER PAGE for VALID ID -------------------------------------------------
 
-    // add card html to the card-content div (under the "back to index" link)
-    document.body.innerHTML += rawHTML;
+    // add game html to the rules-container div
+    document.getElementById("rules-container").innerHTML = rawHTML;
 }
 
 await loadPage();
