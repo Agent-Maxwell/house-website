@@ -37,7 +37,7 @@ export async function styleCardNames(rawHTML) {
                 console.log("invalid suit: " + lastChar);////////////////////////
         }
 
-        const replacement = `<a href='/davidpages/cards/encyclopedia/entry.html?id=${cardId}' class='${spanClass}'>$1</a>`;
+        const replacement = `<a href='/davidpages/cards/encyclopedia/card.html?id=${cardId}' class='${spanClass}'>$1</a>`;
 
         //        if (formattedHTML.match(regex)) console.log("replacement: " + replacement);//////////////////
 

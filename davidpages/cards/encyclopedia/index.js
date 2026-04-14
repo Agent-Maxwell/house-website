@@ -18,7 +18,7 @@ for (let cardId of cardIds) {
     // LINK -------------------------------------------
     // this is an empty link that has css to make it expand to fill the div
     const link = document.createElement('a');
-    link.href = "/davidpages/cards/encyclopedia/entry.html?id=" + cardId;
+    link.href = "/davidpages/cards/encyclopedia/card.html?id=" + cardId;
     link.classList.add('card-button-link');
     div.appendChild(link);
 }
