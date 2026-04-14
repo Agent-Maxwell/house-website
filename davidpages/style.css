@@ -93,6 +93,22 @@ img:not(.emoji)  {
     box-shadow: 10px 10px 0px deepskyblue;
 }
 
+.secondary-card {
+    padding: 1rem;
+    background-color:darkgray;
+    border: 6px ridge lightgray;
+}
+
+.secondary-card a {
+    /* color: sienna; */
+    all: revert;
+}
+
+.secondary-card a:hover {
+    all: revert;
+    color:sienna;
+}
+
 .photo {
     width:100%;
     max-width:1200px;
