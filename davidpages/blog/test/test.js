@@ -14,3 +14,5 @@ document.getElementById("myForm").addEventListener("submit", function (e) {
 //   document.getElementById("question").innerText = "are you more of a red or blue persona?"
 });
 
+// copied from
+// https://codepen.io/kevinfarrugia/pen/Wommgd?editors=1111
