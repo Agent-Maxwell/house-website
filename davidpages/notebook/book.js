@@ -115,7 +115,7 @@ const Comic = {
                         this.urlTemplate = "img/blue/blue";
                         break;
                     case "spiral":
-                        this.totalImages = 50;
+                        this.totalImages = 49;
                         this.urlTemplate = "img/spiral/spiral";
                         break;
                 }
@@ -132,7 +132,12 @@ const Comic = {
             flipPageToCoverSounds: [],
 
             urlTemplate: null,
-            total: null, //25 for blue
+            numTurnOpen: null,
+            numTurnClosed: null,
+            numTurnPage: null,
+            numTurnOpen: null,
+            numTurnOpen: null,
+            total: null, // total figured out implicitly from individual totals
             loaded: 0,
 
             context: new (window.AudioContext || window.webkitAudioContext)(),
@@ -142,32 +147,32 @@ const Comic = {
                 this.setupThisNotebook();
 
                 // turnOpenSounds
-                for (let i = 1; i <= 4; i++) {
-                    const sound = {name: 'turnOpen' + i, url: this.urlTemplate + 'turn_open_' + i + '.wav'};
+                for (let i = 1; i <= this.numTurnOpen; i++) {
+                    const sound = {name: 'turnOpen' + i, url: this.urlTemplate + 'turn-open-' + i + '.wav'};
                     this.turnOpenSounds.push(sound);
                     this.loadSound(sound.name, sound.url)
                 }
                 // turnClosedSounds
-                for (let i = 1; i <= 4; i++) {
-                    const sound = {name: 'turnClosed' + i, url: this.urlTemplate + 'turn_closed_' + i + '.wav'};
+                for (let i = 1; i <= this.numTurnClosed; i++) {
+                    const sound = {name: 'turnClosed' + i, url: this.urlTemplate + 'turn-closed-' + i + '.wav'};
                     this.turnClosedSounds.push(sound);
                     this.loadSound(sound.name, sound.url)
                 }
                 // turnPageSounds
-                for (let i = 1; i <= 11; i++) {
-                    const sound = {name: 'turnPage' + i, url: this.urlTemplate + 'turn_page_' + i + '.wav'};
+                for (let i = 1; i <= this.numTurnPage; i++) {
+                    const sound = {name: 'turnPage' + i, url: this.urlTemplate + 'turn-page-' + i + '.wav'};
                     this.turnPageSounds.push(sound);
                     this.loadSound(sound.name, sound.url)
                 }
                 // flipCoverToCoverSounds
-                for (let i = 1; i <= 2; i++) {
-                    const sound = {name: 'flipCoverToCover' + i, url: this.urlTemplate + 'flip_cover_to_cover_' + i + '.wav'};
+                for (let i = 1; i <= this.numFlipCoverToCover; i++) {
+                    const sound = {name: 'flipCoverToCover' + i, url: this.urlTemplate + 'flip-cover-to-cover-' + i + '.wav'};
                     this.flipCoverToCoverSounds.push(sound);
                     this.loadSound(sound.name, sound.url)
                 }
                 // flipPageToCoverSounds
-                for (let i = 1; i <= 3; i++) {
-                    const sound = {name: 'flipPageToCover' + i, url: this.urlTemplate + 'flip_page_to_cover_' + i + '.wav'};
+                for (let i = 1; i <= this.numFlipPageToCover; i++) {
+                    const sound = {name: 'flipPageToCover' + i, url: this.urlTemplate + 'flip-page-to-cover-' + i + '.wav'};
                     this.flipPageToCoverSounds.push(sound);
                     this.loadSound(sound.name, sound.url)
                 }
@@ -237,14 +242,40 @@ const Comic = {
             setupThisNotebook() {
                 switch (Comic.notebookID) {
                     case "blue":
-                        this.total = 25;
-                        this.urlTemplate = "aud/blue/";
+                        this.numTurnOpen = 4;
+                        this.numTurnClosed = 4;
+                        this.numTurnPage = 11;
+                        this.numFlipCoverToCover = 2;
+                        this.numFlipPageToCover = 3;
+                        //this.total = 25;
+                        this.urlTemplate = "aud/blue/blue-";
                         break;
-                    default:
-                        this.total = 25;
-                        this.urlTemplate = "aud/blue/";
+                    case "spiral":
+                        this.numTurnOpen = 4;
+                        this.numTurnClosed = 5;
+                        this.numTurnPage = 19;
+                        this.numFlipCoverToCover = 7;
+                        this.numFlipPageToCover = 5;
+                        //this.total = 40;
+                        this.urlTemplate = "aud/spiral/spiral-";
                         break;
+                    default: // default to blue sounds
+                        console.log("sounds for notebookID '" + Comic.notebookID + "' not found, defaulting to blue sounds");////////////
+                        this.numTurnOpen = 4;
+                        this.numTurnClosed = 4;
+                        this.numTurnPage = 11;
+                        this.numFlipCoverToCover = 2;
+                        this.numFlipPageToCover = 3;
+                        //this.total = 25;
+                        this.urlTemplate = "aud/blue/blue-";
                 }
+                // count total number of sounds
+                this.total = 
+                    this.numTurnOpen +
+                    this.numTurnClosed +
+                    this.numTurnPage +
+                    this.numFlipCoverToCover +
+                    this.numFlipPageToCover;
             }
         }
         this.SoundEngine.loadSounds();

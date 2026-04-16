@@ -8,14 +8,24 @@
     src: url('/davidpages/font/Vols3x3.ttf') format('truetype');
 }
 
-html, body {
+body {
     margin: 0;
     padding: 0;
     height: 100%;
     overflow: hidden; /* Prevents the body itself from ever scrolling */
 
     background-color: lightsteelblue;
+
 }
+
+/* notebook-specific styling. */
+/*.blue {
+    background-color: magenta;
+}
+
+.spiral {
+    background-color: magenta;
+}*/
 
 #book-container {
     display: flex;
