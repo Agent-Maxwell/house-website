@@ -1,6 +1,9 @@
+/* card and rank use this for now */
+
 #card-img {
 /*    resets css from img formatting */
     all: initial;
+    /* all: revert; */
 
     max-width: 200px;
 

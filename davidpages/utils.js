@@ -53,9 +53,30 @@ const validIds = [
   "13d"
 ]
 
+const validRanks = [
+  "1",
+  "2",
+  "3",
+  "4",
+  "5",
+  "6",
+  "7",
+  "8",
+  "9",
+  "10",
+  "11",
+  "12",
+  "13"
+]
+
 // check if something is a valid id
 export function validId(inputId) {
     return validIds.includes(inputId);
+}
+
+// check if something is a valid rank (rank id, just number)
+export function validRank(inputRank) {
+    return validRanks.includes(inputRank);
 }
 
 // translate id -> just rank number
