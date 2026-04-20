@@ -12,147 +12,156 @@
   font-style: italic;
 }
 
-:root {
-    --link-color: darkcyan;
-    --link-hover-color: rgb(126, 107, 255);
+@layer normal, special;
+
+@layer normal {
+    :root {
+        --link-color: darkcyan;
+        --link-hover-color: rgb(126, 107, 255);
+    }
+
+    ::selection {
+        color:cyan;
+        background-color: slateblue;
+    }
+
+    body {
+        background-color:powderblue;
+        font-family: 'Zodiak', serif;
+        font-size: 1.2em;
+    }
+
+    .navbar {
+        font-size: smaller;
+
+        display: flex;
+        justify-content: space-evenly;
+        flex-wrap: wrap;
+
+        padding: 2px;
+
+        background-color: skyblue;
+        border: 2px solid var(--link-color);
+        border-radius: 30px;
+    }
+
+    .navbar a {
+        margin-left: 10px;
+        margin-right: 10px;
+        text-decoration: none;
+    }
+
+    a {
+        color: var(--link-color);
+        text-decoration: none;
+    }
+
+    a:hover {
+        color: var(--link-hover-color);
+        /* text-decoration: wavy underline orchid; */
+        text-decoration: underline;
+    }
+
+    blockquote {
+        padding: 5px;
+        color: steelblue;
+        background-color: skyblue;
+
+    }
+
+    .note  {
+        color: rgb(58, 104, 146);
+        font-style: italic;
+        font-weight: 400;
+    }
+
+    img {
+        /* color: steelblue; */
+        margin: auto;
+        width: 100%;
+        max-width: 700px;
+        box-shadow: 0px 0px 31px rgba(0, 0, 0, 0.5);
+    }
+
+    .card-container {
+        display: flex;
+        justify-content: space-evenly;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+
+    .card {
+        padding: 1rem;
+        background-color: skyblue;
+        box-shadow: 10px 10px 0px deepskyblue;
+    }
+
+    .secondary-card {
+        padding: 1rem;
+        background-color:darkgray;
+        border: 6px ridge lightgray;
+    }
+
+    .secondary-card a {
+        /* color: sienna; */
+        all: revert;
+    }
+
+    .secondary-card a:hover {
+        all: revert;
+        color:sienna;
+    }
+
+    .photo {
+        width:100%;
+        max-width:1200px;
+    }
+
+    .blue-text {
+        color: #0051ff;
+    }
+
+    .red-suit {
+        color: red;
+        font-weight: bold;
+        text-decoration: none;
+    }
+
+    .black-suit {
+        color: black;
+        font-weight: bold;
+        text-decoration: none;
+    }
+
+    /*centered, capped width for comfortable reading*/
+    .reading-width {
+        justify-self: center;
+        width: 100%;
+        max-width: 700px;
+    /*    display: flex;*/
+    /*    margin: auto*/
+    }
+
+    .emoji-container {
+        display: flex;
+        flex-flow: row wrap;
+    }
 }
 
-::selection {
-    color:cyan;
-    background-color: slateblue;
-}
+/* layer for types of images i want not to be styled with global defaults */
+@layer special {
+    .emoji {
+        all: revert;
 
-body {
-    background-color:powderblue;
-    font-family: 'Zodiak', serif;
-    font-size: 1.2em;
-}
-
-.navbar {
-    font-size: smaller;
-
-    display: flex;
-    justify-content: space-evenly;
-    flex-wrap: wrap;
-
-    padding: 2px;
-
-    background-color: skyblue;
-    border: 2px solid var(--link-color);
-    border-radius: 30px;
-}
-
-.navbar a {
-    margin-left: 10px;
-    margin-right: 10px;
-    text-decoration: none;
-}
-
-a {
-    color: var(--link-color);
-    text-decoration: none;
-}
-
-a:hover {
-    color: var(--link-hover-color);
-    /* text-decoration: wavy underline orchid; */
-    text-decoration: underline;
-}
-
-blockquote {
-    padding: 5px;
-    color: steelblue;
-    background-color: skyblue;
-
-}
-
-.note  {
-    color: rgb(58, 104, 146);
-    font-style: italic;
-    font-weight: 400;
-}
-
-img:not(.emoji)  {
-    /* color: steelblue; */
-    margin: auto;
-    width: 100%;
-    max-width: 700px;
-    box-shadow: 0px 0px 31px rgba(0, 0, 0, 0.5);
-}
-
-.card-container {
-    display: flex;
-    justify-content: space-evenly;
-    flex-wrap: wrap;
-    gap: 1rem;
-}
-
-.card {
-    padding: 1rem;
-    background-color: skyblue;
-    box-shadow: 10px 10px 0px deepskyblue;
-}
-
-.secondary-card {
-    padding: 1rem;
-    background-color:darkgray;
-    border: 6px ridge lightgray;
-}
-
-.secondary-card a {
-    /* color: sienna; */
-    all: revert;
-}
-
-.secondary-card a:hover {
-    all: revert;
-    color:sienna;
-}
-
-.photo {
-    width:100%;
-    max-width:1200px;
-}
-
-.blue-text {
-    color: #0051ff;
-}
-
-.red-suit {
-    color: red;
-    font-weight: bold;
-    text-decoration: none;
-}
-
-.black-suit {
-    color: black;
-    font-weight: bold;
-    text-decoration: none;
-}
-
-/*centered, capped width for comfortable reading*/
-.reading-width {
-    justify-self: center;
-    width: 100%;
-    max-width: 700px;
-/*    display: flex;*/
-/*    margin: auto*/
-}
-
-.emoji-container {
-    display: flex;
-    flex-flow: row wrap;
-}
-
-.emoji {
-    height: 1.3em;
-    width: auto;
+        height: 1.3em;
+        width: auto;
 
 
-    vertical-align: -0.35em;
-    /* vertical-align: middle; */
+        vertical-align: -0.35em;
+        /* vertical-align: middle; */
 
-    margin: 0px;
-    /* hmm i kinda like them blurry actually */
-    /* image-rendering: pixelated; */
+        margin: 0px;
+        /* hmm i kinda like them blurry actually */
+        /* image-rendering: pixelated; */
+    }
 }
