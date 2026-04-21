@@ -36,29 +36,20 @@ body {
 /* Red Debug Borders (RDB) */
 /* div{border:1px solid red;} */
 
-.ships-box {
+
+
+#all-box {
     display: flex;
+    align-items: start;
     flex-flow: row wrap;
-
-    /* 5 columns wide (plus 4 "pixels" of gutter), or */
-    /* fill screen (100% - margin) */
-    width: calc(min(
-        var(--pixel-size) * (65 * 5 + 4), 
-        calc(100% - 10px)
-        ));
-
-    gap: var(--pixel-size);
-
-    /* margin: var(--pixel-size); */
-    margin: 5px;
 }
 
-#view-options {
+
+#options-box {
+    margin: 5px;
+
     display: inline flex;
     flex-flow: row nowrap;
-
-    background-color: var(--ship-bg);
-    /* border: calc(var(--pixel-size) * 2) outset var(--ship-border-light); */
 
     /* top & left borders: dark */
     border-left: calc(var(--pixel-size) * 2) solid var(--ship-border-dark);
@@ -68,10 +59,7 @@ body {
     /* right border: light */
     border-right: calc(var(--pixel-size) * 2) solid var(--ship-border-light);
 
-    box-sizing: border-box;
-
-    /* margin: var(--pixel-size); */
-    margin: 5px;
+    background-color: var(--ship-bg);
 
     font-size: smaller;
     font-weight: bold;
@@ -124,7 +112,6 @@ body {
 }
 
 .option:hover {
-    /* text-decoration: underline; */
     background-color: var(--ship-border-light);
     text-shadow: none;
 }
@@ -132,4 +119,20 @@ body {
 .option:active {
     background-color: yellowgreen;
     text-shadow: none;
+}
+
+#ships-box {
+    margin: 5px;
+
+    display: flex;
+    flex-flow: row wrap;
+
+    /* 5 columns wide (plus 4 "pixels" of gutter), or */
+    /* fill screen (100% - margin) */
+    width: calc(min(
+        var(--pixel-size) * (65 * 5 + 4), 
+        calc(100% - 10px)
+        ));
+
+    gap: var(--pixel-size);
 }

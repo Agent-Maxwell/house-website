@@ -5,69 +5,71 @@
     <title>UQM Ships</title>
     <link rel="icon" type="image/x-icon" href="/davidpages/vol.ico">
     <link rel="stylesheet" type="text/css" href="/davidpages/style.css">
-    <link rel="stylesheet" type="text/css" href="ships.css">
+    <link rel="stylesheet" type="text/css" href="index.css">
 </head>
 <body>
 
     <a href="/davidpages/index.html">Back to Room</a><br>
 
-    <div id="view-options">
-        <!-- size -->
-        <div id="size-options">
-            <img class="emoji" style="margin-bottom:5px; align-self:center;" src="/davidpages/emoji/magnifying-glass.gif">
-            <label class="option"><input type="radio" name="size" id="1x" value="1" checked><span>1x</span></label>
-            <label class="option"><input type="radio" name="size" id="2x" value="2">2x</label>
-            <label class="option"><input type="radio" name="size" id="3x" value="3">3x</label>
-            <label class="option"><input type="radio" name="size" id="4x" value="4">4x</label>
-            <label class="option"><input type="radio" name="size" id="5x" value="5">5x</label>
+    <div id="all-box">
+        <div id="options-box">
+            <!-- size -->
+            <div id="size-options">
+                <img class="emoji" style="margin-bottom:5px; align-self:center;" src="/davidpages/emoji/magnifying-glass.gif">
+                <label class="option"><input type="radio" name="size" id="1x" value="1" checked><span>1x</span></label>
+                <label class="option"><input type="radio" name="size" id="2x" value="2">2x</label>
+                <label class="option"><input type="radio" name="size" id="3x" value="3">3x</label>
+                <label class="option"><input type="radio" name="size" id="4x" value="4">4x</label>
+                <label class="option"><input type="radio" name="size" id="5x" value="5">5x</label>
+            </div>
+
+            <!-- sort by -->
+            <div id="sort-by-options">
+                <span>Sort by:</span>
+                <label class="option"><input type="radio" name="sort-by" id="name" value="nameOrder" checked>Alphabetical</label>
+                <label class="option"><input type="radio" name="sort-by" id="crew" value="crew">Crew</label>
+                <label class="option"><input type="radio" name="sort-by" id="batt" value="batt">Battery</label>
+                <label class="option"><input type="radio" name="sort-by" id="point-value" value="score">Point Value</label>
+            </div>
+
+            <!-- order -->
+            <div id="order-options">
+                <span>Order:</span>
+                <label class="option"><input type="radio" name="order" id="option1" value="ascending" checked>Ascending</label>
+                <label class="option"><input type="radio" name="order" id="option2" value="descending">Descending</label>
+            </div>
         </div>
 
-        <!-- sort by -->
-         <div id="sort-by-options">
-            <span>Sort by:</span>
-            <label class="option"><input type="radio" name="sort-by" id="name" value="nameOrder" checked>Alphabetical</label>
-            <label class="option"><input type="radio" name="sort-by" id="crew" value="crew">Crew</label>
-            <label class="option"><input type="radio" name="sort-by" id="batt" value="batt">Battery</label>
-            <label class="option"><input type="radio" name="sort-by" id="point-value" value="score">Point Value</label>
-         </div>
-
-        <!-- order -->
-         <div id="order-options">
-            <span>Order:</span>
-            <label class="option"><input type="radio" name="order" id="option1" value="ascending" checked>Ascending</label>
-            <label class="option"><input type="radio" name="order" id="option2" value="descending">Descending</label>
-         </div>
+        <div id="ships-box">
+            <a><img class="ship" id="androsynth"></a>
+            <a><img class="ship" id="arilou"></a>
+            <a><img class="ship" id="chenjesu"></a>
+            <a><img class="ship" id="chmmr"></a>
+            <a><img class="ship" id="druuge"></a>
+            <a><img class="ship" id="earthling"></a>
+            <a><img class="ship" id="ilwrath"></a>
+            <a><img class="ship" id="kohr-ah"></a>
+            <a><img class="ship" id="melnorme"></a>
+            <a><img class="ship" id="mmrnmhrm"></a>
+            <a><img class="ship" id="mycon"></a>
+            <a><img class="ship" id="orz"></a>
+            <a><img class="ship" id="pkunk"></a>
+            <a><img class="ship" id="shofixti"></a>
+            <a><img class="ship" id="slylandro"></a>
+            <a><img class="ship" id="spathi"></a>
+            <a><img class="ship" id="supox"></a>
+            <a><img class="ship" id="syreen"></a>
+            <a><img class="ship" id="thraddash"></a>
+            <a><img class="ship" id="umgah"></a>
+            <a><img class="ship" id="ur-quan"></a>
+            <a><img class="ship" id="utwig"></a>
+            <a><img class="ship" id="vux"></a>
+            <a><img class="ship" id="yehat"></a>
+            <a><img class="ship" id="zoqfot"></a>
+        </div>
     </div>
 
-<div class="ships-box">
-    <a><img class="ship" id="androsynth"></a>
-    <a><img class="ship" id="arilou"></a>
-    <a><img class="ship" id="chenjesu"></a>
-    <a><img class="ship" id="chmmr"></a>
-    <a><img class="ship" id="druuge"></a>
-    <a><img class="ship" id="earthling"></a>
-    <a><img class="ship" id="ilwrath"></a>
-    <a><img class="ship" id="kohr-ah"></a>
-    <a><img class="ship" id="melnorme"></a>
-    <a><img class="ship" id="mmrnmhrm"></a>
-    <a><img class="ship" id="mycon"></a>
-    <a><img class="ship" id="orz"></a>
-    <a><img class="ship" id="pkunk"></a>
-    <a><img class="ship" id="shofixti"></a>
-    <a><img class="ship" id="slylandro"></a>
-    <a><img class="ship" id="spathi"></a>
-    <a><img class="ship" id="supox"></a>
-    <a><img class="ship" id="syreen"></a>
-    <a><img class="ship" id="thraddash"></a>
-    <a><img class="ship" id="umgah"></a>
-    <a><img class="ship" id="ur-quan"></a>
-    <a><img class="ship" id="utwig"></a>
-    <a><img class="ship" id="vux"></a>
-    <a><img class="ship" id="yehat"></a>
-    <a><img class="ship" id="zoqfot"></a>
-</div>
-
-<script src="ships.js" defer></script>
+<script src="index.js" defer></script>
 <!--format card names, insert emoji, back button-->
 <!-- <script src="/davidpages/standard-style.js" type="module" defer></script> -->
 
