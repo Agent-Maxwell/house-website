@@ -1,0 +1,4 @@
+img {
+    max-width: max(65px, 100%);
+    border: 1px solid red;
+}

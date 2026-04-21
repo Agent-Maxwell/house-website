@@ -10,16 +10,17 @@ async function loadPage() {
     // todo check if ship name is valid
     if (ship) {
         // tab name
-        document.title = cardName;
+        document.title = ship;
         // image
-        document.getElementById("card-img").src = "img/" + id + ".png";
+        document.getElementById("ship-img").src = "img/ship-stats/" + ship + ".png";
+        document.getElementById("ship-img").style.imageRendering = "pixelated";
 
-        // get card entry html
+        // get ship entry html
         let rawHTML = null;
-        const idHtmlResponse = await fetch("html/card/" + id + ".html");
+        const idHtmlResponse = await fetch("html/" + ship + ".html");
         if (idHtmlResponse.status === 404) {
-            console.log("missing html for entryID " + id);
-            const response = await fetch("html/card/default.html");
+            console.log("missing html for ship " + ship);
+            const response = await fetch("html/default.html");
             rawHTML = await response.text();
         } else {
             // get raw html from the [id].html file
@@ -28,27 +29,14 @@ async function loadPage() {
 
         // RENDER PAGE for VALID ID -------------------------------------------------
 
-        // add card html to the card-content div (under the "back to index" link)
-        document.getElementById("card-content").innerHTML += rawHTML;
+        document.getElementById("ship-content").innerHTML += rawHTML;
 
-        // automatically add some links at the bottom (in same-rank-container)..........
+        // WIKI LINK
+        const wikiLink = document.getElementById("link");
+        wikiLink.href = "https://wiki.uqm.stack.nl/" + ship;
+        document.body.appendChild(wikiLink);
 
-        // // SAME-RANK HEADING.......................
-        // const linksHeading = document.createElement("h2");
-        // linksHeading.innerText = idToName(id).slice(0, idToName(id).length - 1) + "";
-        // document.getElementById("card-content").appendChild(linksHeading);
-
-        // FLEXBOX VERSION of same-rank links .......................................
-
-        // add a link for each card of the same rank
-        const rank = extractRankFromId(id);
-        const suits = ["s", "d", "c", "h"];
-        suits.forEach((suit) => {
-            // create text (let card name styler do the linking)
-            const listItem = document.createElement("p");
-            listItem.innerText = idToName("" + rank + suit);
-            document.getElementById("same-rank-container").appendChild(listItem);
-        });
+        // const wikiLink = document.getElementById("wiki-link");
 
     } else {
         // RENDER PAGE for INVALID ID------------------------------------------------

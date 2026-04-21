@@ -236,6 +236,21 @@ const sizeButtons = document.querySelectorAll('input[name="size"]');
 // function for changing size css variable
 function sizeChange(value) {
     const r = document.querySelector(':root');
+    // fit or number?
+    switch (value) {
+        case "fit":
+            // const sizeButtons = document.getElementById('');
+
+            // r.style.setProperty('--pixel-size', value);
+            // r.style.setProperty('max-width', value);
+            document.getElementById("ships-box").style.setProperty("max-width", "100%");
+            document.getElementById("ships-box").style.setProperty("width", "auto");
+            break;
+        default:
+            // r.style.setProperty('--pixel-size', value + 'px');
+            r.style.setProperty('--pixel-size', window.screen.width / (65 * 5 + 4));
+    }
+
     r.style.setProperty('--pixel-size', value + 'px');
 }
 // make each radio button call sizeChange w corresponding value

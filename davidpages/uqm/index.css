@@ -6,10 +6,16 @@
 
 @layer special {
     .ship {
+        
+        /* align-self: stretch; */
         all: revert;
 
         width: calc(var(--pixel-size) * 65);
         height: calc(var(--pixel-size) * 67);
+
+
+        /* FILL SCREEN */
+        /* width: 20%; */
 
         image-rendering: pixelated;
 
@@ -133,6 +139,21 @@ body {
         var(--pixel-size) * (65 * 5 + 4), 
         calc(100% - 10px)
         ));
+
+    gap: var(--pixel-size);
+}
+
+.fit#ships-box {
+    margin: 5px;
+
+    display: flex;
+    flex-flow: row wrap;
+
+    /* 5 columns wide (plus 4 `pixels" of gutter), or */
+    /* fill screen (100% - margin) */
+    width: 100%;
+
+    /* border: 2px solid green; */
 
     gap: var(--pixel-size);
 }

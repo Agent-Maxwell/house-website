@@ -1,0 +1,22 @@
+@font-face {
+    font-family: "mario";
+    src: url("font/CHLORINP.TTF");
+}
+
+body {
+    background-color: seagreen;
+
+    font-family: "mario";
+
+    font-size: 4em;
+
+    text-shadow: lightgreen 0px 10px;
+}
+
+h1 {
+    color:blue;
+}
+
+p {
+    color: indigo;
+}
