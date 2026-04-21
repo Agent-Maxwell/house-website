@@ -5,17 +5,13 @@
 }
 
 @layer special {
-    .ship {
+    .ship-img {
         
         /* align-self: stretch; */
         all: revert;
 
         width: calc(var(--pixel-size) * 65);
         height: calc(var(--pixel-size) * 67);
-
-
-        /* FILL SCREEN */
-        /* width: 20%; */
 
         image-rendering: pixelated;
 
@@ -75,37 +71,11 @@ body {
     white-space: nowrap;
 }
 
-#size-options {
-    display: flex;
-    flex-flow: column wrap;
-
-    /* align-items: center; */
-
-    padding: 10px;
-
-    /* border: 1px solid black; */
-    box-sizing: border-box;
-}
-
-#sort-by-options {
+#options-section {
     display: flex;
     flex-flow: column nowrap;
 
-    /* align-items: center; */
-
-    padding: 10px;
-
-    /* border: 1px solid black; */
-    box-sizing: border-box;
-}
-
-#order-options {
-    display: flex;
-    flex-flow: column nowrap;
-
-    /* align-items: center; */
-
-    padding: 10px;
+    padding: 5px;
 
     /* border: 1px solid black; */
     box-sizing: border-box;
@@ -115,6 +85,11 @@ body {
     /* even it out a bit */
     padding-right: 0.2em;
     /* border-radius: 5px; */
+}
+
+#fit-option {
+    /* switched to inline by keypress */
+    display: none;
 }
 
 .option:hover {
@@ -143,17 +118,27 @@ body {
     gap: var(--pixel-size);
 }
 
-.fit#ships-box {
-    margin: 5px;
 
-    display: flex;
-    flex-flow: row wrap;
+/* "fit" sizing */
 
-    /* 5 columns wide (plus 4 `pixels" of gutter), or */
+
+/* ships box */
+#ships-box.fit {
     /* fill screen (100% - margin) */
     width: 100%;
+    /* gap: calc(100% / ((65*54) + 4)); */
+    gap: 0;
+}
 
-    /* border: 2px solid green; */
+/* the actual <a>'s in the flexbox (that hold the imgs) */
+.fit > .ship-flex-item {
+    /* 20% of (100% - 4"px") */
+    flex: 1 0 calc(0.2 * (100% - (400% / ((65*54) + 4))));
+    /* border:1px solid red; */
+}
 
-    gap: var(--pixel-size);
+/* ship images, in the a's */
+.fit > .ship-flex-item > .ship-img {
+    width: 100%;
+    height: auto;
 }

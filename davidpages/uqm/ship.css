@@ -1,4 +1,48 @@
-img {
-    max-width: max(65px, 100%);
-    border: 1px solid red;
+:root {
+  --ship-bg: #525252;
+  --ship-border-dark: #424242;
+  --ship-border-medium: #747474;
+  --ship-border-light: #848484;
+}
+
+body {
+    background-color: black;
+    color: white;
+}
+
+#ship-img {
+    all: revert;
+
+    image-rendering: pixelated;
+
+    width: min(100%, calc(65px * 5));
+
+    display: block;
+    margin: auto;
+    margin-top: 10px;
+}
+
+h1 {
+    font-size: 1.5em;
+}
+
+.tip {
+    color: black;
+    font-style: italic;
+    font-weight: 1000;
+    font-size: smaller;
+
+    padding: 10px;
+
+    /* note: uqm outset style taken from index.css ------------------- */
+    background-color: var(--ship-bg);
+    text-shadow: var(--ship-border-light) 0 0.06em;
+
+    /* top & left borders: dark */
+    border-left: calc(5px * 2) solid var(--ship-border-dark);
+    border-top: calc(5px * 2) solid var(--ship-border-dark);
+    /* bottom border: medium */
+    border-bottom: calc(5px * 2) solid var(--ship-border-medium);
+    /* right border: light */
+    border-right: calc(5px * 2) solid var(--ship-border-light);
 }

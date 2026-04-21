@@ -14,7 +14,7 @@
     <div id="all-box">
         <div id="options-box">
             <!-- size -->
-            <div id="size-options">
+            <div id="options-section">
                 <img class="emoji" style="margin-bottom:5px; align-self:center;" src="/davidpages/emoji/magnifying-glass.gif">
                 <label class="option"><input type="radio" name="size" id="1x" value="1" checked><span>1x</span></label>
                 <label class="option"><input type="radio" name="size" id="2x" value="2">2x</label>
@@ -22,60 +22,58 @@
                 <label class="option"><input type="radio" name="size" id="4x" value="4">4x</label>
                 <label class="option"><input type="radio" name="size" id="5x" value="5">5x</label>
                 <label class="option"><input type="radio" name="size" id="10x" value="10">10x</label>
-                <label class="option"><input type="radio" name="size" id="fit" value="fit">
-                    <img class="emoji" style="margin-bottom:5px; align-self:center;" src="/davidpages/emoji/barrier.gif">
+                <label id="fit-option" class="option"><input type="radio" name="size" id="fit" value="fit">
+                    <img class="emoji" style="margin-bottom:5px;" src="/davidpages/emoji/barrier.gif">
                     "fit"</label>
             </div>
 
             <!-- sort by -->
-            <div id="sort-by-options">
+            <div id="options-section">
                 <span>Sort by:</span>
                 <label class="option"><input type="radio" name="sort-by" id="name" value="nameOrder" checked>Alphabetical</label>
                 <label class="option"><input type="radio" name="sort-by" id="crew" value="crew">Crew</label>
                 <label class="option"><input type="radio" name="sort-by" id="batt" value="batt">Battery</label>
-                <label class="option"><input type="radio" name="sort-by" id="point-value" value="score">Point Value</label>
+                <label class="option"><input type="radio" name="sort-by" id="point-value" value="value">Point Value</label>
+                <label class="option"><input type="radio" name="sort-by" id="random" value="random">Random</label>
             </div>
 
             <!-- order -->
-            <div id="order-options">
+            <div id="options-section">
                 <span>Order:</span>
                 <label class="option"><input type="radio" name="order" id="option1" value="ascending" checked>Ascending</label>
                 <label class="option"><input type="radio" name="order" id="option2" value="descending">Descending</label>
             </div>
         </div>
 
-        <div id="ships-box" class="fit">
-            <a><img class="ship" id="androsynth"></a>
-            <a><img class="ship" id="arilou"></a>
-            <a><img class="ship" id="chenjesu"></a>
-            <a><img class="ship" id="chmmr"></a>
-            <a><img class="ship" id="druuge"></a>
-            <a><img class="ship" id="earthling"></a>
-            <a><img class="ship" id="ilwrath"></a>
-            <a><img class="ship" id="kohr-ah"></a>
-            <a><img class="ship" id="melnorme"></a>
-            <a><img class="ship" id="mmrnmhrm"></a>
-            <a><img class="ship" id="mycon"></a>
-            <a><img class="ship" id="orz"></a>
-            <a><img class="ship" id="pkunk"></a>
-            <a><img class="ship" id="shofixti"></a>
-            <a><img class="ship" id="slylandro"></a>
-            <a><img class="ship" id="spathi"></a>
-            <a><img class="ship" id="supox"></a>
-            <a><img class="ship" id="syreen"></a>
-            <a><img class="ship" id="thraddash"></a>
-            <a><img class="ship" id="umgah"></a>
-            <a><img class="ship" id="ur-quan"></a>
-            <a><img class="ship" id="utwig"></a>
-            <a><img class="ship" id="vux"></a>
-            <a><img class="ship" id="yehat"></a>
-            <a><img class="ship" id="zoqfot"></a>
+        <div id="ships-box">
+            <a class="ship-flex-item"><img class="ship-img" id="androsynth"></a>
+            <a class="ship-flex-item"><img class="ship-img" id="arilou"></a>
+            <a class="ship-flex-item"><img class="ship-img" id="chenjesu"></a>
+            <a class="ship-flex-item"><img class="ship-img" id="chmmr"></a>
+            <a class="ship-flex-item"><img class="ship-img" id="druuge"></a>
+            <a class="ship-flex-item"><img class="ship-img" id="earthling"></a>
+            <a class="ship-flex-item"><img class="ship-img" id="ilwrath"></a>
+            <a class="ship-flex-item"><img class="ship-img" id="kohr-ah"></a>
+            <a class="ship-flex-item"><img class="ship-img" id="melnorme"></a>
+            <a class="ship-flex-item"><img class="ship-img" id="mmrnmhrm"></a>
+            <a class="ship-flex-item"><img class="ship-img" id="mycon"></a>
+            <a class="ship-flex-item"><img class="ship-img" id="orz"></a>
+            <a class="ship-flex-item"><img class="ship-img" id="pkunk"></a>
+            <a class="ship-flex-item"><img class="ship-img" id="shofixti"></a>
+            <a class="ship-flex-item"><img class="ship-img" id="slylandro"></a>
+            <a class="ship-flex-item"><img class="ship-img" id="spathi"></a>
+            <a class="ship-flex-item"><img class="ship-img" id="supox"></a>
+            <a class="ship-flex-item"><img class="ship-img" id="syreen"></a>
+            <a class="ship-flex-item"><img class="ship-img" id="thraddash"></a>
+            <a class="ship-flex-item"><img class="ship-img" id="umgah"></a>
+            <a class="ship-flex-item"><img class="ship-img" id="ur-quan"></a>
+            <a class="ship-flex-item"><img class="ship-img" id="utwig"></a>
+            <a class="ship-flex-item"><img class="ship-img" id="vux"></a>
+            <a class="ship-flex-item"><img class="ship-img" id="yehat"></a>
+            <a class="ship-flex-item"><img class="ship-img" id="zoqfot"></a>
         </div>
 
-        <a href="https://sc2.sourceforge.net/downloads.php">
-            <!-- <img class="emoji" src="img/ship-icons/ur-quan.png"> -->
-            <img class="emoji" src="/davidpages/emoji/paperclip.gif">
-            uqm</a>
+        <!-- <a href="https://sc2.sourceforge.net/downloads.php"><img class="emoji" src="/davidpages/emoji/paperclip.gif">uqm</a> -->
     </div>
 
 <script src="index.js" defer></script>
