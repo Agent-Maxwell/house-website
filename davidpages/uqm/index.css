@@ -19,7 +19,12 @@
         display: block;
     }
 
-    /* .ship:hover  */
+    .ship-img:hover {
+        filter: brightness(1.4);
+
+        /* fun */
+        /* filter: brightness(1.4) hue-rotate(70deg) invert(9%); */
+    }
 }
 
 :root {

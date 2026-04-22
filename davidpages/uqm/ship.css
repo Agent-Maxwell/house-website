@@ -7,7 +7,7 @@
 
 body {
     background-color: black;
-    color: white;
+    color: silver
 }
 
 #ship-img {
@@ -15,29 +15,66 @@ body {
 
     image-rendering: pixelated;
 
-    width: min(100%, calc(65px * 5));
+    /* expand to (100% - margin), or 5x scale */
+    width: min(calc(100% - (10px * 2)), calc(65px * 5));
 
     display: block;
-    margin: auto;
-    margin-top: 10px;
+
+    /* center */
+    justify-self: center;
+
+    /* aesthetic spacing */
+    margin: 40px;
 }
 
 h1 {
     font-size: 1.5em;
+    text-align: center;
 }
 
-.tip {
-    color: black;
-    font-style: italic;
-    font-weight: 1000;
-    font-size: smaller;
+h2 {
+    font-size: 1.2em;
+    text-align: center;
+}
 
-    padding: 10px;
+/* Represents formatting specific to this uqm-box on this page */
+#main-box {
+    /* no display:flex needed i think */
+
+    margin: 10px;
+
+    display: block;
+    justify-self: center;
+    /* max-width: 700px; */
+
+    overflow: hidden;
+}
+
+#moves-row {
+    display: flex;
+}
+
+.moves-section {
+    /* 50% - margins */
+    flex: 1 0 calc(50% - (10px * 2));
+    margin: 10px;
+}
+
+#section-more {
+    margin: 10px;
+}
+
+/* Represents generic uqm box styling */
+.uqm-box {
+    color: black;
+    /* font-style: italic; */
 
     /* note: uqm outset style taken from index.css ------------------- */
     background-color: var(--ship-bg);
-    text-shadow: var(--ship-border-light) 0 0.06em;
+    /* note: index does 0.06em, 0.08em here. i guess relative units are useless.*/
+    text-shadow: var(--ship-border-light) 0 0.08em;
 
+    /* BORDER: 5px "pixels" */
     /* top & left borders: dark */
     border-left: calc(5px * 2) solid var(--ship-border-dark);
     border-top: calc(5px * 2) solid var(--ship-border-dark);
@@ -45,4 +82,53 @@ h1 {
     border-bottom: calc(5px * 2) solid var(--ship-border-medium);
     /* right border: light */
     border-right: calc(5px * 2) solid var(--ship-border-light);
+}
+
+.uqm-box h1, h2 {
+    margin: 0;
+}
+
+/* ATTACK, SPECIAL bold */
+.uqm-box h1 {
+    font-weight: 1000;
+}
+
+/* h2 used for move "name" subtitle */
+.uqm-box h2 {
+    font-style: italic;
+}
+
+.uqm-box p {
+    margin-top: 10px;
+    margin-bottom: 0;
+
+    /* Same border as uqm-box but flipped to be inset. ---------- */
+    /* BORDER: 5px "pixels" */
+    /* bottom & right borders: dark */
+    border-bottom: calc(5px * 2) solid var(--ship-border-dark);
+    border-right: calc(5px * 2) solid var(--ship-border-dark);
+    /* top border: medium */
+    border-top: calc(5px * 2) solid var(--ship-border-medium);
+    /* left border: light */
+    border-left: calc(5px * 2) solid var(--ship-border-light);
+    
+
+    padding: 10px;
+    background-color: black;
+    /* ...text color set by individual sections */
+    
+    /* FUN -------- */
+
+    text-shadow: none;
+    /* text-shadow: 0 0.3em midnightblue; */
+    /* font-weight: bold; */
+    /* text-transform: capitalize; */
+}
+
+#moves-row p {
+    color: royalblue;
+}
+
+#section-more p {
+    color: goldenrod;
 }

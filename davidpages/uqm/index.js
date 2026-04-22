@@ -187,6 +187,7 @@ for (ship of ships) {
     shipImg.src = "img/ship-stats/" + ship.name.toLowerCase() + ".png";
 
     // todo also set link href's here
+    shipImg.parentElement.href = "ship.html?id=" + ship.name.toLowerCase();
 }
 
 // get sortBy radio buttons

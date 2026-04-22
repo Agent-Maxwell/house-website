@@ -9,37 +9,65 @@ async function loadPage() {
 
     // todo check if ship name is valid?
     if (true) {
-        // tab icon
+        // TAB ICON -------------------
         const faviconLink = document.querySelector("link[rel~='icon']");
         faviconLink.href = "/davidpages/uqm/img/ship-icons/" + ship + ".png";
 
-        // tab name
+        // TAB NAME -------------------
         document.title = capitalizeShipName(ship);
 
-        // ship-img
+        // SHIP IMAGE -----------------
         document.getElementById("ship-img").src = "img/ship-stats/" + ship + ".png";
+        // todo ship img hovertext w stats
 
-        // get ship-content html
-        let rawHTML = null;
+        // SHIP HTML -------------------------------------------
+
+        // get ship html
+        let htmlText = null;
         const response = await fetch("html/" + ship + ".html");
         if (response.status === 404) {
             console.log("missing html for ship " + ship);
             const response = await fetch("html/default.html");
-            rawHTML = await response.text();
+            htmlText = await response.text();
         } else {
-            // get raw html from the [id].html file
-            rawHTML = await response.text();
+            // get html text from the [id].html file
+            htmlText = await response.text();
         }
-        // apply ship-content html
-        document.getElementById("ship-content").innerHTML += rawHTML;
 
+        // create fake document from html text
+        const parser = new DOMParser();
+        const contentDoc = parser.parseFromString(htmlText, 'text/html');
 
+        // define which sections to populate (not counting wiki link)
+        const sections = ["attack", "special", "more", "tips"];
 
-        // wiki link
+        // pluck & place
+        sections.forEach(sectionName => {
+            // source: the element from the content file with the correct data-section attribute
+            const source = contentDoc.querySelector(`[data-section="${sectionName}"]`);
+            // destination: the element in the (live) html with the corresponding attribute
+            const destination = document.getElementById(`section-${sectionName}`);
+
+            // if both do actually exist,
+            if (source && destination) {
+                // place! += so as to keep the pre-placed headings;
+                destination.innerHTML += source.innerHTML;
+            } else { // otherwise,
+                // hide sections if the content file doesn't have anything for it
+                destination.style.display = "none";
+            }
+
+        });
+
+        // WIKI LINK --------------------
         // note: slightly broken for some, possibly just ur-quan & kohr-ah
-        const wikiLink = document.getElementById("wiki-link");
-        wikiLink.href = "https://wiki.uqm.stack.nl/" + ship;
-        document.getElementById("ship-content").appendChild(wikiLink);
+
+        // todo if i want to do a data section for it...
+        // const wikiUrl = contentDoc.querySelector('[data-section="wiki-url"]').innerHTML;
+
+        // const wikiLink = document.getElementById("wiki-link");
+        // wikiLink.href = "https://wiki.uqm.stack.nl/" + ship;
+        // wikiLink.innerHTML += " " + capitalizeShipName(ship) + " on the Wiki";
 
     } else {
         // note: not happening rn
@@ -48,10 +76,10 @@ async function loadPage() {
         console.error("invalid id: " + id);
 
         const response = await fetch("html/card/invalid-id.html");
-        const rawHTML = await response.text();
+        const htmlText = await response.text();
         
         // replace entire body with invalid-id html page
-        document.body.innerHTML = rawHTML;
+        document.body.innerHTML = htmlText;
     }
 }
 

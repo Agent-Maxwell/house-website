@@ -4,19 +4,31 @@
 }
 
 body {
-    background-color: seagreen;
+    background-image: url(img/mario-level.png);
+    background-size: cover;
 
-    font-family: "mario";
-
-    font-size: 4em;
-
-    text-shadow: lightgreen 0px 10px;
+    font-size: 2em;
 }
 
 h1 {
     color:blue;
+    text-shadow: black 0px 5px;
+
+    text-align: center;
 }
 
-p {
-    color: indigo;
+ol, ul {
+    color: black;
+    /* text-align: center; */
+
+    background-color: rgba(105, 217, 105, 0.8);
+    border: 5px inset lightseagreen;
+    display: flex;
+    flex-flow: column nowrap;
+}
+
+img {
+    max-width: min(100%, 300px);
+    display:block;
+    justify-self: center;
 }

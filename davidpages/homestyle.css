@@ -1,10 +1,16 @@
+@font-face {
+    font-family: "Davids3x3";
+    src: url(font/Vols3x3.ttf);
+}
+
 body {
     background-image: url("/davidpages/bg/floral-wallpaper.jpg");
     background-size: 100%
 }
 
 #bg-wash {
-    background-color: rgb(147, 196, 255);
+    /* background-color: rgb(147, 196, 255); */
+    background-color: rgb(22, 202, 205);
     top: 0;
     left: 0;
     width: 100%;
@@ -14,4 +20,35 @@ body {
     opacity: 70%;
 
     z-index: -1;
+}
+
+#davids-room {
+    /* font-family: 'Davids3x3';
+    font-weight: normal;
+    font-size: 7em;
+
+    margin-top: -0.7em;
+    margin-bottom: 0;
+    padding: 0;
+    line-height: 0.2em; */
+
+    rotate: -3.23deg;
+}
+
+#poem {
+    margin: 20px;
+    justify-self: center;
+
+    border: 20px dotted khaki;
+    border-radius: 10px;
+
+    padding: 10px;
+    background-color: skyblue;
+
+    rotate: -11deg;
+}
+
+/* card headings */
+h3 {
+    text-align: center;
 }
