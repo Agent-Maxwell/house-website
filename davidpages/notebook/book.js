@@ -118,6 +118,10 @@ const Comic = {
                         this.totalImages = 49;
                         this.urlTemplate = "img/spiral/spiral";
                         break;
+                    case "black":
+                        this.totalImages = 29;
+                        this.urlTemplate = "img/black/black";
+                        break;
                 }
             }
         }
@@ -238,7 +242,7 @@ const Comic = {
                 }
             },
 
-            // NOTEBOOK DEPENDENt --------------------------------
+            // NOTEBOOK DEPENDENT --------------------------------
             setupThisNotebook() {
                 switch (Comic.notebookID) {
                     case "blue":
@@ -258,6 +262,15 @@ const Comic = {
                         this.numFlipPageToCover = 5;
                         //this.total = 40;
                         this.urlTemplate = "aud/spiral/spiral-";
+                        break;
+                    case "black":
+                        this.numTurnOpen = 4;
+                        this.numTurnClosed = 8;
+                        this.numTurnPage = 15;
+                        this.numFlipCoverToCover = 6;
+                        this.numFlipPageToCover = 6;
+                        //this.total = 39;
+                        this.urlTemplate = "aud/black/black-";
                         break;
                     default: // default to blue sounds
                         console.log("sounds for notebookID '" + Comic.notebookID + "' not found, defaulting to blue sounds");////////////
@@ -394,19 +407,41 @@ const Comic = {
         }
 
         // set page number display
-        const text = document.getElementById('page-label');
+        const pageLabel = document.getElementById('page-label');
         switch (this.currentIndex) {
-            case 0:
-                text.innerText = "front";
+        case 0:
+            pageLabel.innerText = "front";
+            break;
+        case this.ImageLoader.totalImages - 1:
+            pageLabel.innerText = "back";
+            break;
+        default:
+            // NOTEBOOK DEPENDENT EXCEPTIONS for page number label
+            switch (Comic.notebookID) {
+            // black exceptions (non-front or back)
+            case "black":
+                let indexForPageNumbering;
+                if (this.currentIndex == 25) {
+                    // special string for this case (p49-50 is a missing page)
+                    pageLabel.innerText = "p48,51";
+                    break;
+                } else if (this.currentIndex > 25) {
+                    // past index 25: account for missing page
+                    indexForPageNumbering = this.currentIndex + 1;
+                } else {
+                    // otherwise normal
+                    indexForPageNumbering = this.currentIndex;
+                }
+                const leftPageNumForBlack = (indexForPageNumbering - 1) * 2;
+                const rightPageNumForBlack = leftPageNumForBlack + 1;
+                pageLabel.innerText = `p${leftPageNumForBlack}-${rightPageNumForBlack}`;
                 break;
-            case this.ImageLoader.totalImages - 1:
-                text.innerText = "back";
-                break;
+            // execptions done, label page normal way
             default:
                 const leftPageNum = (this.currentIndex - 1) * 2;
                 const rightPageNum = leftPageNum + 1;
-                text.innerText = `p${leftPageNum}-${rightPageNum}`;
-            break;
+                pageLabel.innerText = `p${leftPageNum}-${rightPageNum}`;
+            }
         }
 
         // disable buttons at the edges

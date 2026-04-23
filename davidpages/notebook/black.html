@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/davidpages/style.css">
+    <link rel="stylesheet" href="style.css">
+    <title>BLACK</title>
+<!--    todo icon-->
+</head>
+<body data-notebookID="black" class="black">
+<div id="book-container">
+    <nav id="controls">
+        <!-- note: using explicit img tag instead of ::phrase:: cuz easier here -->
+        <button id="btn-first" class="btn"><img class="emoji" src="/davidpages/emoji/blue-first.gif"></button>
+        <button id="btn-prev" class="btn"><img class="emoji" src="/davidpages/emoji/blue-prev.gif"></button>
+        <div id="page-label-container">
+            <span id="page-label">loading...</span>
+        </div>
+        <button id="btn-next" class="btn"><img class="emoji" src="/davidpages/emoji/blue-next.gif"></button>
+        <button id="btn-last" class="btn"><img class="emoji" src="/davidpages/emoji/blue-last.gif"></button>
+    </nav>
+    <div id="stage">
+        <img id="page-image" src="" alt="loading...">
+    </div>
+</div>
+<script src="book.js"></script>
+<!-- doesnt work. fine for this page -->
+<!-- <script src="/davidpages/standard-style.js" type="module" defer></script> -->
+</body>
+</html>
