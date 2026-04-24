@@ -52,3 +52,41 @@
 .david-link:hover {
   color:rgb(126, 107, 255);
 }
+
+/* Lily Area */
+.lily-box {
+  text-align: center;
+}
+.lily-box h2 {
+  font-size: 32px;
+  margin-bottom: 1px;
+}
+.lily-box h3 {
+  font-size: medium;
+}
+.lily-img {
+  border-radius: 30px;
+  box-shadow: 0 10px 10px #440119;
+  transition: 1.5s;
+}
+.lily-img:hover {
+  transition: 1.5s;
+  transform: rotate(15deg);
+}
+.lily-link {
+  text-decoration: none;
+  color: #eb0be7;
+}
+.lily-link:hover {
+  display: inline-block;
+  text-decoration: none;
+  color: #0fd8dc;
+  transform: translateY(-5px);
+}
+.lily-blinkie img {
+  width: auto;
+  height: 1.3em;
+}
+.lily-font {
+  font-family: "Nogard";
+}
