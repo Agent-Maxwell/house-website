@@ -184,6 +184,10 @@ const ships = [
 // id from url
 const params = new URLSearchParams(window.location.search);
 let shipId = params.get("id");
+// get obj w stats
+const shipObj = ships.find((obj) => {
+    return obj.name.toLowerCase() == shipId;
+});
 
 async function loadPage() {
 
@@ -202,9 +206,6 @@ async function loadPage() {
 
         // SHIP IMAGE HOVERTEXT
         // (crew, batt)
-        const shipObj = ships.find((obj) => {
-            return obj.name.toLowerCase() == shipId;
-        });
         shipImg.title = "Crew: " + shipObj.crew + ", Batt: " + shipObj.batt;
 
         // SHIP HTML -------------------------------------------
@@ -291,6 +292,35 @@ function toTitleCase(str) {
 }
 
 //////////////////////////////////////////////////////////////////
+
+// left/right arrows goes to other ships
+//(shipObj copied from above)
+document.addEventListener("keydown", (e) => {
+    // LEFT
+    if (e.code == "ArrowLeft") {
+        // find previous ship (in name order)
+        const prevShipObj = ships.find((obj) => {
+            return obj.nameOrder == shipObj.nameOrder - 1;
+        });
+        // if a previous ship exists,
+        if (prevShipObj) {
+            // go there...!
+            window.location.href = "ship.html?id=" + prevShipObj.name.toLowerCase();
+        }
+    // RIGHT
+    } else if (e.code == "ArrowRight") {
+        // find next ship (in name order)
+        const nextShipObj = ships.find((obj) => {
+            return obj.nameOrder == shipObj.nameOrder + 1;
+        });
+        // if a next ship exists,
+        if (nextShipObj) {
+            // go there...!
+            window.location.href = "ship.html?id=" + nextShipObj.name.toLowerCase();
+        }
+    }
+});
+
 
 // actually load the page
 await loadPage();

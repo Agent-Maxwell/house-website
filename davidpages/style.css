@@ -151,6 +151,14 @@
         display: flex;
         flex-flow: row wrap;
     }
+
+    .warning {
+        background-color: rgba(185, 0, 0, 1);
+        background-image: url("/davidpages/bg/black-thread.png");;
+        color: maroon;
+        text-shadow: 1px 1px 0 red,
+         -1px -1px 0 blue;
+    }
 }
 
 /* layer for types of images i want not to be styled with global defaults */
@@ -161,12 +169,34 @@
         height: 1.3em;
         width: auto;
 
-
-        vertical-align: -0.35em;
+        vertical-align: -0.35rem;
+        /* vertical-align: middle; */
         /* vertical-align: middle; */
 
         margin: 0px;
         /* hmm i kinda like them blurry actually */
         /* image-rendering: pixelated; */
+    }
+
+    .emoji:hover {
+        /* filter: brightness(150%) hue-rotate(170deg) contrast(400%); */
+    }
+
+    .emoji:hover {
+    width: 100%;
+    height: 200px;
+    /* Starting color */
+    background-color: hsl(0, 80%, 50%); 
+    /* Animation: name | duration | timing | iteration */
+    animation: rainbow-shift 5s linear infinite;
+    }
+
+    @keyframes rainbow-shift {
+    0% {
+        background-color: hsl(0, 80%, 50%);
+    }
+    100% {
+        background-color: hsl(360, 80%, 50%);
+    }
     }
 }
