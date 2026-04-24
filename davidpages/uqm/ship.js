@@ -226,7 +226,7 @@ async function loadPage() {
         const contentDoc = parser.parseFromString(htmlText, 'text/html');
 
         // define which sections to populate (not counting wiki link)
-        const sections = ["attack", "special", "more", "tips"];
+        const sections = ["attack", "special", "more", "extra", "tips"];
 
         // pluck & place
         sections.forEach(sectionName => {
