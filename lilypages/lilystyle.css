@@ -1,0 +1,71 @@
+@font-face {
+    font-family: "Nogard";
+    src: url(lilysfonts/nogard.ttf);
+}
+
+@font-face {
+    font-family: "Cinzel";
+    src: url(lilysfonts/CinzelDecorative-Regular.otf);
+}
+
+@font-face {
+    font-family: "Lordish";
+    src: url(lilysfonts/Lordish-Regular.ttf);
+}
+
+@font-face {
+    font-family: "OldeEnglish";
+    src: url(lilysfonts/OldeEnglish.ttf);
+}
+
+body {
+    font-family: "Nogard", 'Times New Roman';
+    color: #cba0a6;
+    background-image: url(lilyimages/stardust.png);
+    background-color: rgb(29, 1, 3);
+}
+
+.navbar {
+    font-family: "Lordish";
+    text-align: center;
+    padding: 10px;
+}
+
+.navbar a {
+    text-decoration: none;
+    color: #870c1f;
+}
+
+.navbar a::before {
+    content: "⟡ ";
+}
+
+.navbar nav:last-child::after {
+    content: " ⟡";
+    color: #870c1f;
+}
+
+.navbar a:hover {
+    color: cyan;
+}
+
+.sidebar {
+    visibility: hidden;
+}
+
+.live-updates {
+    width: 500px;
+    height: 250px;
+    /* text-align: center; */
+    margin: auto;
+    padding: 25px;
+    background-color: rgba(74, 21, 51, 0.5);
+}
+
+.live-updates h2, h3 {
+    font-family: "Cinzel";
+}
+
+footer h2 {
+    font-family: "OldeEnglish";
+}

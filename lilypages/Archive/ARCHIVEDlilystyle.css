@@ -1,0 +1,38 @@
+body{
+  text-align: center;
+  background-color: #1d0008;
+  color: rgb(93, 139, 209);
+  font-family:courier,helvetica,sans-serif;
+  font-size: 135%;
+  margin: 0px;
+}
+
+a:link {
+  color: aqua;
+}
+a:visited {
+  color: darkslateblue;
+}
+
+.column {
+  float: left;
+  width: 175px;
+  padding: 10px;
+}
+
+.paragraph {
+  max-width: 900px;
+  margin-top: 0;
+  margin-bottom: 0;
+  line-height: normal;
+  letter-spacing: normal;
+}
+
+.socials {
+  text-align: center;
+  background-color: rgba(153, 50, 204, 0.308);
+  border-style: double;
+  padding: 10px;
+  line-height: normal;
+  letter-spacing: normal;
+}
