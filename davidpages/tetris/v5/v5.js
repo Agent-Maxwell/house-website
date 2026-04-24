@@ -37,7 +37,7 @@
 
 
 
-//more copupastes
+// https://www.viget.com/articles/time-based-animation
 const core = {
  frame: function() {
  core.setDelta();
