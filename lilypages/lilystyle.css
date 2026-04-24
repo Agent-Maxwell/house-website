@@ -57,8 +57,8 @@ body {
     width: 500px;
     height: 250px;
     /* text-align: center; */
-    margin: 10px auto;
-    padding: 15px;
+    margin: auto;
+    padding: 25px;
     background-color: rgba(74, 21, 51, 0.5);
 }
 
