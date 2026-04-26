@@ -54,6 +54,9 @@
 }
 
 /* Lily Area */
+.lily-font {
+  font-family: "Nogard";
+}
 .lily-box {
   text-align: center;
 }
@@ -86,7 +89,4 @@
 .lily-blinkie img {
   width: auto;
   height: 1.3em;
-}
-.lily-font {
-  font-family: "Nogard";
 }
