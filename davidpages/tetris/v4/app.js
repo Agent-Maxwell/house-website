@@ -838,7 +838,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
         if (!paused) {
-                    pause()
+            pause()
         } else {
             if (gameOver) {
 //                load sounds, THEN start game

@@ -152,6 +152,7 @@
     /*    margin: auto*/
     }
 
+    /* only on the emoji test page */
     .emoji-container {
         display: flex;
         flex-flow: row wrap;
@@ -194,22 +195,13 @@
         /* image-rendering: pixelated; */
         }
 
-    .emoji:hover {
-        /* filter: brightness(150%) hue-rotate(170deg) contrast(400%); */
-
-
-        /* Starting color */
-        /* background-color: hsl(0, 80%, 50%);  */
-
-        /* specify how multiple animations overlap */
-
+    /* no-spin: currently just for notebook page turn buttons */
+    .emoji:hover:not(.no-spin) {
         /* Animation: name | duration | timing | iteration */
         animation: 
             spin 1.714s linear infinite, 
             rainbow-shift 11.928s linear infinite;
         /* animation: hover 1.714s ease-in-out infinite; */
-
-
     }
 
     @keyframes spin {
@@ -222,7 +214,6 @@
     }
 
     @keyframes hover {
-
         0% {transform: translateY(20px);}
         50% {transform: translateY(-20px);}
         100% {transform: translateY(20px);}
