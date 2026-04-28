@@ -28,17 +28,26 @@ const stepTime = 0.3;
 // todo to see if a key was just presesd, maybe have another set of vars
 // like ArrowUpJustPressed, which the update() function resets when it registers it
 const keys = {
-    ArrowUp: false,
-    ArrowDown: false,
-    ArrowLeft: false,
-    ArrowRight: false,
-    Space: false
+  ArrowUp: false,
+  ArrowDown: false,
+  ArrowLeft: false,
+  ArrowRight: false,
+  Space: false,
+
+  // these are just set once and reset by Game
+  // note: keyrepeat happens w this strategy. todo
+  ArrowUpJustPressed: false,
+  ArrowDownJustPressed: false,
+  ArrowLeftJustPressed: false,
+  ArrowRightJustPressed: false,
+  SpaceJustPressed: false
 };
 window.addEventListener("keydown", (e) => {
     if (keys.hasOwnProperty(e.code)) {
         keys[e.code] = true;
+        keys[e.code + "JustPressed"] = true;
         // Prevent scrolling with arrows / space
-        e.preventDefault(); 
+        e.preventDefault();
         // console.log(e.code + "pressed");/////////
     }
 });
@@ -54,7 +63,7 @@ window.addEventListener("keyup", (e) => {
 // https://www.viget.com/articles/time-based-animation
 const core = {
   init() {
-    core.then = Date.now();
+    core.then = performance.now();
   },
 
   frame() {
@@ -65,7 +74,7 @@ const core = {
   },
 
   setDelta() {
-    core.now = Date.now();
+    core.now = performance.now();
     core.delta = (core.now - core.then) / 1000; // seconds since last frame
     core.then = core.now;
   },
@@ -118,6 +127,7 @@ const game = {
 
   update(delta) {
     // increase stepTimer, step&reset if time
+
     game.stepTimer += delta;
     if (game.stepTimer >= stepTime) {
       game.stepTimer -= stepTime;
@@ -127,17 +137,21 @@ const game = {
 
 
     // ah yes "tetris" -----------------
-    if (keys.ArrowLeft) {
+    if (keys.ArrowLeftJustPressed) {
       game.currentLocation[0]--;
+      keys.ArrowLeftJustPressed = false;
     }
-    if (keys.ArrowRight) {
+    if (keys.ArrowRightJustPressed) {
       game.currentLocation[0]++;
+      keys.ArrowRightJustPressed = false;
     }
-    if (keys.ArrowUp) {
+    if (keys.ArrowUpJustPressed) {
       game.currentLocation[1]--;
+      keys.ArrowUpJustPressed = false;
     }
-    if (keys.ArrowDown) {
+    if (keys.ArrowDownJustPressed) {
       game.currentLocation[1]++;
+      keys.ArrowDownJustPressed = false;
     }
   },
 
@@ -155,6 +169,7 @@ const game = {
     // ctx.fillRect(- this.turn / 2 % 400, 0, 500, this.turn);
 
     drawTestGraphics();
+    // drawCube();
 
     // draw "next" location
     // drawTetronimo(game.currentLocation[0], game.currentLocation[1] + 1);
@@ -182,7 +197,7 @@ const game = {
       const newX = pos[0];
       const newY = pos[1]+1;
       // >0 : square not empty (note: breaks if tetronimo is offscreen)
-      
+
       return (game.grid[game.currentLocation[0] + newX][game.currentLocation[1] + newY] > 0);
     });
 
@@ -208,6 +223,18 @@ const game = {
 };
 // #endregion
 
+// #region PAUSE OFF-TAB ------------------------------------------------------
+document.addEventListener("visibilitychange", () => {
+  if (document.hidden) {
+    // game.paused = true;
+  } else {
+    // reset delta to prevent catchup
+    core.then = performance.now();
+    // game.paused = false;
+  }
+});
+// #endregion
+
 // #region DRAWING STUFF ----------------------------------------------
 function drawTetronimo(x, y) {
   // rainbow style
@@ -216,6 +243,33 @@ function drawTetronimo(x, y) {
   sTetronimo.forEach((coords) => {
     ctx.fillRect(50*(x+coords[0]), 50*(y+coords[1]), 50, 50);
   });
+}
+
+function drawCube() {
+  ctx.strokeStyle = "lime";
+  ctx.strokeRect(100, 100, 100, 100);
+  
+  ctx.beginPath();
+  ctx.moveTo(100, 100);
+  ctx.lineTo(120, 120);
+  ctx.stroke();
+  
+  ctx.beginPath();
+  ctx.moveTo(200, 100);
+  ctx.lineTo(180, 120);
+  ctx.stroke();
+  
+  ctx.beginPath();
+  ctx.moveTo(100, 200);
+  ctx.lineTo(120, 180);
+  ctx.stroke();
+  
+  ctx.beginPath();
+  ctx.moveTo(200, 200);
+  ctx.lineTo(180, 180);
+  ctx.stroke();
+
+  ctx.strokeRect(120, 120, 60, 60);
 }
 
 function drawTestGraphics() {
