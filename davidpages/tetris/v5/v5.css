@@ -1,3 +1,8 @@
-/* ::not(*) {
-  color:black;
-} */
+:root:not(*) {
+  background-color:magenta;
+}
+
+body {
+  background-color:black;
+  color: white;
+}

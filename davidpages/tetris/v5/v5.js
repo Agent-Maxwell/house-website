@@ -10,13 +10,53 @@ const gridHeight = 20;
 // grid block px size
 const blockSize = 10;
 
-// tetrominos
+// enforce grid size
+canvas.style.width = gridWidth * blockSize;
+
+// #region TETRONIMOS
 const sTetronimo = [
+  [0,-1],
+  [0,0],
+  [1,0],
+  [1,1]
+]
+const zTetronimo = [
   [0,1],
   [0,0],
   [1,0],
   [1,-1]
 ]
+const lTetronimo = [
+  [0,-1],
+  [0,0],
+  [0,1],
+  [1,1]
+]
+const jTetronimo = [
+  [0,-1],
+  [0,0],
+  [0,1],
+  [-1,1]
+]
+const tTetronimo = [
+  [-1,0],
+  [0,0],
+  [1,0],
+  [0,-1]
+]
+const iTetronimo = [
+  [0,-1],
+  [0,0],
+  [0,1],
+  [0,2]
+]
+const oTetronimo = [
+  [0,-1],
+  [0,0],
+  [1,-1],
+  [1,0]
+]
+// #endregion
 
 // step time in seconds
 const stepTime = 0.3;
@@ -94,24 +134,30 @@ core.init();
 // game: handles everything in tetris logic. thinks in game steps.
 // edit: nah it handles its own step timer
 const game = {
+  // number of elapsed game steps
   turn: 0,
+  // 2d array holding game grid. 0=empty, 1=filled
   grid: [],
+  // timer for game steps
   stepTimer: 0,
-  current: [],
-  currentLocation: [],
+  // list of all the current piece's blocks, relative from currentLocation
+  activePiece: [],
+  // location of current active piece's "center"
+  activeCenter: [],
 
   firstTimeSetup() {
-    game.current = sTetronimo;
-    game.currentLocation = [gridWidth / 2, 1];
+    // copy sTetronimo blueprint into active piece array
+    game.activePiece = structuredClone(randomTetronimoBlueprint());
+    game.activeCenter = [Math.floor(gridWidth / 2), 1];
     game.setupGrid();
   },
 
   setupGrid() {
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < gridWidth; i++) {
       const col = []; // Create a temporary col
-      for (let j = 0; j < 20; j++) {
-        // bottom layer filled for now
-        if (j > 11) {
+      for (let j = 0; j < gridHeight; j++) {
+        // layers past [999] filled
+        if (j > 999) {
           col.push(1);
         } else {
         col.push(0);
@@ -119,10 +165,6 @@ const game = {
       }
       this.grid.push(col);
     }
-  },
- 
-  startGame() {
-
   },
 
   update(delta) {
@@ -136,21 +178,21 @@ const game = {
 
 
 
-    // ah yes "tetris" -----------------
+    // controls -----------------
     if (keys.ArrowLeftJustPressed) {
-      game.currentLocation[0]--;
+      game.move(-1, 0);
       keys.ArrowLeftJustPressed = false;
     }
     if (keys.ArrowRightJustPressed) {
-      game.currentLocation[0]++;
+      game.move(1, 0);
       keys.ArrowRightJustPressed = false;
     }
     if (keys.ArrowUpJustPressed) {
-      game.currentLocation[1]--;
+      game.move(0, -1);
       keys.ArrowUpJustPressed = false;
     }
     if (keys.ArrowDownJustPressed) {
-      game.currentLocation[1]++;
+      game.move(0, 1);
       keys.ArrowDownJustPressed = false;
     }
   },
@@ -174,52 +216,65 @@ const game = {
     // draw "next" location
     // drawTetronimo(game.currentLocation[0], game.currentLocation[1] + 1);
     // draw current
-    drawTetronimo(game.currentLocation[0], game.currentLocation[1]);
+    drawActivePiece();
   },
 
   step() {
     game.turn += 1;
-    // move current shape down
-    // game.currentLocation[1]++;
-    game.moveDown();
 
-    // move shape down, freeze, score, etc
-  },
+    // console.log("activepieec:" + game.activePiece);//////////
+    // console.log("activecenter:" + game.activeCenter);////////////
 
-  moveDown() {
-    // create copy to revert to or whatever
-    // const initial = game.current.map(col => [...col]);
+    // if move down fails:
+    if (!game.move(0, 1)) {
+      // freeze score spawn new piece etc
 
-    // attempt to move down:
-    // check 1 square down from each current position.
-    // if any intersect, this is true
-    const moveDownIntersects = game.current.some((pos) => {
-      const newX = pos[0];
-      const newY = pos[1]+1;
-      // >0 : square not empty (note: breaks if tetronimo is offscreen)
+      // apply each activePiece block to game grid
+      game.activePiece.forEach((blockPos) => {
+        // get global coords for each block (active piece center + blockPos)
+        const globalX = game.activeCenter[0] + blockPos[0];
+        const globalY = game.activeCenter[1] + blockPos[1];
 
-      return (game.grid[game.currentLocation[0] + newX][game.currentLocation[1] + newY] > 0);
-    });
-
-    // console.log("moveDownIntersects: " + moveDownIntersects);
-
-    if (moveDownIntersects) {
-      //freeze.. spawn new...
-    } else {
-      // move current down
-      game.current.forEach((pos) => {
-        pos[1]++;
+        game.grid[globalX][globalY] = 1;
       });
+
+      // get new S tetronimo
+      game.activePiece = structuredClone(randomTetronimoBlueprint());
+      
+      // reset activ epiece  location
+      game.activeCenter = [Math.floor(gridWidth / 2), 1];
+
     }
   },
 
-  moveLeft() {
+  // attempt move along any vector, return whether it succeeded
+  move(dx, dy) {
+    // check new position.
+    const moveDownValid = game.activePiece.every((blockPos) => {
+      // get new coords for each block
+      const newBlockX = blockPos[0] + dx;
+      const newBlockY = blockPos[1] + dy;
 
-  },
+      const newX = game.activeCenter[0] + newBlockX;
+      const newY = game.activeCenter[1] + newBlockY;
 
-  moveRight() {
+      return canMoveInto(newX, newY);
+    });
 
-  },
+    // console.log("move valid: " + moveDownValid);/////////////
+
+    // if the entire move is valid, MOVE
+    if (moveDownValid) {
+      // actually move it now
+      // console.log("before: " + game.activePiece);////////////////
+      game.activePiece = game.activePiece.map((blockPos) => [blockPos[0] + dx, blockPos[1] + dy]);
+      // console.log("after: " + game.activePiece);//////////
+      return true;
+    } else {
+      return false;
+      // whoever called me will worry about freezing etc
+    }
+  }
 };
 // #endregion
 
@@ -236,12 +291,12 @@ document.addEventListener("visibilitychange", () => {
 // #endregion
 
 // #region DRAWING STUFF ----------------------------------------------
-function drawTetronimo(x, y) {
+function drawActivePiece() {
   // rainbow style
   ctx.fillStyle = "blue";
-  // for each block in tetronimo (s for now)
-  sTetronimo.forEach((coords) => {
-    ctx.fillRect(50*(x+coords[0]), 50*(y+coords[1]), 50, 50);
+  // for each block in active piece
+  game.activePiece.forEach((coords) => {
+    ctx.fillRect(50*(game.activeCenter[0]+coords[0]), 50*(game.activeCenter[1]+coords[1]), 50, 50);
   });
 }
 
@@ -274,8 +329,8 @@ function drawCube() {
 
 function drawTestGraphics() {
   // GRID
-  for (let i = 0; i < 10; i++) {
-    for (let j = 0; j < 20; j++) {
+  for (let i = 0; i < gridWidth; i++) {
+    for (let j = 0; j < gridHeight; j++) {
 
 
       if (game.grid[i][j] > (game.turn % 1000) / 1000) {
@@ -284,12 +339,12 @@ function drawTestGraphics() {
       } else {
         ctx.fillStyle = `rgb(
         ${Math.floor(233 - 12.5 * i)}
-        ${Math.floor(250 - 30.5 * j)}
+        ${Math.floor(250 - 10.5 * j)}
         ${Math.floor(0 + 30.5 * j)})`;
         ctx.fillRect(50*i, 50*j, 50, 50);
 
-        ctx.strokeStyle = "black";
-        ctx.strokeRect(50*i, 50*j, 50, 50);
+        // ctx.strokeStyle = "black";
+        // ctx.strokeRect(50*i, 50*j, 50, 50);
       }
 
 
@@ -359,6 +414,49 @@ function trueRotate(unRotated, rotation) {
     //console.log("post-rotation: " + rotated)
 
     return rotated;
+}
+
+// checks if coords are onscreen
+function isOnscreen(x, y) {
+  // console.log("isOnscreen(" + x + "," + y + ")");///////////////
+  if (x < 0) return false;
+  if (x >= gridWidth) return false;
+  if (y < 0) return false;
+  if (y >= gridHeight) return false;
+  return true;
+}
+
+// checks if coords are empty
+function isEmpty(x, y) {
+  // console.log("isEmpty(" + x + "," + y + ")");///////////////
+  return game.grid[x][y] === 0;
+}
+
+// just onscreen + empty
+function canMoveInto(x, y) {
+  // console.log("canMoveInto(" + x + "," + y + ")");///////////////
+  return isOnscreen(x, y) && isEmpty(x, y);
+}
+
+function randomTetronimoBlueprint() {
+  switch(Math.floor(Math.random() * 7)) {
+    case 0:
+      return sTetronimo;
+    case 1:
+      return zTetronimo;
+    case 2:
+      return lTetronimo;
+    case 3:
+      return jTetronimo;
+    case 4:
+      return tTetronimo;
+    case 5:
+      return iTetronimo;
+    case 6:
+      return oTetronimo;
+    default:
+      console.error("HUHS????");
+  }
 }
 // #endregion
 
