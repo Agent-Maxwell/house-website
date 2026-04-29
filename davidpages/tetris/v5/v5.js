@@ -8,10 +8,11 @@ const gridWidth = 10;
 const gridHeight = 20;
 
 // grid block px size
-const blockSize = 10;
+const blockSize = 50;
 
 // enforce grid size
-canvas.style.width = gridWidth * blockSize;
+canvas.width = gridWidth * blockSize;
+canvas.height = gridHeight * blockSize;
 
 // #region TETRONIMOS
 const sTetronimo = [
@@ -188,8 +189,10 @@ const game = {
       keys.ArrowRightJustPressed = false;
     }
     if (keys.ArrowUpJustPressed) {
-      game.move(0, -1);
+      // game.move(0, -1); // lol
       keys.ArrowUpJustPressed = false;
+
+      game.activePiece = trueRotate(game.activePiece, 1);
     }
     if (keys.ArrowDownJustPressed) {
       game.move(0, 1);
@@ -266,9 +269,9 @@ const game = {
     // if the entire move is valid, MOVE
     if (moveDownValid) {
       // actually move it now
-      // console.log("before: " + game.activePiece);////////////////
-      game.activePiece = game.activePiece.map((blockPos) => [blockPos[0] + dx, blockPos[1] + dy]);
-      // console.log("after: " + game.activePiece);//////////
+      // nope!
+      // game.activePiece = game.activePiece.map((blockPos) => [blockPos[0] + dx, blockPos[1] + dy]);
+      game.activeCenter = [game.activeCenter[0] + dx, game.activeCenter[1] + dy];
       return true;
     } else {
       return false;
@@ -394,17 +397,17 @@ function trueRotate(unRotated, rotation) {
 
     let rotated = []
     //console.log("trueRotate loop starting, going to loop " + unRotated.length + " times")
-    for (i = 0; i < unRotated.length; i++) { //rotate X and Y values
+    for (let i = 0; i < unRotated.length; i++) { //rotate X and Y values
         //console.log("loop i = " + i)
         //console.log("unRotated[0] length: " + unRotated[0].length);
-        let originalX = unRotated[i][0]
-        let originalY = unRotated[i][1]
+        let originalX = unRotated[i][0];
+        let originalY = unRotated[i][1];
         //console.log("unRotated[" + i + "][0]: " + unRotated[i][0]);//debug: print og x
         //console.log("unRotated[" + i + "][0]: " + unRotated[i][0]);//debug: print og y
         // NOTE: the "-rotation" is to convert amount of positive clockwise rotations into the factor to multiply the counterclockwise PI/2 rotation by
-        let rotatedX = Math.round(originalX * Math.cos(-rotation * Math.PI / 2) - originalY * Math.sin(-rotation * (Math.PI / 2)))
-        let rotatedY = Math.round(originalX * Math.sin(-rotation * Math.PI / 2) + originalY * Math.cos(-rotation * (Math.PI / 2)))
-        rotated.push([rotatedX, rotatedY])
+        let rotatedX = Math.round(originalX * Math.cos(-rotation * Math.PI / 2) - originalY * Math.sin(-rotation * (Math.PI / 2)));
+        let rotatedY = Math.round(originalX * Math.sin(-rotation * Math.PI / 2) + originalY * Math.cos(-rotation * (Math.PI / 2)));
+        rotated.push([rotatedX, rotatedY]);
         //console.log(rotatedX + " " + rotatedY)
     }
 
