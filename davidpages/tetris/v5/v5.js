@@ -4,15 +4,15 @@ const ctx = canvas.getContext("2d");
 
 // #region GAME CONSTANTS ---------------------------------------------
 // grid dimensions
-const gridWidth = 10;
-const gridHeight = 20;
+const COLS = 10;
+const ROWS = 20;
 
 // grid block px size
-const blockSize = 50;
+const CELL_SIZE = 50;
 
 // enforce grid size
-canvas.width = gridWidth * blockSize;
-canvas.height = gridHeight * blockSize;
+canvas.width = COLS * CELL_SIZE;
+canvas.height = ROWS * CELL_SIZE;
 
 // #region TETRONIMOS
 const sTetronimo = [
@@ -60,33 +60,31 @@ const oTetronimo = [
 // #endregion
 
 // step time in seconds
-const stepTime = 0.3;
+const STEP_TIME = 0.5;
+
+// key repeat delays
+const LEFT_RIGHT_INITIAL_DELAY = 0.2;
+const LEFT_RIGHT_REPEAT_DELAY = 0.08;
+
+const DOWN_INITIAL_DELAY = 0.05;
+const DOWN_REPEAT_DELAY = 0.05;
+
 // #endregion
 
 // #region KEYS -------------------------------------------------------
 // keys: keeps track of key presses
 // has properties for all relevant keys, toggles them with keyup/keydown listeners
-// todo to see if a key was just presesd, maybe have another set of vars
-// like ArrowUpJustPressed, which the update() function resets when it registers it
+// todo to see if a key was just presesd
 const keys = {
   ArrowUp: false,
   ArrowDown: false,
   ArrowLeft: false,
   ArrowRight: false,
   Space: false,
-
-  // these are just set once and reset by Game
-  // note: keyrepeat happens w this strategy. todo
-  ArrowUpJustPressed: false,
-  ArrowDownJustPressed: false,
-  ArrowLeftJustPressed: false,
-  ArrowRightJustPressed: false,
-  SpaceJustPressed: false
 };
 window.addEventListener("keydown", (e) => {
     if (keys.hasOwnProperty(e.code)) {
         keys[e.code] = true;
-        keys[e.code + "JustPressed"] = true;
         // Prevent scrolling with arrows / space
         e.preventDefault();
         // console.log(e.code + "pressed");/////////
@@ -97,6 +95,61 @@ window.addEventListener("keyup", (e) => {
         keys[e.code] = false;
     }
 });
+// #endregion
+
+// #region KEY REPEAT TIMERS ------------------------------------------
+class keyRepeatTimer {
+  constructor(callback, initialDelay, repeatDelay) {
+    this.callback = callback;
+    this.initialDelay = initialDelay;
+    this.repeatDelay = repeatDelay;
+
+    this.off();
+  }
+
+  off() {
+    this.timer = 0;
+    this.state = "off";
+  }
+
+  start() {
+    this.timer = 0;
+    this.state = "initial";
+  }
+
+  update(delta) {
+    switch(this.state) {
+      case "off":
+        // OFF: do nothing
+        break;
+      case "initial":
+        // INITIAL: timer. check (activate&reset)
+        this.timer += delta;
+        if (this.timer >= this.initialDelay) {
+          // callback
+          this.callback();
+          // reset timer
+          this.timer = 0;
+          // switch to repeating mode
+          this.state = "repeat";
+        }
+        break;
+      case "repeat":
+        // REPEAT: timer. check (activate&reset)
+        this.timer += delta;
+        if (this.timer >= this.repeatDelay) {
+          // callback
+          this.callback();
+          // reset timer
+          this.timer = 0;
+          // stay in "repeat" mode
+        }
+        break;
+      default:
+        console.error("unknown keyRepeatTimer state: " + this.state);
+    }
+  }
+}
 // #endregion
 
 // #region CORE -------------------------------------------------------
@@ -133,7 +186,7 @@ core.init();
 
 // #region GAME -------------------------------------------------------
 // game: handles everything in tetris logic. thinks in game steps.
-// edit: nah it handles its own step timer
+// edit: nah it handles timers
 const game = {
   // number of elapsed game steps
   turn: 0,
@@ -141,22 +194,45 @@ const game = {
   grid: [],
   // timer for game steps
   stepTimer: 0,
-  // list of all the current piece's blocks, relative from currentLocation
+  // i will handle key repeat thank you
+  keyRepeatTimer: 0,
+  // list of all the current piece's blocks, relative from activeCenter
   activePiece: [],
   // location of current active piece's "center"
   activeCenter: [],
+  // bitwise guys to track keys being pressed
+  currentKeysPressed: 0,
+  pastKeysPressed: 0,
+  keyFlags: {
+    ArrowLeft:  1<<0,
+    ArrowRight: 1<<1,
+    ArrowDown:  1<<2,
+    ArrowUp:    1<<3,
+    // SPACE: 1<<4,
+  },
+  // key repeat timers
+  leftKeyRepeatTimer: null,
+  rightKeyRepeatTimer: null,
+  downKeyRepeatTimer: null,
 
   firstTimeSetup() {
-    // copy sTetronimo blueprint into active piece array
+    // create keyrepeat timers (now that move() exists)
+    game.leftKeyRepeatTimer = new keyRepeatTimer(() => this.move(-1, 0), LEFT_RIGHT_INITIAL_DELAY, LEFT_RIGHT_REPEAT_DELAY);
+    game.rightKeyRepeatTimer = new keyRepeatTimer(() => this.move(1, 0), LEFT_RIGHT_INITIAL_DELAY, LEFT_RIGHT_REPEAT_DELAY);
+    game.downKeyRepeatTimer = new keyRepeatTimer(() => this.moveDown(), DOWN_INITIAL_DELAY, DOWN_REPEAT_DELAY);
+
+    // copy random tetronimo blueprint into active piece array
     game.activePiece = structuredClone(randomTetronimoBlueprint());
-    game.activeCenter = [Math.floor(gridWidth / 2), 1];
+    // spawn in the middle
+    game.activeCenter = [Math.floor(COLS / 2), 1];
+
     game.setupGrid();
   },
 
   setupGrid() {
-    for (let i = 0; i < gridWidth; i++) {
+    for (let i = 0; i < COLS; i++) {
       const col = []; // Create a temporary col
-      for (let j = 0; j < gridHeight; j++) {
+      for (let j = 0; j < ROWS; j++) {
         // layers past [999] filled
         if (j > 999) {
           col.push(1);
@@ -169,35 +245,73 @@ const game = {
   },
 
   update(delta) {
-    // increase stepTimer, step&reset if time
+    // controls ======================================
+    // BITWISE VERSION
+    // reset current
+    game.currentKeysPressed = 0;
+    // set current
+    if (keys.ArrowLeft) {
+      game.currentKeysPressed |= game.keyFlags.ArrowLeft;
+      // if it was already being held:
+      if (game.pastKeysPressed & game.keyFlags.ArrowLeft) {
+        // update it (iterate timer, check, active, reset etc)
+        game.leftKeyRepeatTimer.update(delta);
+      // if it was just pressed:
+      } else {
+        // move todo probably move this to the timer
+        game.move(-1, 0);
+        // reset&start timer
+        game.leftKeyRepeatTimer.start();
+      }
+    }
+    if (keys.ArrowRight) {
+      game.currentKeysPressed |= game.keyFlags.ArrowRight;
+      // if it was already being held:
+      if (game.pastKeysPressed & game.keyFlags.ArrowRight) {
+        // update it (iterate timer, check, active, reset etc)
+        game.rightKeyRepeatTimer.update(delta);
+      // if it was just pressed:
+      } else {
+        // move todo probably move this to the timer
+        game.move(1, 0);
+        // reset&start timer
+        game.rightKeyRepeatTimer.start();
+      }
+    }
+    if (keys.ArrowDown) {
+      game.currentKeysPressed |= game.keyFlags.ArrowDown;
+      // if it was already being held:
+      if (game.pastKeysPressed & game.keyFlags.ArrowDown) {
+        // update it (iterate timer, check, active, reset etc)
+        game.downKeyRepeatTimer.update(delta);
+      // if it was just pressed:
+      } else {
+        // move todo probably move this to the timer
+        game.moveDown();
+        // reset&start timer
+        game.downKeyRepeatTimer.start();
+      }
+    }
+    if (keys.ArrowUp) {
+      game.currentKeysPressed |= game.keyFlags.ArrowUp;
+      // if it was just pressed:
+      if (!(game.pastKeysPressed & game.keyFlags.ArrowUp)) {
+        //todo check if rotataion is valid
+        game.rotate(-1);
+      }
+    }
 
+    // increase stepTimer, step&reset if time =========
     game.stepTimer += delta;
-    if (game.stepTimer >= stepTime) {
-      game.stepTimer -= stepTime;
+    if (game.stepTimer >= STEP_TIME) {
+      // for now moveDown() in step is handling resetting steptimer
+      // game.stepTimer -= STEP_TIME;
       game.step();
     }
 
+    // move old current to past for next frame ========
+    game.pastKeysPressed = game.currentKeysPressed;
 
-
-    // controls -----------------
-    if (keys.ArrowLeftJustPressed) {
-      game.move(-1, 0);
-      keys.ArrowLeftJustPressed = false;
-    }
-    if (keys.ArrowRightJustPressed) {
-      game.move(1, 0);
-      keys.ArrowRightJustPressed = false;
-    }
-    if (keys.ArrowUpJustPressed) {
-      // game.move(0, -1); // lol
-      keys.ArrowUpJustPressed = false;
-
-      game.activePiece = trueRotate(game.activePiece, 1);
-    }
-    if (keys.ArrowDownJustPressed) {
-      game.move(0, 1);
-      keys.ArrowDownJustPressed = false;
-    }
   },
 
   draw() {
@@ -207,14 +321,15 @@ const game = {
     // fill screen slowly
 
     // const img = new Image();
-    // img.src = "paul-with-stick.jpg";
+    // // img.src = "paul-with-stick.jpg";
     // img.src = "checkerboard.jpg";
     // ctx.fillStyle = ctx.createPattern(img, "repeat");
     
-    // ctx.fillRect(- this.turn / 2 % 400, 0, 500, this.turn);
+    // ctx.fillRect(-(this.turn * 0.2) % 400, 0, 500, this.turn * 50);
 
     drawTestGraphics();
     // drawCube();
+
 
     // draw "next" location
     // drawTetronimo(game.currentLocation[0], game.currentLocation[1] + 1);
@@ -229,7 +344,7 @@ const game = {
     // console.log("activecenter:" + game.activeCenter);////////////
 
     // if move down fails:
-    if (!game.move(0, 1)) {
+    if (!game.moveDown()) {
       // freeze score spawn new piece etc
 
       // apply each activePiece block to game grid
@@ -245,15 +360,43 @@ const game = {
       game.activePiece = structuredClone(randomTetronimoBlueprint());
       
       // reset activ epiece  location
-      game.activeCenter = [Math.floor(gridWidth / 2), 1];
+      game.activeCenter = [Math.floor(COLS / 2), 1];
 
     }
+  },
+
+  // attempt any rotation, return whether it succeeded
+  // do repeated attempts here? todo
+  rotate(rotation) {
+    const newActivePiece = trueRotate(game.activePiece, rotation);
+    const moveValid = newActivePiece.every((blockPos) => {
+      const newX = game.activeCenter[0] + blockPos[0];
+      const newY = game.activeCenter[1] + blockPos[1];
+      return canMoveInto(newX, newY);
+    });
+    if (moveValid) game.activePiece = newActivePiece;
+    return moveValid;
+  },
+
+  // move down, reset stepTImer.
+  // note: freeze/score/spawn new piece logic not here, in step() rn
+  // todo probably have canFreeze argument here like v4, so that
+  // step/instantFall and down arrow can both use this
+  moveDown() {
+    // no matter if called automatically or from player input, reset step timer
+    // (only if piece actually moved!)
+    const moved = game.move(0, 1);
+    if (moved) {
+      game.stepTimer -= STEP_TIME;
+      if (game.stepTimer < 0) game.stepTimer = 0;  
+    }
+    return moved;
   },
 
   // attempt move along any vector, return whether it succeeded
   move(dx, dy) {
     // check new position.
-    const moveDownValid = game.activePiece.every((blockPos) => {
+    const moveValid = game.activePiece.every((blockPos) => {
       // get new coords for each block
       const newBlockX = blockPos[0] + dx;
       const newBlockY = blockPos[1] + dy;
@@ -267,7 +410,7 @@ const game = {
     // console.log("move valid: " + moveDownValid);/////////////
 
     // if the entire move is valid, MOVE
-    if (moveDownValid) {
+    if (moveValid) {
       // actually move it now
       // nope!
       // game.activePiece = game.activePiece.map((blockPos) => [blockPos[0] + dx, blockPos[1] + dy]);
@@ -277,11 +420,11 @@ const game = {
       return false;
       // whoever called me will worry about freezing etc
     }
-  }
+  },
 };
 // #endregion
 
-// #region PAUSE OFF-TAB ------------------------------------------------------
+// #region PAUSE OFF-TAB ----------------------------------------------
 document.addEventListener("visibilitychange", () => {
   if (document.hidden) {
     // game.paused = true;
@@ -332,8 +475,8 @@ function drawCube() {
 
 function drawTestGraphics() {
   // GRID
-  for (let i = 0; i < gridWidth; i++) {
-    for (let j = 0; j < gridHeight; j++) {
+  for (let i = 0; i < COLS; i++) {
+    for (let j = 0; j < ROWS; j++) {
 
 
       if (game.grid[i][j] > (game.turn % 1000) / 1000) {
@@ -389,7 +532,7 @@ function drawTestGraphics() {
 // #endregion
 
 // #region UTILITY FUNCS ----------------------------------------------
-//true mathematical rotation (copied from v4)
+//true counterclockwise mathematical rotation (copied from v4)
 function trueRotate(unRotated, rotation) {
     //rotation equations from internet:
     //x' = x * cos(PI/2) - y * sin(PI/2)
@@ -423,9 +566,9 @@ function trueRotate(unRotated, rotation) {
 function isOnscreen(x, y) {
   // console.log("isOnscreen(" + x + "," + y + ")");///////////////
   if (x < 0) return false;
-  if (x >= gridWidth) return false;
+  if (x >= COLS) return false;
   if (y < 0) return false;
-  if (y >= gridHeight) return false;
+  if (y >= ROWS) return false;
   return true;
 }
 
@@ -462,6 +605,16 @@ function randomTetronimoBlueprint() {
   }
 }
 // #endregion
+
+
+
+
+//test?//////////////////////////////////////////////////////
+// const leftKeyRepeatTimer = new keyRepeatTimer(game.move(-1, 0), LEFT_RIGHT_INITIAL_DELAY, LEFT_RIGHT_REPEAT_DELAY);
+
+
+
+
 
 
 
