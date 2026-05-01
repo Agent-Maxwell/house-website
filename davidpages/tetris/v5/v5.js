@@ -95,8 +95,8 @@ const offsetData = {
     // for I
     const iOffsetData = [
       [[0,0], [-1,0], [2,0], [-1,0], [2,0]],
-      [[0,1], [0,0], [0,0], [0,-1], [0,2]],
-      [[-1,-1], [1,-1], [-1,-1], [1,0], [-2,0]],
+      [[-1,0], [0,0], [0,0], [0,-1], [0,2]],
+      [[-1,-1], [1,-1], [-2,-1], [1,0], [-2,0]],
       [[0,-1], [0,-1], [0,-1], [0,1], [0,-2]],
     ];
     this.i = iOffsetData;
@@ -254,7 +254,7 @@ const game = {
     ArrowRight: 1<<1,
     ArrowDown:  1<<2,
     ArrowUp:    1<<3,
-    // SPACE: 1<<4,
+    Space:      1<<4,
   },
   // key repeat timers
   leftKeyRepeatTimer: null,
@@ -338,10 +338,16 @@ const game = {
     }
     if (keys.ArrowUp) {
       game.currentKeysPressed |= game.keyFlags.ArrowUp;
-      // if it was just pressed:
+      // if it was just pressed: (no keyrepeat for rotate)
       if (!(game.pastKeysPressed & game.keyFlags.ArrowUp)) {
-        //todo check if rotataion is valid
         game.rotate();
+      }
+    }
+    if (keys.Space) {
+      game.currentKeysPressed |= game.keyFlags.Space;
+      // if it was just pressed: (no keyrepeat for instant drop)
+      if (!(game.pastKeysPressed & game.keyFlags.Space)) {
+        game.instantDrop();
       }
     }
 
@@ -391,14 +397,7 @@ const game = {
     if (!game.moveDown()) {
       // freeze score spawn new piece etc
 
-      // apply each activePiece block to game grid
-      game.activeMinoes.forEach((blockPos) => {
-        // get global coords for each block (active piece center + blockPos)
-        const globalX = game.activeCenter[0] + blockPos[0];
-        const globalY = game.activeCenter[1] + blockPos[1];
-
-        game.grid[globalX][globalY] = 1;
-      });
+      game.freeze();
 
       // new active tetronimo
       nextTetronimo();
@@ -414,7 +413,7 @@ const game = {
 
     // for each offset:
     for (let offset of offsetList) {
-      // console.log("attempting offset: (" + offset[0] + "," + offset[1] + ")");
+      console.log("attempting offset: (" + offset[0] + "," + offset[1] + ")");
       // check if its valid
       const rotationValid = rotated.every((mino) => {
         const newGlobalX = game.activeCenter[0] + offset[0] + mino[0];
@@ -433,6 +432,7 @@ const game = {
         game.activeCenter[0] += offset[0];
         game.activeCenter[1] += offset[1];
         // valid offset found. rotation happened.
+        game.activeState = (game.activeState + 1) % 4;
         return true;
       }
     }
@@ -441,7 +441,7 @@ const game = {
   },
 
   // attempt any rotation, return whether it succeeded
-  // do repeated attempts here? todo
+  // note: unused for now.
   rotateIfPossible(rotation) {
     const newActivePiece = trueRotate(game.activeMinoes, rotation);
     const rotationValid = newActivePiece.every((blockPos) => {
@@ -466,6 +466,24 @@ const game = {
       if (game.stepTimer < 0) game.stepTimer = 0;  
     }
     return moved;
+  },
+
+  instantDrop() {
+    while(this.moveDown()) {}
+    this.freeze();
+    nextTetronimo();
+  },
+
+  // freeze active piece
+  freeze() {
+    // apply each activePiece block to game grid
+    game.activeMinoes.forEach((blockPos) => {
+      // get global coords for each block (active piece center + blockPos)
+      const globalX = game.activeCenter[0] + blockPos[0];
+      const globalY = game.activeCenter[1] + blockPos[1];
+
+      game.grid[globalX][globalY] = 1;
+    });
   },
 
   // attempt move along any vector, return whether it succeeded
@@ -728,8 +746,12 @@ function getOffsetList(tetronimo, state) {
   const finalOffsetList = [];
   for (let i in currentOffsetList) {
     const finalOffset = [];
+    // current - next
     finalOffset.push(currentOffsetList[i][0] - nextOffsetList[i][0]);
     finalOffset.push(currentOffsetList[i][1] - nextOffsetList[i][1]);
+    // next - current
+    // finalOffset.push(nextOffsetList[i][0] - currentOffsetList[i][0]);
+    // finalOffset.push(nextOffsetList[i][1] - currentOffsetList[i][1]);
     finalOffsetList.push(finalOffset);
   }
 
@@ -743,9 +765,12 @@ function getOffsetList(tetronimo, state) {
 }
 
 function nextTetronimo() {
+
   // get random tetronimo name, remember it
   const startingTetronimo = randomTetronimoName();
+  // const startingTetronimo = "i"; //DEBUG: all squares
   game.activeTetronimo = startingTetronimo;
+
   // start in state 0
   game.activeState = 0;
   // copy blueprint into activeMinoes
@@ -754,12 +779,6 @@ function nextTetronimo() {
   game.activeCenter = [Math.floor(COLS / 2), 1];
 }
 // #endregion
-
-
-
-
-//test?//////////////////////////////////////////////////////
-// const leftKeyRepeatTimer = new keyRepeatTimer(game.move(-1, 0), LEFT_RIGHT_INITIAL_DELAY, LEFT_RIGHT_REPEAT_DELAY);
 
 
 
