@@ -1,0 +1,8 @@
+@font-face {
+    font-family: "mario";
+    src: url("font/CHLORINP.TTF");
+}
+
+body {
+    background-color: firebrick;
+}
