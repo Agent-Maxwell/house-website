@@ -269,7 +269,7 @@ const game = {
   // #endregion
   
   // GAME MODE--------------------------------
-  mode: 0,
+  mode: 1,
   // 0: "finite zen." no-step, no clearing
   // 1: "normal"
   // 2: "floating"
@@ -295,7 +295,7 @@ const game = {
     }
     if (game.mode === 2) {
       // you get a bit more time for floating mode
-      STEP_TIME = (4/3);
+      STEP_TIME = (1.11);
     }
 
     // THEN MAKE KEY REPEATERS
@@ -649,12 +649,16 @@ function drawActivePiece() {
   // [MODE DEPENDENT]
   
   if (game.mode === 0) {
-    ctx.fillStyle = "black";
+
+
     // for each block in active piece
     game.activeMinoes.forEach((coords) => {
       const minoX = game.activeCenter[0]+coords[0];
       const minoY = game.activeCenter[1]+coords[1];
       drawCircle(minoX, minoY, "black");
+      // FUN: white ~~~~~~
+      // drawCircle(minoX, minoY, "white");
+
     });
   }
   if (game.mode === 1) {
@@ -675,33 +679,6 @@ function drawActivePiece() {
   }
 }
 
-function drawCube() {
-  ctx.strokeStyle = "lime";
-  ctx.strokeRect(100, 100, 100, 100);
-  
-  ctx.beginPath();
-  ctx.moveTo(100, 100);
-  ctx.lineTo(120, 120);
-  ctx.stroke();
-  
-  ctx.beginPath();
-  ctx.moveTo(200, 100);
-  ctx.lineTo(180, 120);
-  ctx.stroke();
-  
-  ctx.beginPath();
-  ctx.moveTo(100, 200);
-  ctx.lineTo(120, 180);
-  ctx.stroke();
-  
-  ctx.beginPath();
-  ctx.moveTo(200, 200);
-  ctx.lineTo(180, 180);
-  ctx.stroke();
-
-  ctx.strokeRect(120, 120, 60, 60);
-}
-
 function drawModeGraphics() {
   // GRID
   for (let i = 0; i < COLS; i++) {
@@ -709,13 +686,21 @@ function drawModeGraphics() {
 
       // MODE 0 --------------------------------------------
       if (game.mode === 0) {
-        // filled or not, rainbow bg
-        drawRainbowBg(i, j);
+        //BG 
+
+        // cool effect w rainbow filled blocks
+        // drawRect(i, j, rainbowFillStyle(9-i, 19-j));
+
+        drawRect(i, j, "white");
 
         // then on top of bg:
         // FILLED (white circles)
         if (game.grid[i][j] > 0) {
-          drawCircle(i, j, "white");
+          // drawCircle(i, j, "white");
+          // FUN: rainbow~~~~~~~~~~~~
+          // ctx.fillStyle = rainbowFillStyle(i, j);
+          drawCircle(i, j, rainbowFillStyle(i, j));
+
         }
       }
 
@@ -854,17 +839,17 @@ function drawText(text) {
 
 // draw moving rainbow bg at specific coords
 function drawRainbowBg(x, y) {
-  // 3 equally spaced sin waves
 
-  // (x/10) 0-1 across screen
-  const cycleTime = 100;
+  // moved to rainbowfillstyle
+  // const cycleTime = 17;
+  // const sin1 = Math.sin((x/10) + (1/cycleTime)*game.timer * 2*Math.PI);
+  // const sin2 = Math.sin((x/10) + (1/cycleTime)*game.timer * 2*Math.PI + 2*Math.PI / 3);
+  // const sin3 = Math.sin((x/10) + (1/cycleTime)*game.timer * 2*Math.PI + 2*2*Math.PI / 3);
+  // ctx.fillStyle = `rgb(${128 + sin1 * 128},${128 + sin2 * 128},${128 + sin3 * 128})`;
 
 
-  const sin1 = Math.sin((x/10) + (1/cycleTime)*game.timer * 2*Math.PI);
-  const sin2 = Math.sin((x/10) + (1/cycleTime)*game.timer * 2*Math.PI + 2*Math.PI / 3);
-  const sin3 = Math.sin((x/10) + (1/cycleTime)*game.timer * 2*Math.PI + 2*2*Math.PI / 3);
-  ctx.fillStyle = `rgb(${128 + sin1 * 128},${128 + sin2 * 128},${128 + sin3 * 128})`;
-  
+  ctx.fillStyle = rainbowFillStyle(x, y);
+
   // ctx.fillStyle = `rgb(
   //   ${Math.floor(233 - (12.5 * ((x + game.timer) % 10)))}
   //   ${Math.floor(250 - (10.5 * y))}
@@ -914,6 +899,48 @@ function drawCircle(x, y, color) {
 
   ctx.fill();
   ctx.closePath();
+}
+
+// draw circle of given color at given coords
+function drawRect(x, y, color) {
+  ctx.fillStyle = color;
+  ctx.fillRect(x*CELL_SIZE, y*CELL_SIZE, CELL_SIZE, CELL_SIZE);
+}
+
+function drawCube() {
+  ctx.strokeStyle = "lime";
+  ctx.strokeRect(100, 100, 100, 100);
+  
+  ctx.beginPath();
+  ctx.moveTo(100, 100);
+  ctx.lineTo(120, 120);
+  ctx.stroke();
+  
+  ctx.beginPath();
+  ctx.moveTo(200, 100);
+  ctx.lineTo(180, 120);
+  ctx.stroke();
+  
+  ctx.beginPath();
+  ctx.moveTo(100, 200);
+  ctx.lineTo(120, 180);
+  ctx.stroke();
+  
+  ctx.beginPath();
+  ctx.moveTo(200, 200);
+  ctx.lineTo(180, 180);
+  ctx.stroke();
+
+  ctx.strokeRect(120, 120, 60, 60);
+}
+
+function rainbowFillStyle(x, y) {
+  const cycleTime = 10; // todo make this a dynamic game var
+  const sin1 = Math.sin((x/10) + (y/10) + (1/cycleTime)*game.timer * 2*Math.PI);
+  const sin2 = Math.sin((x/10) + (y/10) + (1/cycleTime)*game.timer * 2*Math.PI + 2*Math.PI / 3);
+  const sin3 = Math.sin((x/10) + (y/10) + (1/cycleTime)*game.timer * 2*Math.PI + 2*2*Math.PI / 3);
+  return `rgb(${128 + sin1 * 128},${128 + sin2 * 128},${128 + sin3 * 128})`;
+
 }
 
 // #endregion
