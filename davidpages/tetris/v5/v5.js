@@ -232,6 +232,7 @@ core.init();
 // game: handles everything in tetris logic. thinks in game steps.
 // edit: nah it handles timers
 const game = {
+  // #region GAME VARS -----------------------
   // number of elapsed game steps
   turn: 0,
   // 2d array holding game grid. 0=empty, 1=filled
@@ -262,40 +263,39 @@ const game = {
   leftKeyRepeatTimer: null,
   rightKeyRepeatTimer: null,
   downKeyRepeatTimer: null,
+  // timer that just counts up from first time setup (for rainbwo bg)
+  timer: 0,
+  score: 0,
+  // #endregion
   
-  // GAME MODE------------------------------------
-  // =============================================
-
-  ////modefsdfsdfsd mode edsfsdf
-  //
-  //
-  //
-  //
-  //
-
-  mode: 2,
-  // mode: normal,
-
+  // GAME MODE--------------------------------
+  mode: 0,
+  // 0: "finite zen." no-step, no clearing
+  // 1: "normal"
+  // 2: "floating"
 
   firstTimeSetup() {
-
     // FIRST CHECK MODE AND SET CONSTANTS
     console.log("mode " + game.mode);
 
+    // [MODE DEPENDENT]
     if (game.mode === 0) {
-      STEP_TIME = (3/4);
+      // step time unchanged but irrelevant;
+      // for mode 0, steps are just disabled in update()
+      // STEP_TIME = 999;
+
+      // left/right/down all the same timing
       LEFT_RIGHT_INITIAL_DELAY = 0.2;
-      LEFT_RIGHT_REPEAT_DELAY = 0.05;
+      LEFT_RIGHT_REPEAT_DELAY = 0.1;
       DOWN_INITIAL_DELAY = 0.2;
-      DOWN_REPEAT_DELAY = 0.05;
+      DOWN_REPEAT_DELAY = 0.1;
     }
     if (game.mode === 1) {
-      DOWN_INITIAL_DELAY = 1;
-      // console.log(DOWN_INITIAL_DELAY);
-      DOWN_REPEAT_DELAY = 0.05;
+      // normal. no modifications
     }
-    if (game.mode === 1) {
-      //
+    if (game.mode === 2) {
+      // you get a bit more time for floating mode
+      STEP_TIME = (4/3);
     }
 
     // THEN MAKE KEY REPEATERS
@@ -316,6 +316,7 @@ const game = {
       const col = []; // Create a temporary col
       for (let j = 0; j < ROWS; j++) {
         // layers past [999] filled
+        // [MODE DEPENDENT]
         if (game.mode === 7) { //7
           col.push(1);
         } else {
@@ -327,6 +328,9 @@ const game = {
   },
 
   update(delta) {
+    // timer ticks up
+    game.timer += delta;
+
     // controls ======================================
     // BITWISE VERSION
     // reset current
@@ -385,7 +389,7 @@ const game = {
       game.currentKeysPressed |= game.keyFlags.Space;
       // if it was just pressed: (no keyrepeat for instant drop)
       if (!(game.pastKeysPressed & game.keyFlags.Space)) {
-        game.instantDrop();
+      game.instantDrop();
       }
     }
     if (keys.KeyC) {
@@ -400,7 +404,8 @@ const game = {
 
     // increase stepTimer, step&reset if time =========
     // ONLY IF NOT PAUSED
-    if (!game.paused) {
+    // also not in mode 0 [MODE DEPENDENT]
+    if (!game.paused && game.mode !== 0) {
       game.stepTimer += delta;
       if (game.stepTimer >= STEP_TIME) {
         // for now moveDown() in step is handling resetting steptimer
@@ -431,6 +436,8 @@ const game = {
     // drawTestGraphics();
 
     drawModeGraphics();
+    drawText(game.score);
+
     // drawCube();
 
 
@@ -443,21 +450,15 @@ const game = {
   step() {
     game.turn += 1;
 
-    // console.log("activepieec:" + game.activePiece);//////////
-    // console.log("activecenter:" + game.activeCenter);////////////
-
     // if move down fails:
     if (!game.moveDown()) {
-      // freeze score spawn new piece etc
-
       game.freeze();
-
-      // new active tetronimo
+      game.scoreCheck();
       nextTetronimo();
     }
   },
 
-  rotate() {
+  rotate() { 
     // list of offsets to try from current position
     const offsetList = getOffsetList(game.activeTetronimo, game.activeState);
     // console.log("rotate() offsetlist: " + offsetList[0]);/////////////////
@@ -466,7 +467,7 @@ const game = {
 
     // for each offset:
     for (let offset of offsetList) {
-      console.log("attempting offset: (" + offset[0] + "," + offset[1] + ")");
+      // console.log("attempting offset: (" + offset[0] + "," + offset[1] + ")");////////////
       // check if its valid
       const rotationValid = rotated.every((mino) => {
         const newGlobalX = game.activeCenter[0] + offset[0] + mino[0];
@@ -478,10 +479,7 @@ const game = {
       if (rotationValid) {
         // rotate active piece
         game.activeMinoes = rotated;
-        // apply succesfful offset
-  
-        // console.log(offsetList[0][0]);
-  
+        // apply succesfful offset  
         game.activeCenter[0] += offset[0];
         game.activeCenter[1] += offset[1];
         // valid offset found. rotation happened.
@@ -524,7 +522,7 @@ const game = {
   instantDrop() {
     while(game.moveDown()) {}
     game.freeze();
-    game.score();/////////////
+    game.scoreCheck();
     nextTetronimo();
   },
 
@@ -569,230 +567,68 @@ const game = {
     }
   },
 
-  scoreold() {
-    // moved to MODE 2
+  scoreCheck() {
+    // [MODE DEPENDENT] mode 0: just score a point and thats it
+    if (game.mode === 0) {
+      game.score++;
+      return;
+    }
 
-    // scan rows
-    for (let row = 0; row < game.grid[0].length; row++) {
+    // console.log("SCOREHELLOD mode:" + game.mode);///////
+
+    // scan rows the same way regardless of mode, just handle
+    // row clear itself differently depending on mode
+
+    const numCols = game.grid.length;
+    const numRows = game.grid[0].length;
+    // for each row (bottom to top):
+    for (let row = numRows - 1; row >= 0; row--) {
+      // assume rowfull
       let rowFull = true;
-      // console.log("x: " + i);
-      for (let col = 0; col < game.grid.length; col++) {
-        // console.log("x: " + i);
-        if (!game.grid[row][col] === 1) {
+      // set rowFull to false if any are empty
+      for (let col = 0; col < numCols; col++) {
+        if (game.grid[col][row] === 0) {
           rowFull = false;
           break;
         }
       }
-
-      // if row full clear it...
+      // if row full:
       if (rowFull) {
-        for (let col = 0; col < game.grid.length; col++) {
-          // console.log("x: " + i);
-          game.grid[row][col] = 0;
-        }
-      }
-
-    }
-  },
-
-  // thank you ai
-  score() {
-    console.log("SCOREHELLOD mode:" + game.mode);
-
-
-
-
-
-
-
-    // MODE 0 ----------------------------------------------
-    // zero-g
-
-    if (game.mode === 0) {
-      // 1. Iterate through every row
-      for (let row = 0; row < game.grid[0].length; row++) {
-        let isRowFull = true; 
-    
-        // console.log("BEGIN mode 0 row check:" + row);
-
-        // 2. Check every column in that row
-        for (let col = 0; col < game.grid.length; col++) {
-          if (game.grid[col][row] === 0) { // If we find an empty space (0)
-            console.log(col + "," + row);
-            isRowFull = false;
-            break; 
-          }
-        }
-        console.log("row " + row + " FULL???:" + isRowFull);
-  
-        // 3. If the loop finished and isRowFull is still true, clear it!
-        if (isRowFull) {
-          for (let x = 0; x < game.grid.length; x++) {
-            game.grid[x][row] = 0;
-          }
-        }
-      }
-    }
-
-
-    // MODE 1 ---------------------------------------------
-    // broken rn
-
-    if (game.mode === 1) {
-      // "new ai version"
-      for (let row = game.grid.length - 1; row >= 0; row--) {
-        if (game.grid[row].every(cell => cell === 1)) {
-          game.grid.splice(row, 1);
-          game.grid.unshift(new Array(game.grid[0].length).fill(0));
-          row++; // Offset the loop index because we just moved rows
-        }
-      }
-    }
-
-
-
-
-
-    // MODE 2 ---------------------------------------------
-    //normal
-    if (game.mode === 2) {
-
-      // hold on
-
-
-      // console.log("mode 2 here. game grid:");//////////////////////
-      // console.log(game.grid);//////////////////////
-      // // scan rows
-      // for (let row = 0; row < game.grid[0].length; row++) {
-      //   // console.log("gamegrid[0]length: " + game.grid[0].length);
-      //   let rowFull = true;
-      //   // console.log("x: " + i);
-      //   for (let col = 0; col < game.grid.length; col++) {
-      //     console.log("x" + col + " y" + row + ": " + game.grid[row][col]);///////////////////
-      //     if (!game.grid[row][col] === 1) {
-      //       rowFull = false;
-      //       break;
-      //     }
-      //   }
-  
-      //   // if row full clear it...
-      //   if (rowFull) {
-      //     for (let col = 0; col < game.grid.length; col++) {
-      //       // console.log("x: " + i);
-      //       game.grid[row][col] = 0;
-      //     }
-      //   }
-      // }
-
-
-
-
-
-
-
-      // ai fix for row cols finaally?
-      if (game.mode === 2) {
-        const numCols = game.grid.length;
-        const numRows = game.grid[0].length;
-    
-        // Scan rows from bottom to top (prevents skipping rows when shifting)
-        for (let row = numRows - 1; row >= 0; row--) {
-          let rowFull = true;
-    
-          // Check every column at this row index
-          for (let col = 0; col < numCols; col++) {
-            // FIX: access as [col][row]
-            if (game.grid[col][row] !== 1) {
-              rowFull = false;
-              break;
-            }
-          }
-    
-          // If row is full, clear it and move everything above down
-          if (rowFull) {
+        // [MODE DEPENDENT] behavior on a full row:
+        switch (game.mode) {
+          // MODE 0: no clearing.
+          case 0:
+            break;
+          // MODE 1: clear, grid blocks fall
+          case 1:
+            // scan across row
             for (let col = 0; col < numCols; col++) {
-              // 1. Remove the block at the current row
+              // splice, unshift: grid blocks fall
+              // remove block at this row
               game.grid[col].splice(row, 1);
-              
-              // 2. Add a new empty block at the very top (index 0)
+              // add new empty block at top
               game.grid[col].unshift(0);
             }
-            
-            // 3. Since we shifted everything down, we need to check 
-            // THIS SAME row index again because a new row just fell into it.
-            row++; 
-          }
+            // 1 point for row clear
+            game.score++;
+            // check same row again because the next one just fell into it...
+            row++;
+            break;
+          // MODE 2: clear, grid blocks DON'T fall
+          case 2:
+            // scan across row
+            for (let col = 0; col < numCols; col++) {
+              // just set to 0
+              game.grid[col][row] = 0;
+            }
+            // 1 point for row clear
+            game.score++;
+            break;
         }
       }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     }
-
-
-
-
 
   },
-
-  scoreOld1() {/////////////////////////////////////
-    const width = game.grid.length;
-    const height = game.grid[0].length;
-  
-    // 1. Scan each row (Y) from bottom to top
-    for (let y = height - 1; y >= 0; y--) {
-      let isRowFull = true;
-  
-      // 2. Check every column (X) at this Y height
-      for (let x = 0; x < width; x++) {
-        if (game.grid[x][y] === 0) {
-          isRowFull = false;
-          break;
-        }
-      }
-  
-      if (isRowFull) {
-        // 3. Clear the row and shift EVERYTHING above it down
-        // Since it's [col][row], we must modify each column individually
-        for (let x = 0; x < width; x++) {
-          // Remove the element at the current Y position
-          game.grid[x].splice(y, 1);
-          
-          // Add a 0 at the top (index 0) of this column
-          game.grid[x].unshift(0);
-        }
-  
-        // 4. Because everything shifted down, we need to check 
-        // this SAME 'y' index again in the next iteration.
-        y++; 
-      }
-    }
-  }
 };
 // #endregion
 
@@ -810,15 +646,15 @@ document.addEventListener("visibilitychange", () => {
 
 // #region DRAWING STUFF ----------------------------------------------
 function drawActivePiece() {
-
-
+  // [MODE DEPENDENT]
   
   if (game.mode === 0) {
-    // rainbow style
     ctx.fillStyle = "black";
     // for each block in active piece
     game.activeMinoes.forEach((coords) => {
-      ctx.fillRect(50*(game.activeCenter[0]+coords[0]), 50*(game.activeCenter[1]+coords[1]), 50, 50);
+      const minoX = game.activeCenter[0]+coords[0];
+      const minoY = game.activeCenter[1]+coords[1];
+      drawCircle(minoX, minoY, "black");
     });
   }
   if (game.mode === 1) {
@@ -873,119 +709,84 @@ function drawModeGraphics() {
 
       // MODE 0 --------------------------------------------
       if (game.mode === 0) {
-        // rainbow bg
-        // ctx.fillStyle = `rgb()`;
+        // filled or not, rainbow bg
+        drawRainbowBg(i, j);
+
+        // then on top of bg:
+        // FILLED (white circles)
+        if (game.grid[i][j] > 0) {
+          drawCircle(i, j, "white");
+        }
+      }
+
+      // MODE 1 --------------------------------------------
+      if (game.mode === 1) {
+        // filled or not, white bg
+        ctx.fillStyle = "white";
         ctx.fillRect(50*i, 50*j, 50, 50);
 
-
-        // filled: white
-        if (game.grid[i][j] > (game.turn % 1000) / 1000) {
-          console.log((game.turn % 1000) / 1000);
-          // ctx.fillStyle = `rgb(${game.turn % 256}, ${game.turn % 119}, ${game.turn % 603})`;
-          ctx.fillStyle = "silver";
-          // ctx.fillRect(50*i, 50*j, 50, 50);
-
-          // dont reset color here for cool subtle glitchy bg color filter
-
-          // fill...... circle???
+        // then on top of bg:
+        // FILLED (white circles)
+        if (game.grid[i][j] > 0) {
+          // fill...... circle??? -------------
           const radius = CELL_SIZE / 2;
           // const radius = 10; ////////
 
           // Target top-left corner
           const topLeftX = i * CELL_SIZE;
           const topLeftY = j * CELL_SIZE;
-
           // Calculate center
           const centerX = 50*i + radius;
           const centerY = 50*j + radius;
 
           ctx.beginPath();
           ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
-          ctx.fillStyle = "white"; // Or use your gradient variable here
+
+          // console.log ("timer: " + game.timer) ;///////////////////
+
+          // FILLED CELL CIRCLE COLOR
+          // ctx.fillStyle = "cyan";
+          // ctx.fillStyle = `rgb(${(game.timer * 100) % 256}, ${(game.timer * 100) % 119}, ${(game.timer * 100) % 603})`;
+          // ctx.fillStyle = `rgb(110, 40, 200)`;
+          // ctx.fillStyle = `rgb(${(game.timer * 100)}, 0, 0)`;
+          ctx.fillStyle = "black";
+
           ctx.fill();
           ctx.closePath();
-
-        // empty: rainbow
-        } else {
-          ctx.fillStyle = `rgb(
-          ${Math.floor(233 - 12.5 * i)}
-          ${Math.floor(250 - 10.5 * j)}
-          ${Math.floor(0 + 30.5 * j)})`;
-
-          ctx.fillRect(50*i, 50*j, 50, 50);
-
-
-
-  
-          // ctx.(50*i, 50*j, 50, 50);
         }
       }
+
 
       // MODE 2 --------------------------------------------
       if (game.mode === 2) {
 
+        // gray bg. currently covered by gradient
         ctx.fillStyle = `gray`;
         ctx.fillRect(50*i, 50*j, 50, 50);
 
 
-        // filled
-        if (game.grid[i][j] > (game.turn % 1000) / 1000) {
-          console.log((game.turn % 1000) / 1000);
+        // FILLED
+        if (game.grid[i][j] === 1) {
           // ctx.fillStyle = `rgb(${game.turn % 256}, ${game.turn % 119}, ${game.turn % 603})`;
           ctx.fillStyle = "orange";
           ctx.fillRect(50*i, 50*j, 50, 50);
-        // empty
+        // EMPTY
         } else {
-          ctx.fillStyle = "black";
-
           //gradient
           // 1. Create the gradient (x0, y0, x1, y1)
           // Define it from y=0 to y=height
           const gradient = ctx.createLinearGradient(0, 0, 0, ROWS * CELL_SIZE);
-
           // 2. Add color stops
           gradient.addColorStop(0, 'blue');   // Top color
           gradient.addColorStop(1, 'green');  // Bottom color
-
           // 3. Apply to fillStyle
           ctx.fillStyle = gradient;
   
           ctx.fillRect(50*i, 50*j, 50, 50);
         }
       }
-
-
-      
-      // if (this.grid[i][j] > 0.5) {
-      //   ctx.fillStyle = "blue";
-      //   ctx.fillRect(50*i, 50*j, 50, 50);
-      // } else {
-      //   ctx.fillStyle = `rgb(
-      //   ${Math.floor(233 - 12.5 * i)}
-      //   ${Math.floor(250 - 30.5 * j)}
-      //   ${Math.floor(0 + 30.5 * j)})`;
-      //   ctx.fillRect(50*j, 50*i, 50, 50);
-      // }
     }
   }
-
-  // DEAD PIXEL
-  // ctx.fillStyle = "lime";
-  // ctx.fillRect(50*2, 50*4, 50, 50);
-
-  // // RANDOM SKOG
-  // ctx.fillStyle = "black"
-  // ctx.beginPath(); // Good practice to wrap lines in paths
-  // ctx.moveTo(0, 0);
-  // ctx.lineTo(200, 100);
-  // ctx.stroke();
-  // // moving rectangle
-  // ctx.fillRect(game.turn % canvas.width, 20, 30, 40);
-  // ctx.fillRect(30, 60, 40, 400);
-  // // text
-  // ctx.font = "48px sans-serif";
-  // ctx.fillText(game.turn, 90, 200);
-
 }
 
 function drawTestGraphics() {
@@ -1044,6 +845,77 @@ function drawTestGraphics() {
   ctx.font = "48px sans-serif";
   ctx.fillText(game.turn, 90, 200);
 }
+
+function drawText(text) {
+  ctx.font = "48px sans-serif";
+  ctx.fillStyle = "purple";
+  ctx.fillText(text, 90, 200);
+}
+
+// draw moving rainbow bg at specific coords
+function drawRainbowBg(x, y) {
+  // 3 equally spaced sin waves
+
+  // (x/10) 0-1 across screen
+  const cycleTime = 100;
+
+
+  const sin1 = Math.sin((x/10) + (1/cycleTime)*game.timer * 2*Math.PI);
+  const sin2 = Math.sin((x/10) + (1/cycleTime)*game.timer * 2*Math.PI + 2*Math.PI / 3);
+  const sin3 = Math.sin((x/10) + (1/cycleTime)*game.timer * 2*Math.PI + 2*2*Math.PI / 3);
+  ctx.fillStyle = `rgb(${128 + sin1 * 128},${128 + sin2 * 128},${128 + sin3 * 128})`;
+  
+  // ctx.fillStyle = `rgb(
+  //   ${Math.floor(233 - (12.5 * ((x + game.timer) % 10)))}
+  //   ${Math.floor(250 - (10.5 * y))}
+  //   ${Math.floor(0 + (30.5 * y))})`;
+
+  ctx.fillRect(x*CELL_SIZE, y*CELL_SIZE, 50, 50);
+
+  // cool test
+  // ctx.fillRect(50*x, 50*(10 + 10*(sin1)), 50, 50);
+  // ctx.fillRect(50*x, 50*(10 + 10*(sin2)), 50, 50);
+  // ctx.fillRect(50*x, 50*(10 + 10*(sin3)), 50, 50);
+}
+
+// draw static rainbow bg at specific coords
+function drawStaticRainbowBg(x, y) {
+  ctx.fillStyle = `rgb(
+    ${Math.floor(233 - 12.5 * x)}
+    ${Math.floor(250 - 10.5 * y)}
+    ${Math.floor(0 + 30.5 * y)})`;
+
+  ctx.fillRect(50*x, 50*y, 50, 50);
+}
+
+// draw circle of given color at given coords
+function drawCircle(x, y, color) {
+  ctx.fillStyle = color;
+
+  // fill...... circle??? -------------
+  const radius = CELL_SIZE / 2;
+
+  // Target top-left corner
+  const topLeftX = x * CELL_SIZE;
+  const topLeftY = y * CELL_SIZE;
+  // Calculate center
+  const centerX = 50*x + radius;
+  const centerY = 50*y + radius;
+
+  ctx.beginPath();
+  ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
+
+  // FILLED CELL CIRCLE COLOR
+  // ctx.fillStyle = "cyan";
+  // ctx.fillStyle = `rgb(${(game.timer * 100) % 256}, ${(game.timer * 100) % 119}, ${(game.timer * 100) % 603})`;
+  // ctx.fillStyle = `rgb(110, 40, 200)`;
+  // ctx.fillStyle = `rgb(${(game.timer * 100)}, 0, 0)`;
+  ctx.fillStyle = color;
+
+  ctx.fill();
+  ctx.closePath();
+}
+
 // #endregion
 
 // #region UTILITY FUNCS ----------------------------------------------
@@ -1093,7 +965,7 @@ function isEmpty(x, y) {
   return game.grid[x][y] === 0;
 }
 
-// just onscreen + empty
+// yust onscreen + empty
 function canMoveInto(x, y) {
   // console.log("canMoveInto(" + x + "," + y + ")");///////////////
   return isOnscreen(x, y) && isEmpty(x, y);
