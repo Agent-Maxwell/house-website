@@ -1,5 +1,6 @@
 :root {
     --blue-cover: rgb(70, 189, 211);
+    /* font-size: 2em; */
 }
 
 /*davids font*/
@@ -34,10 +35,46 @@ body {
     overflow: hidden;  /*Prevent the body from scrolling */
 }
 
-#controls {
-    flex: 0 0 auto; /* Don't shrink, don't grow beyond content */
+/* NAVBAR */
+
+#navbar {
+    display:flex;
+    /* flex-flow: row wrap; */
+    justify-content: space-between;
+}
+
+.nav-item {
+    /* flex: 0 0 auto; Don't shrink, don't grow beyond content */
     padding: 10px;
 }
+
+.nav-item#left {
+    flex: 1;
+
+    display: flex;
+    justify-content: flex-start;
+}
+
+.nav-item#center {
+    min-width: max-content;
+}
+
+.nav-item#right {
+    flex: 1;
+    
+    text-align: right;
+
+    /* Don't shrink */
+    min-width: max-content;
+}
+
+#back-holder {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* CONTROLS */
 
 .btn {
     width: 2.5em;
@@ -45,9 +82,10 @@ body {
     /* justify-content: center; */
     /* align-items: center; */
 
-    background-color: lightblue;
     border: 2px outset var(--blue-cover);
     border-radius: 5px;
+
+    background-color: lightblue;
 }
 
 .btn:active {
@@ -73,10 +111,11 @@ body {
     text-align: center;
 
     font-family: 'Courier New', monospace;
-/*    font-family: 'Davids3x3', monospace;*/
-/*    font-size: 40px;*/
-/*    margin-top: -20px;*/
 }
+
+/* TILTS */
+
+/* NOTEBOOK IMAGE AREA */
 
 #stage {
     flex: 1 1 auto; /* Take up ALL remaining space */

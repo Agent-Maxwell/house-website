@@ -52,3 +52,25 @@ body {
 h3 {
     text-align: center;
 }
+
+/* MUSIC BUTTON */
+.music-button {
+    /* it must be hidden until I actually make some music for it SUBSTANCE THEN FRAME */
+    display:none;
+
+    margin: 30px;
+    padding: 5px;
+    border: 3px outset var(--link-color);
+    background-color:white;
+
+    color: darkcyan;
+}
+.music-button:hover {
+    background-color:lightgreen;
+    /* filter: brightness(150%); */
+    color: var(--link-hover-color);
+}
+.music-button:active {
+    background-color:cyan;
+    border: 3px inset var(--link-color);
+}

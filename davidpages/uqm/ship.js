@@ -10,6 +10,7 @@ const ships = [
         crew: 20,
         batt: 24,
         value: 15,
+        davidScore: 7
     },
     {
         nameOrder: 2,
@@ -17,6 +18,7 @@ const ships = [
         crew: 6,
         batt: 20,
         value: 16,
+        davidScore: 8
     },
     {
         nameOrder: 3,
@@ -24,6 +26,7 @@ const ships = [
         crew: 36,
         batt: 30,
         value: 28,
+        davidScore: 11
     },
     {
         nameOrder: 4,
@@ -31,6 +34,7 @@ const ships = [
         crew: 42,
         batt: 42,
         value: 30,
+        davidScore: 13
     },
     {
         nameOrder: 5,
@@ -38,6 +42,7 @@ const ships = [
         crew: 14,
         batt: 32,
         value: 17,
+        davidScore: 18
     },
     {
         nameOrder: 6,
@@ -45,6 +50,7 @@ const ships = [
         crew: 18,
         batt: 18,
         value: 11,
+        davidScore: 9
     },
     {
         nameOrder: 7,
@@ -52,6 +58,7 @@ const ships = [
         crew: 22,
         batt: 16,
         value: 10,
+        davidScore: 21
     },
     {
         nameOrder: 8,
@@ -59,6 +66,7 @@ const ships = [
         crew: 42,
         batt: 42,
         value: 30,
+        davidScore: 25
     },
     {
         nameOrder: 9,
@@ -66,6 +74,7 @@ const ships = [
         crew: 20,
         batt: 42,
         value: 18,
+        davidScore: 19
     },
     {
         nameOrder: 10,
@@ -73,6 +82,7 @@ const ships = [
         crew: 20,
         batt: 10,
         value: 19,
+        davidScore: 14
     },
     {
         nameOrder: 11,
@@ -80,6 +90,7 @@ const ships = [
         crew: 20,
         batt: 40,
         value: 21,
+        davidScore: 24
     },
     {
         nameOrder: 12,
@@ -87,6 +98,7 @@ const ships = [
         crew: 16,
         batt: 20,
         value: 23,
+        davidScore: 5
     },
     {
         nameOrder: 13,
@@ -94,6 +106,7 @@ const ships = [
         crew: 8,
         batt: 12,
         value: 20,
+        davidScore: 6
     },
     {
         nameOrder: 14,
@@ -101,6 +114,7 @@ const ships = [
         crew: 6,
         batt: 4,
         value: 5,
+        davidScore: 10
     },
     {
         nameOrder: 15,
@@ -108,6 +122,7 @@ const ships = [
         crew: 12,
         batt: 20,
         value: 17,
+        davidScore: 12
     },
     {
         nameOrder: 16,
@@ -115,6 +130,7 @@ const ships = [
         crew: 30,
         batt: 10,
         value: 18,
+        davidScore: 1
     },
     {
         nameOrder: 17,
@@ -122,6 +138,7 @@ const ships = [
         crew: 12,
         batt: 16,
         value: 16,
+        davidScore: 20
     },
     {
         nameOrder: 18,
@@ -129,6 +146,7 @@ const ships = [
         crew: 12, // syreen funny, max 42
         batt: 16,
         value: 13,
+        davidScore: 3
     },
     {
         nameOrder: 19,
@@ -136,6 +154,7 @@ const ships = [
         crew: 8,
         batt: 24,
         value: 10,
+        davidScore: 15
     },
     {
         nameOrder: 20,
@@ -143,6 +162,7 @@ const ships = [
         crew: 10,
         batt: 30,
         value: 7,
+        davidScore: 22
     },
     {
         nameOrder: 21,
@@ -150,6 +170,7 @@ const ships = [
         crew: 42,
         batt: 42,
         value: 30,
+        davidScore: 16
     },
     {
         nameOrder: 22,
@@ -157,6 +178,7 @@ const ships = [
         crew: 20,
         batt: 10, // utwig funny, max 20
         value: 22,
+        davidScore: 2
     },
     {
         nameOrder: 23,
@@ -164,6 +186,7 @@ const ships = [
         crew: 20,
         batt: 40,
         value: 12,
+        davidScore: 4
     },
     {
         nameOrder: 24,
@@ -171,6 +194,7 @@ const ships = [
         crew: 20,
         batt: 10,
         value: 23,
+        davidScore: 23
     },
     {
         nameOrder: 25,
@@ -178,6 +202,7 @@ const ships = [
         crew: 10,
         batt: 10,
         value: 6,
+        davidScore: 17
     }
 ]
 

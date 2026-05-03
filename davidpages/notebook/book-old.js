@@ -11,18 +11,8 @@ const Comic = {
     ImageLoader: {},
 
     init() {
-        // old: notebookID from html file
-        // this.notebookID = document.body.getAttribute("data-notebookID");
-        // console.log("notebookid: " + this.notebookID);
-
-        // new: notebookID from url param
-        const queryString = window.location.search;
-        const urlParams = new URLSearchParams(queryString);
-        this.notebookID = urlParams.get('id');
-        //todo could check if id is valid and not show broken page
-
-        // set tab name
-        document.title = this.notebookID.toUpperCase();
+        this.notebookID = document.body.getAttribute("data-notebookID");
+//        console.log("notebookid: " + this.notebookID);
 
         // LOAD IMAGES
         this.ImageLoader = {

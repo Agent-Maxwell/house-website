@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/davidpages/style.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/x-icon" href="/davidpages/emoji/book-blue.gif">
+    <title>BLACK</title>
+</head>
+<body data-notebookID="black" class="black">
+<div id="book-container">
+    <div id="navbar">
+        <div class="nav-item" id="left">
+            <div id="back-holder"><a href="index.html">Back to Notebooks</a></div>
+        </div>
+        <div class="nav-item" id="center">
+            <!-- note: using explicit img tag instead of ::name:: -->
+            <button id="btn-first" class="btn"><img class="emoji no-spin" src="/davidpages/emoji/blue-first.gif"></button>
+            <button id="btn-prev" class="btn"><img class="emoji no-spin" src="/davidpages/emoji/blue-prev.gif"></button>
+            <div id="page-label-container">
+                <span id="page-label">loading...</span>
+            </div>
+            <button id="btn-next" class="btn"><img class="emoji no-spin" src="/davidpages/emoji/blue-next.gif"></button>
+            <button id="btn-last" class="btn"><img class="emoji no-spin" src="/davidpages/emoji/blue-last.gif"></button>
+        </div>
+        <div class="nav-item" id="right">
+            <div id="tilts-holder">
+                <span>wip <img class="emoji" src="/davidpages/emoji/barrier.gif"></span>
+                <button id="tilt-left" class="btn"><img class="emoji no-spin" src="/davidpages/emoji/arrow-left-down.gif"></button>
+                <button id="tilt-right" class="btn"><img class="emoji no-spin" src="/davidpages/emoji/arrow-right-down.gif"></button>    
+            </div>
+        </div>
+    </div>
+
+    <div id="stage">
+        <img id="page-image" src="" alt="loading...">
+    </div>
+</div>
+<script src="book.js"></script>
+</body>
+</html>

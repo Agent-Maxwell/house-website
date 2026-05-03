@@ -1097,7 +1097,7 @@ function nextTetronimo() {
   // copy blueprint into activeMinoes
   game.activeMinoes = structuredClone(getTetronimoBlueprint(startingTetronimo));
   // spawn in the middle
-  game.activeCenter = [Math.floor(COLS / 2), 1];
+  game.activeCenter = [Math.floor((COLS-1) / 2), 1];
 }
 // #endregion
 

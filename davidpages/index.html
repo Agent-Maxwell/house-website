@@ -21,6 +21,19 @@
     <div style="text-align: center">
         <h1 id="davids-room">::clubs:: DAVID's ROOM ::clubs::</h1>
 
+        <button class="music-button" onclick="openPlayer()">::sound:: SOUNDTRACK ::new::</button>
+        <!-- music player button js -->
+        <script>
+            function openPlayer() {
+                // Arguments: URL, Window Name, Features
+                window.open(
+                    'music-player/player.html', 
+                    'MusicPlayer', 
+                    'width=200,height=200,scrollbars=no,resizable=no,status=no,location=no,toolbar=no,menubar=no'
+                );
+            }
+        </script>
+
         <img src="img/david-in-chair.JPG" title="what is art?" style="width:100%; max-width:700px;" alt="david in chair">
 
         <!-- <h2 class="update">::wrench:: UPDATE: The emoji are behaving normally<span class="note">(::question-mark::)</span> now. You may proceed with the usual amount of caution. ::wrench::</h2> -->
@@ -69,7 +82,7 @@
                 <li><a href="/davidpages/photos/index.html">::camera:: Photos</a></li>
                 <li><a href="/davidpages/uqm/index.html"><img class="emoji" src="/davidpages/uqm/img/ship-icons/ur-quan.png"> UQM Ships</a></li>
                 <li><a href="/davidpages/cards/games.html">::joker:: Card Games</a></li>
-                <li><a href="/davidpages/blog/guide.html">::document:: For Gayhouse Members: How to make your page</a></li>
+                <!-- <li><a href="/davidpages/blog/guide.html">::document:: For Gayhouse Members: How to make your page</a></li> -->
 <!--                whatever ill put outside links somewhere else. keep ppl on the site-->
 <!--                <li><a href="https://www.youtube.com/@volohov825">Youtube</a></li>-->
                 <!-- <li class="note">idk if i'll put my art here actually, maybe some of it, idk</li> -->
