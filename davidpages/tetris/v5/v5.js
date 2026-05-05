@@ -266,6 +266,8 @@ const game = {
   // timer that just counts up from first time setup (for rainbwo bg)
   timer: 0,
   score: 0,
+  //todo image object, for now just img vars in game
+  greenMinoImg: null,
   // #endregion
   
   // GAME MODE--------------------------------
@@ -285,10 +287,10 @@ const game = {
       // STEP_TIME = 999;
 
       // left/right/down all the same timing
-      LEFT_RIGHT_INITIAL_DELAY = 0.2;
-      LEFT_RIGHT_REPEAT_DELAY = 0.1;
-      DOWN_INITIAL_DELAY = 0.2;
-      DOWN_REPEAT_DELAY = 0.1;
+      LEFT_RIGHT_INITIAL_DELAY = 0.12;
+      LEFT_RIGHT_REPEAT_DELAY = 0.12;
+      DOWN_INITIAL_DELAY = 0.12;
+      DOWN_REPEAT_DELAY = 0.12;
     }
     if (game.mode === 1) {
       // normal. no modifications
@@ -309,6 +311,11 @@ const game = {
     nextTetronimo();
 
     game.setupGrid();
+
+    // load mino image for rebndering todo move to "load eveything" scetion somewheer
+    game.greenMinoImg = new Image();
+    //console.log(this.greenMinoImg);
+    game.greenMinoImg.src = "../img/gren-mino.png";
   },
 
   setupGrid() {
@@ -662,11 +669,18 @@ function drawActivePiece() {
     });
   }
   if (game.mode === 1) {
-    // rainbow style
+    // red style
     ctx.fillStyle = "red";
     // for each block in active piece
     game.activeMinoes.forEach((coords) => {
-      ctx.fillRect(50*(game.activeCenter[0]+coords[0]), 50*(game.activeCenter[1]+coords[1]), 50, 50);
+      const i = game.activeCenter[0]+coords[0];
+      const j = game.activeCenter[1]+coords[1];
+      //ctx.fillRect(50*i, 50*j, 50, 50);
+      //ctx.filter = `hue-rotate(${Math.random() * 360}deg)`;
+      //ctx.filter = `hue-rotate(${i+j*10}deg)`;
+      ctx.filter = "grayscale(100%)";
+      ctx.drawImage(game.greenMinoImg, 50*i, 50*j);
+      ctx.filter = 'none'; //rreset filter
     });
   }
   if (game.mode === 2) {
@@ -706,38 +720,19 @@ function drawModeGraphics() {
 
       // MODE 1 --------------------------------------------
       if (game.mode === 1) {
-        // filled or not, white bg
-        ctx.fillStyle = "white";
+        // filled or not, black bg
+        ctx.fillStyle = "black";
         ctx.fillRect(50*i, 50*j, 50, 50);
 
         // then on top of bg:
-        // FILLED (white circles)
         if (game.grid[i][j] > 0) {
-          // fill...... circle??? -------------
-          const radius = CELL_SIZE / 2;
-          // const radius = 10; ////////
-
-          // Target top-left corner
-          const topLeftX = i * CELL_SIZE;
-          const topLeftY = j * CELL_SIZE;
-          // Calculate center
-          const centerX = 50*i + radius;
-          const centerY = 50*j + radius;
-
-          ctx.beginPath();
-          ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
-
-          // console.log ("timer: " + game.timer) ;///////////////////
-
-          // FILLED CELL CIRCLE COLOR
-          // ctx.fillStyle = "cyan";
-          // ctx.fillStyle = `rgb(${(game.timer * 100) % 256}, ${(game.timer * 100) % 119}, ${(game.timer * 100) % 603})`;
-          // ctx.fillStyle = `rgb(110, 40, 200)`;
-          // ctx.fillStyle = `rgb(${(game.timer * 100)}, 0, 0)`;
-          ctx.fillStyle = "black";
-
-          ctx.fill();
-          ctx.closePath();
+          //ctx.filter = `hue-rotate(${Math.random() * 360}deg)`;
+          // beautiful rainbow gradient
+          //ctx.filter = `hue-rotate(${(i+j)*15}deg)`;
+          ctx.filter = "hue-rotate(60deg)";
+          ctx.drawImage(game.greenMinoImg, 50*i, 50*j);
+          // Reset filter so future drawings aren't affected
+          ctx.filter = 'none';
         }
       }
 
