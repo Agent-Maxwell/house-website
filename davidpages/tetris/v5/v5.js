@@ -313,9 +313,13 @@ const game = {
     game.setupGrid();
 
     // load mino image for rebndering todo move to "load eveything" scetion somewheer
-    game.greenMinoImg = new Image();
+    game.greenMino1 = new Image();
+    game.greenMino2 = new Image();
+    game.greenMino3 = new Image();
     //console.log(this.greenMinoImg);
-    game.greenMinoImg.src = "../img/gren-mino.png";
+    game.greenMino1.src = "../img/gren-mino-1.png";
+    game.greenMino2.src = "../img/gren-mino-2.png";
+    game.greenMino3.src = "../img/gren-mino-3.png";
   },
 
   setupGrid() {
@@ -679,7 +683,7 @@ function drawActivePiece() {
       //ctx.filter = `hue-rotate(${Math.random() * 360}deg)`;
       //ctx.filter = `hue-rotate(${i+j*10}deg)`;
       ctx.filter = "grayscale(100%)";
-      ctx.drawImage(game.greenMinoImg, 50*i, 50*j);
+      ctx.drawImage(game.greenMino2, 50*i, 50*j);
       ctx.filter = 'none'; //rreset filter
     });
   }
@@ -729,8 +733,9 @@ function drawModeGraphics() {
           //ctx.filter = `hue-rotate(${Math.random() * 360}deg)`;
           // beautiful rainbow gradient
           //ctx.filter = `hue-rotate(${(i+j)*15}deg)`;
-          ctx.filter = "hue-rotate(60deg)";
-          ctx.drawImage(game.greenMinoImg, 50*i, 50*j);
+          //ctx.filter = "hue-rotate(60deg)";
+          ctx.filter = "hue-rotate(180deg)";
+          ctx.drawImage(game.greenMino1, 50*i, 50*j);
           // Reset filter so future drawings aren't affected
           ctx.filter = 'none';
         }
