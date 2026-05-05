@@ -724,8 +724,9 @@ function drawModeGraphics() {
 
       // MODE 1 --------------------------------------------
       if (game.mode === 1) {
-        // filled or not, black bg
-        ctx.fillStyle = "black";
+        // filled or not, bg
+        // ctx.fillStyle = "black";
+        ctx.fillStyle = "azure";
         ctx.fillRect(50*i, 50*j, 50, 50);
 
         // then on top of bg:
@@ -734,8 +735,9 @@ function drawModeGraphics() {
           // beautiful rainbow gradient
           //ctx.filter = `hue-rotate(${(i+j)*15}deg)`;
           //ctx.filter = "hue-rotate(60deg)";
-          ctx.filter = "hue-rotate(180deg)";
+          ctx.filter = "hue-rotate(120deg)";
           ctx.drawImage(game.greenMino1, 50*i, 50*j);
+
           // Reset filter so future drawings aren't affected
           ctx.filter = 'none';
         }
@@ -1102,7 +1104,12 @@ function nextTetronimo() {
 // #endregion
 
 
-
+function funnyTetronimo() {
+  return [[rand(),rand()],[rand(),rand()],[rand(),rand()],[rand(),rand()],]
+}
+function rand() {
+  return Math.floor(Math.random() * 3 - 1);
+}
 
 
 
