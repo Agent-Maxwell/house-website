@@ -32,7 +32,20 @@ body {
     padding: 0;
     line-height: 0.2em; */
 
-    rotate: -3.23deg;
+    /*rotate: -3.23deg;*/
+    /* MORE... */
+    rotate: -5.23deg;
+
+    color: darkblue;
+    text-transform: capitalize;
+    text-decoration: mediumturquoise wavy underline;
+    filter: drop-shadow(0 0.19em 0.13em darkslategray);
+
+    margin-bottom: calc(5%);
+}
+
+#davids-room:hover {
+    text-transform: lowercase;
 }
 
 #poem {
