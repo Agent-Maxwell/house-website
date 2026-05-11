@@ -32,3 +32,11 @@ img {
     display:block;
     justify-self: center;
 }
+
+a {
+    color:red;
+}
+
+a:hover {
+    color:gold;
+}

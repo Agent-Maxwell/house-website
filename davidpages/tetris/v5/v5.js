@@ -11,7 +11,8 @@ const ROWS = 20;
 const CELL_SIZE = 50;
 
 // enforce grid size
-canvas.width = COLS * CELL_SIZE;
+// allow 100px space for hud stuff on the right side
+canvas.width = COLS * CELL_SIZE + 100;
 canvas.height = ROWS * CELL_SIZE;
 
 // step time in seconds
@@ -112,6 +113,52 @@ const offsetData = {
 }
 offsetData.init();
 
+// #endregion
+
+// #region BLOCK CLASS ------------------------------------------------
+// class to represent a filled block on the screen, part of the active piece or not.
+// contains block type, animations, location(?).
+class Block {
+  constructor(type) {
+    // "normal" or whatever special type
+    this.type = type;
+    // counter to see how many clears til it disappears (default 1)
+    this.stack = 1;
+    // whether pieces freeze on it, cant intersect etc
+    this.collision = true;
+    // visual sprite
+    // console.log("creatingBlock. assets.images: " + game.assets.images.mino1);
+    this.sprite = game.assets.images.mino1;
+    // maybe color filter
+
+    switch (type) {
+      case "air":
+      this.collision = false;
+      // this.sprite = game.assets.images[mino1];
+      this.sprite = null;
+      break;
+
+      case "a":
+      this.collision = true;
+      this.sprite = game.assets.images.mino2;
+      break;
+
+      case "b":
+      this.collision = true;
+      this.sprite = game.assets.images.mino3;
+      this.stack = 3;
+      break;
+    }
+  }
+
+  clear() {
+
+  }
+
+  toString() {
+    return this.type;
+  }
+}
 // #endregion
 
 // #region KEYS -------------------------------------------------------
@@ -235,7 +282,7 @@ const game = {
   // #region GAME VARS -----------------------
   // number of elapsed game steps
   turn: 0,
-  // 2d array holding game grid. 0=empty, 1=filled
+  // 2d array holding game grid. Block.value: 0=empty, 1=filled
   grid: [],
   // timer for game steps
   stepTimer: 0,
@@ -271,10 +318,19 @@ const game = {
   // #endregion
   
   // GAME MODE--------------------------------
-  mode: 1,
+  mode: 3,
   // 0: "finite zen." no-step, no clearing
   // 1: "normal"
   // 2: "floating"
+  // 3: Block class test
+
+  assets: {
+    images: {},
+    audioBuffers: {}
+  },
+
+  // for audio. not initizlied yet. todo
+  audioCtx: null,
 
   firstTimeSetup() {
     // FIRST CHECK MODE AND SET CONSTANTS
@@ -299,9 +355,11 @@ const game = {
       // you get a bit more time for floating mode
       STEP_TIME = (1.11);
     }
+    if (game.mode === 3) {
+      //...
+    }
 
     // THEN MAKE KEY REPEATERS
-    
     // create keyrepeat timers (now that move() exists)
     game.leftKeyRepeatTimer = new keyRepeatTimer(() => this.move(-1, 0), LEFT_RIGHT_INITIAL_DELAY, LEFT_RIGHT_REPEAT_DELAY);
     game.rightKeyRepeatTimer = new keyRepeatTimer(() => this.move(1, 0), LEFT_RIGHT_INITIAL_DELAY, LEFT_RIGHT_REPEAT_DELAY);
@@ -322,6 +380,96 @@ const game = {
     game.greenMino3.src = "../img/gren-mino-3.png";
   },
 
+  async loadEverything() {
+    console.log("loading...");
+    // create the context immediately (it will start 'suspended')
+    game.audioCtx = new AudioContext();
+
+    // todo Wake up the audio on the first click
+    // could just go here i guess
+
+    // window.addEventListener('click', () => {
+    //   if (audioCtx.state === 'suspended') {
+    //     audioCtx.resume();
+    //   }
+    //   // Now playSound() will work perfectly!
+    // }, { once: true });
+
+    const imagesToLoad = {
+      mino1: '../img/gren-mino-1.png',
+      mino2: '../img/gren-mino-2.png',
+      mino3: '../img/gren-mino-3.png',
+    };
+
+    const soundsToLoad = {
+      // move: 'sounds/move.wav',
+    };
+
+    try {
+      // Create arrays of Promises
+      const imagePromises = Object.entries(imagesToLoad).map(([name, url]) => 
+          this.loadImage(name, url)
+      );
+
+      const audioPromises = Object.entries(soundsToLoad).map(([name, url]) => 
+          this.loadAudio(name, url)
+      );
+
+      // 2. The Magic Moment: Wait for every single one to resolve
+      await Promise.all([...imagePromises, ...audioPromises]);
+
+      console.log("all assets loaded!");
+      // this.start(); // Launch the game loop
+    } catch (error) {
+      console.error("Failed to load assets:", error);
+    }
+  },
+
+  loadImage(name, url) {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      // img.crossOrigin = "anonymous"; //if hosting images elswehere
+
+      img.onload = () => {
+        this.assets.images[name] = img;
+        resolve(img);
+      };
+      img.onerror = () => reject(`failed to load img: ${url}`);
+      img.src = url;
+    });
+  },
+
+  async loadAudio(name, url) {
+    const response = await fetch(url);
+    const arrayBuffer = await response.arrayBuffer();
+    // decode binary data into AudioBuffer
+    const decodedData = await game.audioCtx.decodeAudioData(arrayBuffer);
+    // put decoded audio in assets, ready to be played
+    this.assets.audioBuffers[name] = decodedData;
+    return decodedData;
+  },
+
+  // play a one-off sound from assets.audiobuffers[name]
+  playSound(name) {
+    if (!this.audioCtx) {
+      console.log("cannot play sound " + name + "; audio context does not exist");
+      return;
+    }
+
+    // source node ("needle")
+    const source = game.audioCtx.createBufferSource();
+
+    // point the needle to stored buffer ("record")
+    source.buffer = game.assets.audioBuffers[name];
+
+    // connect needle to speakers
+    source.connect(game.audioCtx.destination);
+
+    // play!
+    source.start(0);
+  },
+
+  // todo use Block class in grid
   setupGrid() {
     for (let i = 0; i < COLS; i++) {
       const col = []; // Create a temporary col
@@ -329,13 +477,14 @@ const game = {
         // layers past [999] filled
         // [MODE DEPENDENT]
         if (game.mode === 7) { //7
-          col.push(1);
+          col.push(new Block("a"));
         } else {
-        col.push(0);
+        col.push(new Block("air"));
         }
       }
       this.grid.push(col);
     }
+    // console.log(game.grid[0][0]);///////////////
   },
 
   update(delta) {
@@ -384,7 +533,7 @@ const game = {
       // if it was just pressed:
       } else {
         // move todo probably move this to the timer
-        game.moveDown();
+        if (game.moveDown()) game.stepTimer = 0;
         // reset&start timer
         game.downKeyRepeatTimer.start();
       }
@@ -463,6 +612,7 @@ const game = {
 
     // if move down fails:
     if (!game.moveDown()) {
+      game.stepTimer = 0; // reset here and in movedown(if it moves). could probably centralize timer reset.
       game.freeze();
       game.scoreCheck();
       nextTetronimo();
@@ -527,6 +677,7 @@ const game = {
       game.stepTimer -= STEP_TIME;
       if (game.stepTimer < 0) game.stepTimer = 0;  
     }
+    // console.log("movedown: " + moved);/////////////////
     return moved;
   },
 
@@ -545,7 +696,9 @@ const game = {
       const globalX = game.activeCenter[0] + blockPos[0];
       const globalY = game.activeCenter[1] + blockPos[1];
 
-      game.grid[globalX][globalY] = 1;
+      // game.grid[globalX][globalY] = 1;
+      game.grid[globalX][globalY] = new Block(Math.round(Math.random() * 2) ? "a" : "b");
+      // console.log("freeze. grid: " + game.grid);//////////
     });
   },
 
@@ -598,11 +751,13 @@ const game = {
       let rowFull = true;
       // set rowFull to false if any are empty
       for (let col = 0; col < numCols; col++) {
-        if (game.grid[col][row] === 0) {
+        // if (game.grid[col][row] === 0) {
+        if (game.grid[col][row].type === "air") {
           rowFull = false;
           break;
         }
       }
+      // console.log("row " + row + " full:" + rowFull);////////
       // if row full:
       if (rowFull) {
         // [MODE DEPENDENT] behavior on a full row:
@@ -612,13 +767,15 @@ const game = {
             break;
           // MODE 1: clear, grid blocks fall
           case 1:
+          case 3: // todo block class test
             // scan across row
             for (let col = 0; col < numCols; col++) {
               // splice, unshift: grid blocks fall
               // remove block at this row
               game.grid[col].splice(row, 1);
               // add new empty block at top
-              game.grid[col].unshift(0);
+              // game.grid[col].unshift(0);
+              game.grid[col].unshift(new Block("air"));
             }
             // 1 point for row clear
             game.score++;
@@ -630,15 +787,16 @@ const game = {
             // scan across row
             for (let col = 0; col < numCols; col++) {
               // just set to 0
-              game.grid[col][row] = 0;
+              // game.grid[col][row] = 0;
+              game.grid[col][row] = new Block("air");
             }
             // 1 point for row clear
             game.score++;
             break;
         }
       }
+      // console.log("scanned row " + row);////////////
     }
-
   },
 };
 // #endregion
@@ -656,6 +814,13 @@ document.addEventListener("visibilitychange", () => {
 // #endregion
 
 // #region DRAWING STUFF ----------------------------------------------
+function drawBlock(block, x, y) {
+  // if block has a sprite, draw it
+  if (block.sprite) ctx.drawImage(block.sprite, 50*x, 50*y);
+
+  // ctx.filter = 'none'; //rreset filter
+}
+
 function drawActivePiece() {
   // [MODE DEPENDENT]
   
@@ -672,7 +837,7 @@ function drawActivePiece() {
 
     });
   }
-  if (game.mode === 1) {
+  if (game.mode === 1 || game.mode === 3) {
     // red style
     ctx.fillStyle = "red";
     // for each block in active piece
@@ -713,7 +878,8 @@ function drawModeGraphics() {
 
         // then on top of bg:
         // FILLED (white circles)
-        if (game.grid[i][j] > 0) {
+        // if (game.grid[i][j] > 0) {
+        if (game.grid[i][j].type !== "air") {
           // drawCircle(i, j, "white");
           // FUN: rainbow~~~~~~~~~~~~
           // ctx.fillStyle = rainbowFillStyle(i, j);
@@ -730,7 +896,8 @@ function drawModeGraphics() {
         ctx.fillRect(50*i, 50*j, 50, 50);
 
         // then on top of bg:
-        if (game.grid[i][j] > 0) {
+        // if (game.grid[i][j] > 0) {
+        if (game.grid[i][j].type !== "air") {
           //ctx.filter = `hue-rotate(${Math.random() * 360}deg)`;
           // beautiful rainbow gradient
           //ctx.filter = `hue-rotate(${(i+j)*15}deg)`;
@@ -753,7 +920,8 @@ function drawModeGraphics() {
 
 
         // FILLED
-        if (game.grid[i][j] === 1) {
+        // if (game.grid[i][j] === 1) {
+        if (game.grid[i][j].type !== "air") {
           // ctx.fillStyle = `rgb(${game.turn % 256}, ${game.turn % 119}, ${game.turn % 603})`;
           ctx.fillStyle = "orange";
           ctx.fillRect(50*i, 50*j, 50, 50);
@@ -771,6 +939,10 @@ function drawModeGraphics() {
   
           ctx.fillRect(50*i, 50*j, 50, 50);
         }
+      }
+
+      if (game.mode === 3) {
+        drawBlock(game.grid[i][j], i, j);
       }
     }
   }
@@ -939,6 +1111,7 @@ function drawCube() {
 function rainbowFillStyle(x, y) {
   const cycleTime = 10; // todo make this a dynamic game var
   const sin1 = Math.sin((x/10) + (y/10) + (1/cycleTime)*game.timer * 2*Math.PI);
+  // const sin1 = Math.sin((x/10) + (y/10) + (1.23/cycleTime)*game.timer * 2*Math.PI); // fun: dif freq
   const sin2 = Math.sin((x/10) + (y/10) + (1/cycleTime)*game.timer * 2*Math.PI + 2*Math.PI / 3);
   const sin3 = Math.sin((x/10) + (y/10) + (1/cycleTime)*game.timer * 2*Math.PI + 2*2*Math.PI / 3);
   return `rgb(${128 + sin1 * 128},${128 + sin2 * 128},${128 + sin3 * 128})`;
@@ -991,7 +1164,9 @@ function isOnscreen(x, y) {
 // checks if coords are empty
 function isEmpty(x, y) {
   // console.log("isEmpty(" + x + "," + y + ")");///////////////
-  return game.grid[x][y] === 0;
+  return game.grid[x][y].type === "air";
+  // return game.grid[x][y] == 0; // null
+  // return game.grid[x][y] === 0;
 }
 
 // yust onscreen + empty
@@ -1101,8 +1276,6 @@ function nextTetronimo() {
   // spawn in the middle
   game.activeCenter = [Math.floor((COLS-1) / 2), 1];
 }
-// #endregion
-
 
 function funnyTetronimo() {
   return [[rand(),rand()],[rand(),rand()],[rand(),rand()],[rand(),rand()],]
@@ -1110,12 +1283,13 @@ function funnyTetronimo() {
 function rand() {
   return Math.floor(Math.random() * 3 - 1);
 }
-
+// #endregion
 
 
 
 
 // load stuff..
+await game.loadEverything();
 
 // Setup grid
 game.firstTimeSetup();

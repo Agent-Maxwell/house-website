@@ -12,15 +12,54 @@
         a:hover {
             color: gold;
         }
+        .games-container {
+            width: 100%;
+            border-radius: 20px;
+            display: flex;
+            background-color: red;
+        }
+        .game {
+            margin: 20px;
+            /* width: calc((100% - (20px * 7)) / 6); */
+            width: 100%;
+        }
+        .game img {
+            width:100%;
+            border: 4px solid lime;
+            border-radius: 10px;
+            box-sizing: border-box;
+        }
+        .game:hover img {
+            transform: translate(0, -10px);
+            border: 4px solid gold;
+            box-shadow: 0px 10px 10px rgba(0,0,0,0.5);
+        }
+        .game:active img {
+            border: 4px solid white;
+        }
     </style>
 </head>
 <body>
     <a href="room.html" style="display: block;">BACK</a>
 
+    <div class="games-container">
+        <a class="game" href="https://www.google.com/logos/2010/pacman10-i.html"><img src="img/pac-man.webp"></a>
+        <a class="game" href="https://supermarioplay.com/"><img src="img/super-mario-bros.jpeg"></a>
+        <a class="game" href="https://d1tm91r4ytbt54.cloudfront.net/2779cbcb-a02f-48a3-9e2e-95a8d123d165/1685483461665/web/index.html"><img src="img/minecraft.jpeg"></a>
+        <a class="game" href="https://www.retrogames.cz/play_001-NES.php"><img src="img/donkey-kong.jpg"></a>
+        <a class="game" href="https://www.retrogames.cz/play_002-NES.php"><img src="img/donkey-kong-jr.jpeg"></a>
+        <a class="game" href="https://www.retrogames.cc/arcade-games/mario-bros-us-revision-g.html"><img src="img/mario-bros.jpeg"></a>
+        <!-- <a><img src=""></a> -->
+    </div>
+
+
     <ol>
         <li><a href="https://www.google.com/logos/2010/pacman10-i.html">Pac-Man</a></li>
         <li><a href="https://supermarioplay.com/">Super Mario Bros</a></li>
-        <li><a href="https://google.com">Minecraft</a></li>
+        <li><a href="https://d1tm91r4ytbt54.cloudfront.net/2779cbcb-a02f-48a3-9e2e-95a8d123d165/1685483461665/web/index.html">Minecraft</a></li>
+        <li><a href="https://www.retrogames.cz/play_001-NES.php">Donkey Kong</a></li>
+        <li><a href="https://www.retrogames.cz/play_002-NES.php">Donkey Kong Jr.</a></li>
+        <li><a href="https://www.retrogames.cc/arcade-games/mario-bros-us-revision-g.html">Mario Bros</a></li>
     </ol>
 
 </body>
