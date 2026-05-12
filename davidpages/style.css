@@ -12,6 +12,13 @@
   font-style: italic;
 }
 
+@font-face {
+  font-family: 'Cubic';
+  src: url('/davidpages/font/cubic/cubic.ttf');
+  font-display: swap;
+  font-style: italic;
+}
+
 @layer normal, special;
 
 @layer normal {
@@ -38,6 +45,7 @@
 
     .navbar {
         font-size: smaller;
+        font-weight: bold;
 
         display: flex;
         justify-content: space-evenly;
@@ -45,9 +53,29 @@
 
         padding: 2px;
 
-        background-color: skyblue;
+        /* background-color: skyblue; */
+        /* background-color:blueviolet; */
+        background: 
+        linear-gradient(rgba(255,0,0,1) 0%, rgba(255,154,0,1) 10%, rgba(208,222,33,1) 20%, rgba(79,220,74,1) 30%, rgba(63,218,216,1) 40%, rgba(47,201,226,1) 50%, rgba(28,127,238,1) 60%, rgba(95,21,242,1) 70%, rgba(186,12,248,1) 80%, rgba(251,7,217,1) 90%, rgba(255,0,0,1) 100%);
+        animation: a 3s linear infinite;
         border: 2px solid var(--link-color);
         border-radius: 30px;
+        a {
+            color: black;
+            /* font-family: sans-serif; */
+        }
+        a:hover {
+            color:white;
+            text-decoration: 3px dashed underline black;
+            /* todo each its own color */
+            /* background-color: coral; */
+        }
+    }
+
+    /* rainbow animation */
+    @keyframes a {
+    to {background-position:0 -200%}
+    /* to {background-position:-100% 200%} */
     }
 
     .navbar a {
@@ -102,7 +130,8 @@
         padding: 1rem;
 
         /* background-color: skyblue; */
-        background-color: #3bd1ff;
+        /* background-color: #3bd1ff; */
+        background-color:navy;
         background-image: url("/davidpages/bg/cross-pattern.png");
         /* This is mostly intended for prototyping; please download the pattern and re-host for production environments. Thank you! */
 
@@ -113,7 +142,18 @@
         border-bottom-left-radius: 35px;
 
         /* box-shadow: 10px 10px 0px deepskyblue; */
-        box-shadow: 10px 10px 0px rgb(0, 95, 143);
+        /* box-shadow: 10px 10px 0px rgb(0, 95, 143); */
+        box-shadow: 10px 10px 0px royalblue;
+
+        color:#0051ff;
+    }
+    .card a {
+        color: lime;
+    }
+    .card a:hover {
+        color: orchid;
+        text-shadow: 0.1em 0.1em 0 white;
+        background-color: orchid;
     }
 
     .secondary-card {
@@ -170,11 +210,20 @@
 
     /* evil styling >:) */
     .warning {
+        line-height: 150%;
         background-color: rgba(185, 0, 0, 1);
         background-image: url("/davidpages/bg/black-thread.png");
         color: maroon;
-        text-shadow: 1px 1px 0 red,
-         -1px -1px 0 blue;
+        text-shadow: 0.05em 0.05em 0 red,
+        -0.05em -0.05em 0 blue;
+        font-family: "Cubic", sans-serif;
+        padding: 10px;
+        border: 4px inset maroon;
+        box-shadow: 0 0 35px blue;
+    }
+    .warning::selection {
+        color:red;
+        background-color: orange;
     }
 
     /* good styling :> */

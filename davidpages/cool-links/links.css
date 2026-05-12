@@ -1,0 +1,44 @@
+@font-face {
+  font-family: 'Cloister';
+  src: url('/davidpages/font/antherton_cloister/ANTHC___.TTF');
+  font-display: swap;
+  font-style: italic;
+}
+
+@layer special {
+    body:not(.home-link) {
+    background-color: navy;
+
+
+    font-family: "Cloister";
+    text-align: center;
+    font-size: 1.2em;
+
+    color: springgreen;
+    text-shadow: 0 0 15px springgreen;
+  }
+}
+
+
+.title {
+  font-size: 3em;
+}
+
+ul {
+  list-style-type: none;
+
+  background-color: rgba(0, 75, 214, 0.4);
+  padding: 20px;
+  border-radius: 40px;
+}
+
+li::before {
+  content: "🔗 ";
+}
+
+a {
+  color: springgreen;
+}
+a:hover {
+  color: white;
+}
