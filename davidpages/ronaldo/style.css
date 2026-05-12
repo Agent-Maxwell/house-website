@@ -40,3 +40,39 @@ a {
 a:hover {
     color:gold;
 }
+
+@font-face {
+    font-family: 'Random';
+    src: url('/davidpages/font/Random font.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Baskertown';
+    src: url('/davidpages/font/Baskertown.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+body {
+    font-family: 'Random', sans-serif;
+}
+
+.secret-link {
+    margin: 10%;
+    font-family: 'Baskertown', sans-serif;
+    color:rgba(0,0,0,0);
+    /* filter: blur(2px) opacity(50%); */
+    text-shadow: 10px 5px 5px rgba(0,0,0,0.5);
+}
+
+.secret-link:hover {
+    color:white;
+    border: 5px dotted black;
+    border-radius: 10%;
+    background-color: darkblue;
+    filter: invert(100%);
+}
