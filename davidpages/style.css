@@ -130,10 +130,8 @@
         padding: 1rem;
 
         /* background-color: skyblue; */
-        /* background-color: #3bd1ff; */
-        background-color:navy;
+        background-color: #3bd1ff;
         background-image: url("/davidpages/bg/cross-pattern.png");
-        /* This is mostly intended for prototyping; please download the pattern and re-host for production environments. Thank you! */
 
         /* border-top-left-radius: 10px; */
         /* border-bottom-right-radius: 10px; */
@@ -148,12 +146,14 @@
         color:#0051ff;
     }
     .card a {
-        color: lime;
+        color: green;
     }
     .card a:hover {
-        color: orchid;
-        text-shadow: 0.1em 0.1em 0 white;
-        background-color: orchid;
+        /* color: orchid; */
+        /* text-shadow: 0.1em 0.1em 0 white; */
+        /* background-color: orchid; */
+
+        color: coral;
     }
 
     .secondary-card {

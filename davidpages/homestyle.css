@@ -9,9 +9,9 @@ body {
 }
 
 #bg-wash {
-    /* background-color: rgb(147, 196, 255); */
+    background-color: rgb(100, 255, 224);
     /* background-color: rgb(22, 202, 205); */
-    background-color: rgb(75, 150, 255);
+    /* background-color: rgb(75, 150, 255); */
     top: 0;
     left: 0;
     width: 100%;

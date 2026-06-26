@@ -318,7 +318,7 @@ const game = {
   // #endregion
   
   // GAME MODE--------------------------------
-  mode: 0,
+  mode: 1,
   // 0: "finite zen." no-step, no clearing
   // 1: "normal"
   // 2: "floating"

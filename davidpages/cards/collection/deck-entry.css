@@ -1,0 +1,19 @@
+#deck-img {
+/*    resets css from img formatting */
+    /* all: initial; */
+
+    max-width: 500px;
+
+    display: flex;
+    margin: auto;
+    margin-block: 20px;
+}
+
+#deck-spread-img {
+    /* more detail in this one. just let it fill the reading-width */
+    /* max-width: 500px; */
+
+    display: flex;
+    margin: auto;
+    margin-block: 20px;
+  }
