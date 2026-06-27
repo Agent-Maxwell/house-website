@@ -73,21 +73,26 @@ h3 {
 /* MUSIC BUTTON */
 .music-button {
     /* it must be hidden until I actually make some music for it SUBSTANCE THEN FRAME */
-    display:none;
+    /*display:none;*/
+
+    font-weight: bold;
 
     margin: 30px;
     padding: 5px;
     border: 3px outset var(--link-color);
-    background-color:white;
+    /*background-color:white;*/
+    background-color: rgba(145, 255, 214, 0.5);
 
     color: darkcyan;
 }
 .music-button:hover {
-    background-color:lightgreen;
+    /*background-color:lightgreen;*/
+    background-color: rgba(169, 255, 112, 0.5);
     /* filter: brightness(150%); */
     color: var(--link-hover-color);
 }
 .music-button:active {
-    background-color:cyan;
+    /*background-color:cyan;*/
+    background-color: rgba(255, 226, 112, 0.5);
     border: 3px inset var(--link-color);
 }
