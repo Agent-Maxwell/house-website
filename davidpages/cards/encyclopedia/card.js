@@ -1,6 +1,7 @@
 import {validId, idToName, nameToId, extractRankFromId} from "/davidpages/utils.js";
 import {styleCardNames} from "/davidpages/card-names-styler.js";
 import {insertEmoji} from "/davidpages/script/insert-emoji.js";
+import {linkShips} from "/davidpages/script/link-ships.js";
 
 // id from url
 const params = new URLSearchParams(window.location.search);
@@ -38,17 +39,35 @@ async function loadPage() {
             rawHTML = await idHtmlResponse.text();
         }
 
-        // RENDER PAGE for VALID ID -------------------------------------------------
 
-        // add card html to the card-content div (under the "back to index" link)
-        document.getElementById("card-content").innerHTML += rawHTML;
+        // COPIED FROM ship.js FOR STANDARD SECTIONS
+        // create fake document from html text
+        const parser = new DOMParser();
+        const contentDoc = parser.parseFromString(rawHTML, 'text/html');
 
-        // automatically add some links at the bottom (in same-rank-container)..........
+        // define which sections to populate
+        const sections = ["normal", "ship", "quote", "fortune"];
 
-        // // SAME-RANK HEADING.......................
-        // const linksHeading = document.createElement("h2");
-        // linksHeading.innerText = idToName(id).slice(0, idToName(id).length - 1) + "";
-        // document.getElementById("card-content").appendChild(linksHeading);
+        // pluck & place
+        sections.forEach(sectionName => {
+            // source: the element from the content file with the correct data-section attribute
+            const source = contentDoc.querySelector(`[data-section="${sectionName}"]`);
+            // destination: the element in the (live) html with the corresponding attribute
+            const destination = document.getElementById(`section-${sectionName}`);
+
+            // if both do actually exist,
+            if (source && destination) {
+                // if any standard (non-normal) section exists, show the box.
+                if (sectionName !== "normal")
+                    document.getElementById("standard-section-box").style.display = "flex";
+                // place! += so as to keep the pre-placed headings;
+                destination.innerHTML += source.innerHTML;
+            } else { // otherwise,
+                // hide sections if the content file doesn't have anything for it
+                destination.style.display = "none";
+            }
+
+        });
 
         // FLEXBOX VERSION of same-rank links .......................................
 
@@ -81,4 +100,5 @@ await loadPage();
 let formattedHTML = document.body.innerHTML;
 formattedHTML = await styleCardNames(formattedHTML);
 formattedHTML = insertEmoji(formattedHTML);
+formattedHTML = linkShips(formattedHTML);
 document.body.innerHTML = formattedHTML;
