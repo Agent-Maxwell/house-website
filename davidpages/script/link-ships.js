@@ -1,4 +1,4 @@
-const shipNames = [
+export const shipNames = [
     "androsynth",
     "arilou",
     "chenjesu",

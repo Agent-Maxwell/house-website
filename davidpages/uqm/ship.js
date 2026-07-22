@@ -1,6 +1,6 @@
 import {styleCardNames} from "/davidpages/card-names-styler.js";
 import {insertEmoji} from "/davidpages/script/insert-emoji.js";
-import {linkShips} from "/davidpages/script/link-ships.js";
+import {shipNames, linkShips} from "/davidpages/script/link-ships.js";
 
 // duplicated from index.js for now. should probably do json in the future or whatever
 const ships = [
@@ -209,6 +209,20 @@ const ships = [
 // id from url
 const params = new URLSearchParams(window.location.search);
 let shipId = params.get("id");
+
+// handle random:
+if (shipId === "random") {
+    //stealing shipNames from link-ships, theyre the standard lowercase ones used for ids
+    const randIndex = Math.round(Math.random() * shipNames.length);
+    shipId = shipNames[randIndex];
+    console.log(randIndex);
+    //update the url..?
+    params.set("id", shipId);
+    // new url: current directory, plus updated params.
+    // note. replace: do not preserve current state for back button. push: do reserve, ie, back button goes back to random state.
+    window.history.replaceState(null, "", window.location.pathname + "?" + params.toString());
+}
+
 // get obj w stats
 const shipObj = ships.find((obj) => {
     return obj.name.toLowerCase() == shipId;
