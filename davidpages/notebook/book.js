@@ -5,6 +5,7 @@ const Comic = {
     // current index
     // (index 0 is cover, index 1 is pages 0-1, index 2 is p2-3, index 3 is p4-5)
     currentIndex: 0,
+    currentRotation: 0, // todo check this when displaying images
 
     SoundEngine: {},
 
@@ -339,6 +340,14 @@ const Comic = {
             console.log("url change detected: " + indexFromUrl);
             Comic.goTo(indexFromUrl);
         });
+
+        // update canvas sizing whenever resize is needed
+        const resizeObserver = new ResizeObserver(() => {
+            this.displayCurrentImage();
+        });
+        // todo this is getting annoying, make stage Comic-level var
+        const stage = document.getElementById("stage");
+        resizeObserver.observe(stage);
     },
 
     prevButton() {
@@ -404,17 +413,11 @@ const Comic = {
     },
 
     updateDisplay() {
-        // set image (if loaded)
-        const container = document.getElementById('stage');
-        const loadedImage = this.ImageLoader.images[this.currentIndex];
-        if (loadedImage) {
-            // Clear the old image and drop in the pre-loaded one
-            container.innerHTML = '';
-            container.appendChild(loadedImage);
+        // // if image is loaded, size canvas and draw it.
+        // const loadedImage = this.ImageLoader.images[this.currentIndex];
+        // if (loadedImage) this.displayImage(loadedImage);
+        this.displayCurrentImage();
 
-            // Ensure it still fits your layout
-            loadedImage.id = "page-image";
-        }
 
         // set page number display
         const pageLabel = document.getElementById('page-label');
@@ -467,6 +470,85 @@ const Comic = {
         const lastIndex = this.ImageLoader.totalImages - 1;
         if (input > lastIndex) return lastIndex;
         return input;
+    },
+
+    // (re)size canvas to given image dimensions, as large as possible within the stage
+    fitCanvas(targetWidth, targetHeight) {
+        // todo probably dont getElement every frame or whatever, set references 
+        const stage = document.getElementById("stage");
+        const canvas = document.getElementById("page-canvas");
+
+        const targetRatio = targetWidth / targetHeight;
+        const stageWidth = stage.clientWidth;
+        const stageHeight = stage.clientHeight;
+        const stageRatio = stageWidth / stageHeight;
+        
+        let displayWidth, displayHeight;
+
+        // determine canvas dimensions for proper fit to the page
+        if (stageRatio > targetRatio) {
+            // stage is wider than target
+            displayHeight = stageHeight;
+            displayWidth = stageHeight * targetRatio;
+        } else {
+            //stage is taller than target
+            displayWidth = stageWidth;
+            displayHeight = stageWidth / targetRatio;
+        }
+
+        // console.log("setting canvas width/height: " + displayWidth + ", " + displayHeight);/////////////////////////////////
+
+        // set canvas dimensions
+        // note: automatically clears canvas i think
+        canvas.style.width = `${displayWidth}px`;
+        canvas.style.height = `${displayHeight}px`;
+
+        // set canvas internal resolution to match the image we are displaying
+        canvas.width = targetWidth;
+        canvas.height = targetHeight;
+    },
+
+    displayImage(img) {
+        // size canvas------------------------------------
+        // todo probably dont getElement every frame or whatever, set references 
+        const stage = document.getElementById("stage");
+        const canvas = document.getElementById("page-canvas");
+        const ctx = canvas.getContext("2d");
+
+        const targetRatio = img.naturalWidth / img.naturalHeight;
+        const stageWidth = stage.clientWidth;
+        const stageHeight = stage.clientHeight;
+        const stageRatio = stageWidth / stageHeight;
+        
+        let displayWidth, displayHeight;
+
+        // determine canvas dimensions for proper fit to the page
+        if (stageRatio > targetRatio) {
+            // stage is wider than target
+            displayHeight = stageHeight;
+            displayWidth = stageHeight * targetRatio;
+        } else {
+            //stage is taller than target
+            displayWidth = stageWidth;
+            displayHeight = stageWidth / targetRatio;
+        }
+
+        // set canvas dimensions
+        // note: automatically clears canvas i think
+        canvas.style.width = `${displayWidth}px`;
+        canvas.style.height = `${displayHeight}px`;
+
+        // set canvas internal resolution to match the image we are displaying
+        canvas.width = img.naturalWidth;
+        canvas.height = img.naturalHeight;
+
+        // draw image -------------------------------------------
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+    },
+
+    displayCurrentImage() {
+        const loadedImage = this.ImageLoader.images[this.currentIndex];
+        if (loadedImage) this.displayImage(loadedImage);
     }
 };
 

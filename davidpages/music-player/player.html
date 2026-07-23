@@ -31,9 +31,22 @@
 </head>
 <body>
   <img src="/davidpages/emoji/radio.gif">
-  <audio controls autoplay loop>
+  <audio id="radioAudio" controls autoplay loop>
       <source src="/davidpages/music/soundtrack.wav" type="audio/wav">
       <!--<source src="/davidpages/music/potential-energy/borzo.wav" type="audio/wav">-->
       Your browser does not support the audio element.
   </audio>
+
+  <!-- start at random point -->
+   <!-- thanks ai <3 -->
+  <script>
+    const audio = document.getElementById('radioAudio');
+
+    audio.addEventListener('loadedmetadata', () => {
+      if (audio.duration) {
+        audio.currentTime = Math.random() * audio.duration;
+      }
+    });
+  </script>
+
 </body>
