@@ -5,13 +5,22 @@ const Comic = {
     // current index
     // (index 0 is cover, index 1 is pages 0-1, index 2 is p2-3, index 3 is p4-5)
     currentIndex: 0,
+    // 0 is right side up; 1 is 90° clockwise, 2 is upside down, 3 is 270° clockwise
     currentRotation: 0, // todo check this when displaying images
 
     SoundEngine: {},
 
     ImageLoader: {},
 
+    stage: null,
+    canvas: null,
+    ctx: null,
+
     init() {
+        this.stage = document.getElementById("stage");
+        this.canvas = document.getElementById("page-canvas");
+        this.ctx = this.canvas.getContext("2d");
+
         // old: notebookID from html file
         // this.notebookID = document.body.getAttribute("data-notebookID");
         // console.log("notebookid: " + this.notebookID);
@@ -321,6 +330,30 @@ const Comic = {
             document.getElementById('btn-next').blur();
             this.nextButton();
         }
+        // TILT LEFT
+        document.getElementById('btn-tilt-left').onmousedown = () => {
+            this.setRotation(3);
+        }
+        document.getElementById('btn-tilt-left').onmouseup = () => {
+            document.getElementById('btn-tilt-left').blur();
+            this.setRotation(0);
+        }
+        // TILT RIGHT
+        document.getElementById('btn-tilt-right').onmousedown = () => {
+            this.setRotation(1);
+        }
+        document.getElementById('btn-tilt-right').onmouseup = () => {
+            document.getElementById('btn-tilt-right').blur();
+            this.setRotation(0);
+        }
+        // TILT UPDSIDE DOWN
+        document.getElementById('btn-tilt-down').onmousedown = () => {
+            this.setRotation(2);
+        }
+        document.getElementById('btn-tilt-down').onmouseup = () => {
+            document.getElementById('btn-tilt-down').blur();
+            this.setRotation(0);
+        }
 
         // link left/right arrows to actions
         window.addEventListener('keydown', (e) => {
@@ -346,8 +379,7 @@ const Comic = {
             this.displayCurrentImage();
         });
         // todo this is getting annoying, make stage Comic-level var
-        const stage = document.getElementById("stage");
-        resizeObserver.observe(stage);
+        resizeObserver.observe(this.stage);
     },
 
     prevButton() {
@@ -394,6 +426,11 @@ const Comic = {
             this.SoundEngine.playSound("turnClosed");
         }
         this.goTo(this.ImageLoader.totalImages - 1);
+    },
+
+    setRotation(rotation) {
+        this.currentRotation = rotation;
+        this.displayCurrentImage();
     },
 
     // prev/next page
@@ -472,57 +509,30 @@ const Comic = {
         return input;
     },
 
-    // (re)size canvas to given image dimensions, as large as possible within the stage
-    fitCanvas(targetWidth, targetHeight) {
-        // todo probably dont getElement every frame or whatever, set references 
-        const stage = document.getElementById("stage");
-        const canvas = document.getElementById("page-canvas");
-
-        const targetRatio = targetWidth / targetHeight;
-        const stageWidth = stage.clientWidth;
-        const stageHeight = stage.clientHeight;
-        const stageRatio = stageWidth / stageHeight;
-        
-        let displayWidth, displayHeight;
-
-        // determine canvas dimensions for proper fit to the page
-        if (stageRatio > targetRatio) {
-            // stage is wider than target
-            displayHeight = stageHeight;
-            displayWidth = stageHeight * targetRatio;
-        } else {
-            //stage is taller than target
-            displayWidth = stageWidth;
-            displayHeight = stageWidth / targetRatio;
-        }
-
-        // console.log("setting canvas width/height: " + displayWidth + ", " + displayHeight);/////////////////////////////////
-
-        // set canvas dimensions
-        // note: automatically clears canvas i think
-        canvas.style.width = `${displayWidth}px`;
-        canvas.style.height = `${displayHeight}px`;
-
-        // set canvas internal resolution to match the image we are displaying
-        canvas.width = targetWidth;
-        canvas.height = targetHeight;
-    },
-
     displayImage(img) {
-        // size canvas------------------------------------
-        // todo probably dont getElement every frame or whatever, set references 
-        const stage = document.getElementById("stage");
-        const canvas = document.getElementById("page-canvas");
-        const ctx = canvas.getContext("2d");
+        // use this.currentRotation to draw image
+        let orientationNormal;
+        if (this.currentRotation === 0 || this.currentRotation === 2) orientationNormal = true;
+        if (this.currentRotation === 1 || this.currentRotation === 3) orientationNormal = false;
 
-        const targetRatio = img.naturalWidth / img.naturalHeight;
-        const stageWidth = stage.clientWidth;
-        const stageHeight = stage.clientHeight;
-        const stageRatio = stageWidth / stageHeight;
+        // size canvas ----------------------------------------------
+
+        // set aspect ratio (depending on rotation) ------------
+        let targetRatio;
+        if (orientationNormal) {
+            // if normal (or upside down):
+            targetRatio = img.naturalWidth / img.naturalHeight;
+        } else if (!orientationNormal) {
+            // if tilted left/right, swap dimensions:
+            targetRatio = img.naturalHeight / img.naturalWidth;
+        }
+
+        const stageWidth = this.stage.clientWidth;
+        const stageHeight = this.stage.clientHeight;
+        const stageRatio =  stageWidth / stageHeight;
         
+        // determine canvas dimensions for proper fit to the page -----
         let displayWidth, displayHeight;
-
-        // determine canvas dimensions for proper fit to the page
         if (stageRatio > targetRatio) {
             // stage is wider than target
             displayHeight = stageHeight;
@@ -534,16 +544,38 @@ const Comic = {
         }
 
         // set canvas dimensions
-        // note: automatically clears canvas i think
-        canvas.style.width = `${displayWidth}px`;
-        canvas.style.height = `${displayHeight}px`;
+        // note: automatically clears canvas
+        this.canvas.style.width = `${displayWidth}px`;
+        this.canvas.style.height = `${displayHeight}px`;
 
         // set canvas internal resolution to match the image we are displaying
-        canvas.width = img.naturalWidth;
-        canvas.height = img.naturalHeight;
+        if (orientationNormal) {
+            this.canvas.width = img.naturalWidth;
+            this.canvas.height = img.naturalHeight;
+        } else {
+            this.canvas.width = img.naturalHeight;
+            this.canvas.height = img.naturalWidth;
+        }
 
         // draw image -------------------------------------------
-        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+        //if currentRotation === 0, draw normally
+
+        // ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+
+
+        //if currentRotation !== 0, draw rotated image
+        //todo
+        this.ctx.save();
+        // Move the origin (0, 0) to the center of the canvas
+        this.ctx.translate(this.canvas.width / 2, this.canvas.height / 2);
+        // rotate 90 degrees clockwise (in radians: 90 * π / 180)
+        this.ctx.rotate(this.currentRotation * Math.PI / 2);
+        // Draw image centered on the new origin
+        this.ctx.drawImage(img, -img.naturalWidth / 2, -img.naturalHeight / 2);
+        // Restore original context state
+        this.ctx.restore();
     },
 
     displayCurrentImage() {
