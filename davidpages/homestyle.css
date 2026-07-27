@@ -46,6 +46,8 @@ body {
 
     /* so bounding box doesnt extend to fill width */
     display: inline-block;
+
+    cursor: crosshair;
 }
 
 #davids-room:hover {
@@ -63,6 +65,8 @@ body {
     background-color: skyblue;
 
     rotate: -11deg;
+
+    /* cursor: none; */
 }
 
 /* card headings */
@@ -95,4 +99,12 @@ h3 {
     /*background-color:cyan;*/
     background-color: rgba(255, 226, 112, 0.5);
     border: 3px inset var(--link-color);
+}
+
+.card h3 {
+    cursor: nesw-resize;
+}
+
+.secondary-card h3 {
+    cursor: progress;
 }

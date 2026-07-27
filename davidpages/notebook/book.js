@@ -330,30 +330,39 @@ const Comic = {
             document.getElementById('btn-next').blur();
             this.nextButton();
         }
+        function holdTilt() {
+            window.addEventListener('pointerup', releaseTilt);
+            window.addEventListener('pointercancel', releaseTilt);
+            window.addEventListener('blur', releaseTilt);
+        }
+        function releaseTilt() {
+            // console.log("hi");
+            Comic.setRotation(0);
+            window.removeEventListener('pointerup', releaseTilt);
+            window.removeEventListener('pointercancel', releaseTilt);
+            window.removeEventListener('blur', releaseTilt);
+        }
         // TILT LEFT
-        document.getElementById('btn-tilt-left').onmousedown = () => {
+        const tiltLeftBtn = document.getElementById('btn-tilt-left')
+        tiltLeftBtn.addEventListener("pointerdown", (e) => {
+            if (e.button !== 0) return; // only if left-clicked
             this.setRotation(3);
-        }
-        document.getElementById('btn-tilt-left').onmouseup = () => {
-            document.getElementById('btn-tilt-left').blur();
-            this.setRotation(0);
-        }
+            holdTilt();
+        });
         // TILT RIGHT
-        document.getElementById('btn-tilt-right').onmousedown = () => {
+        const tiltRightBtn = document.getElementById('btn-tilt-right')
+        tiltRightBtn.addEventListener("pointerdown", (e) => {
+            if (e.button !== 0) return; // only if left-clicked
             this.setRotation(1);
-        }
-        document.getElementById('btn-tilt-right').onmouseup = () => {
-            document.getElementById('btn-tilt-right').blur();
-            this.setRotation(0);
-        }
-        // TILT UPDSIDE DOWN
-        document.getElementById('btn-tilt-down').onmousedown = () => {
+            holdTilt();
+        });
+        // TILT (UPDSIDE) DOWN
+        const tiltDownBtn = document.getElementById('btn-tilt-down')
+        tiltDownBtn.addEventListener("pointerdown", (e) => {
+            if (e.button !== 0) return; // only if left-clicked
             this.setRotation(2);
-        }
-        document.getElementById('btn-tilt-down').onmouseup = () => {
-            document.getElementById('btn-tilt-down').blur();
-            this.setRotation(0);
-        }
+            holdTilt();
+        });
 
         // link left/right arrows to actions
         window.addEventListener('keydown', (e) => {

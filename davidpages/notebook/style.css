@@ -88,6 +88,10 @@ body {
     background-color: lightblue;
 }
 
+.btn:not(:disabled) {
+    cursor: pointer;
+}
+
 .btn:active {
     background-color: skyblue;
     border: 2px inset var(--blue-cover);
@@ -98,6 +102,7 @@ body {
     background-color: silver;
     border: 2px inset lightgray;
     border-radius: 5px;
+    cursor: not-allowed;
 }
 
 #page-label-container {
@@ -146,4 +151,12 @@ body {
     display: block;
     /* max-width: 100%; */
     /* max-height: 100%; */
+}
+
+#navbar img {
+    /* Prevents default browser image ghost-dragging */
+    -webkit-user-drag: none;
+    user-select: none;
+    /* Makes mouse clicks pass right through the image to the parent button */
+    /* pointer-events: none; */
 }
