@@ -142,6 +142,18 @@ const Comic = {
                         this.totalImages = 29;
                         this.urlTemplate = "img/black/black";
                         break;
+                    case "pink":
+                        this.totalImages = 73;
+                        this.urlTemplate = "https://davidsroom.org/notebook/pink/img/pink";
+                        break;
+                    case "umfa":
+                        this.totalImages = 26;
+                        this.urlTemplate = "https://davidsroom.org/notebook/umfa/img/umfa";
+                        break;
+                    case "red":
+                        this.totalImages = 51;
+                        this.urlTemplate = "https://davidsroom.org/notebook/red/img/red";
+                        break;
                 }
             }
         }
@@ -265,42 +277,73 @@ const Comic = {
             // NOTEBOOK DEPENDENT --------------------------------
             setupThisNotebook() {
                 switch (Comic.notebookID) {
-                    case "blue":
-                        this.numTurnOpen = 4;
-                        this.numTurnClosed = 4;
-                        this.numTurnPage = 11;
-                        this.numFlipCoverToCover = 2;
-                        this.numFlipPageToCover = 3;
-                        //this.total = 25;
-                        this.urlTemplate = "aud/blue/blue-";
-                        break;
-                    case "spiral":
-                        this.numTurnOpen = 4;
-                        this.numTurnClosed = 5;
-                        this.numTurnPage = 19;
-                        this.numFlipCoverToCover = 7;
-                        this.numFlipPageToCover = 5;
-                        //this.total = 40;
-                        this.urlTemplate = "aud/spiral/spiral-";
-                        break;
-                    case "black":
-                        this.numTurnOpen = 4;
-                        this.numTurnClosed = 8;
-                        this.numTurnPage = 15;
-                        this.numFlipCoverToCover = 6;
-                        this.numFlipPageToCover = 6;
-                        //this.total = 39;
-                        this.urlTemplate = "aud/black/black-";
-                        break;
-                    default: // default to blue sounds
-                        console.log("sounds for notebookID '" + Comic.notebookID + "' not found, defaulting to blue sounds");////////////
-                        this.numTurnOpen = 4;
-                        this.numTurnClosed = 4;
-                        this.numTurnPage = 11;
-                        this.numFlipCoverToCover = 2;
-                        this.numFlipPageToCover = 3;
-                        //this.total = 25;
-                        this.urlTemplate = "aud/blue/blue-";
+                case "blue":
+                    this.numTurnOpen = 4;
+                    this.numTurnClosed = 4;
+                    this.numTurnPage = 11;
+                    this.numFlipCoverToCover = 2;
+                    this.numFlipPageToCover = 3;
+                    //this.total = 25;
+                    // this.urlTemplate = "aud/blue/blue-";
+                    this.urlTemplate = "https://davidsroom.org/notebook/black/aud/black-";
+                    break;
+                case "spiral":
+                    this.numTurnOpen = 4;
+                    this.numTurnClosed = 5;
+                    this.numTurnPage = 19;
+                    this.numFlipCoverToCover = 7;
+                    this.numFlipPageToCover = 5;
+                    //this.total = 40;
+                    // this.urlTemplate = "aud/spiral/spiral-";
+                    this.urlTemplate = "https://davidsroom.org/notebook/spiral/aud/spiral-";
+                    break;
+                case "black":
+                    this.numTurnOpen = 4;
+                    this.numTurnClosed = 8;
+                    this.numTurnPage = 15;
+                    this.numFlipCoverToCover = 6;
+                    this.numFlipPageToCover = 6;
+                    //this.total = 39;
+                    // this.urlTemplate = "aud/black/black-";
+                    this.urlTemplate = "https://davidsroom.org/notebook/black/aud/black-";
+                    break;
+                case "pink":
+                    this.numTurnOpen = 4;
+                    this.numTurnClosed = 4;
+                    this.numTurnPage = 7;
+                    this.numFlipCoverToCover = 3;
+                    this.numFlipPageToCover = 4;
+                    //this.total = 22;
+                    this.urlTemplate = "https://davidsroom.org/notebook/pink/aud/pink-";
+                    break;
+                case "umfa":
+                    this.numTurnOpen = 4;
+                    this.numTurnClosed = 4;
+                    this.numTurnPage = 7;
+                    this.numFlipCoverToCover = 4;
+                    this.numFlipPageToCover = 4;
+                    //this.total = 23;
+                    this.urlTemplate = "https://davidsroom.org/notebook/umfa/aud/umfa-";
+                    break;
+                case "red":
+                    this.numTurnOpen = 4;
+                    this.numTurnClosed = 4;
+                    this.numTurnPage = 9;
+                    this.numFlipCoverToCover = 4;
+                    this.numFlipPageToCover = 5;
+                    //this.total = 26;
+                    this.urlTemplate = "https://davidsroom.org/notebook/red/aud/red-";
+                    break;
+                default: // default to blue sounds
+                    console.log("sounds for notebookID '" + Comic.notebookID + "' not found, defaulting to blue sounds");////////////
+                    this.numTurnOpen = 4;
+                    this.numTurnClosed = 4;
+                    this.numTurnPage = 11;
+                    this.numFlipCoverToCover = 2;
+                    this.numFlipPageToCover = 3;
+                    //this.total = 25;
+                    // this.urlTemplate = "aud/blue/blue-";
+                    this.urlTemplate = "https://davidsroom.org/notebook/blue/aud/blue-";
                 }
                 // count total number of sounds
                 this.total = 
