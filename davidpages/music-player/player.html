@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <head>
-  <title>VOL RADIO</title>
+  <title>VOL-RADIO</title>
     <link rel="icon" type="image/x-icon" href="/davidpages/emoji/radio.gif">
   <link rel="stylesheet" href="/davidpages/style.css">
   <style>
@@ -39,14 +39,62 @@
 
   <!-- start at random point -->
    <!-- thanks ai <3 -->
-  <script>
-    const audio = document.getElementById('radioAudio');
+  <!--<script>
+        // get random vol radio
+    // 1. Set the range of your numbered files
+    const MIN_NUMBER = 1;
+    const MAX_NUMBER = 4; // Change this to your total number of files
 
-    audio.addEventListener('loadedmetadata', () => {
+    // 2. Generate a random integer between MIN and MAX (inclusive)
+    const randomNumber = Math.floor(Math.random() * (MAX_NUMBER - MIN_NUMBER + 1)) + MIN_NUMBER;
+
+    // 3. Build the path to the audio file
+    const audioPath = `https://davidsroom.org/vol-radio/vol-radio-${randomNumber}.wav`;
+
+    // 4. Set the audio source and load it
+    const audioElement = document.getElementById('radioAudio');
+    audioElement.src = audioPath;
+    audioElement.addEventListener('loadedmetadata', () => {
       if (audio.duration) {
         audio.currentTime = Math.random() * audio.duration;
       }
     });
-  </script>
+        audioElement.addEventListener('loadedmetadata', () => {
+      if (audio.duration) {
+        audio.currentTime = Math.random() * audio.duration;
+      }
+    });
+    audioElement.load();
+
+  </script>-->
+
+<script>
+  // 1. Set the range of your numbered files
+  const MIN_NUMBER = 1;
+  const MAX_NUMBER = 4; // Change this to your total number of files
+
+  // 2. Generate a random integer between MIN and MAX (inclusive)
+  const randomNumber = Math.floor(Math.random() * (MAX_NUMBER - MIN_NUMBER + 1)) + MIN_NUMBER;
+
+  // Optional: Update title to match
+  // document.title = "VOL-RADIO-" + randomNumber;
+
+  // 3. Build the path to the audio file
+  const audioPath = `https://davidsroom.org/vol-radio/vol-radio-${randomNumber}.wav`;
+
+  // 4. Get element
+  const audioElement = document.getElementById('radioAudio');
+
+  // 5. Attach listener FIRST so we don't miss the event
+  audioElement.addEventListener('loadedmetadata', () => {
+    if (audioElement.duration && !isNaN(audioElement.duration)) {
+      audioElement.currentTime = Math.random() * audioElement.duration;
+    }
+  });
+
+  // 6. Set source & start loading
+  audioElement.src = audioPath;
+  audioElement.load();
+</script>
 
 </body>
