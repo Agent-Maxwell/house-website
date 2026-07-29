@@ -1,0 +1,40 @@
+:root {
+  --pixel-size: 3px;
+
+  --ship-bg: #525252;
+  --ship-border-dark: #424242;
+  --ship-border-medium: #747474;
+  --ship-border-light: #848484;
+}
+
+body {
+  background-color: black;
+  color: lightgrey;
+}
+
+.uqm-box {
+  margin: 5px;
+
+  display: inline block;
+  flex-flow: row nowrap;
+
+  /* top & left borders: dark */
+  border-left: calc(var(--pixel-size) * 2) solid var(--ship-border-dark);
+  border-top: calc(var(--pixel-size) * 2) solid var(--ship-border-dark);
+  /* bottom border: medium */
+  border-bottom: calc(var(--pixel-size) * 2) solid var(--ship-border-medium);
+  /* right border: light */
+  border-right: calc(var(--pixel-size) * 2) solid var(--ship-border-light);
+
+  padding: 10px;
+
+  background-color: var(--ship-bg);
+
+  /* font-size: smaller; */
+  color: black;
+  font-weight: bold;
+  text-shadow: var(--ship-border-light) 0 0.06em;
+
+  /* prevent radio buttons from getting seperated from their label */
+  white-space: nowrap;
+}

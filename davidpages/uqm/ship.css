@@ -1,3 +1,11 @@
+@font-face {
+    font-family: 'Computerfont';
+    src: url("/davidpages/font/Computerfont.ttf") format('truetype');
+    font-weight: 400;        /* Match the weight of the file (e.g., 400, 700) */
+    font-style: normal;      /* normal or italic */
+    font-display: swap;      /* Prevents invisible text while font loads */
+  }
+
 :root {
   --ship-bg: #525252;
   --ship-border-dark: #424242;
@@ -90,7 +98,13 @@ h2 {
 
 /* ATTACK, SPECIAL bold */
 .uqm-box h1 {
-    font-weight: 1000;
+    /* font-weight: 1000; */
+
+    font-family: "Computerfont", sans-serif;
+    color: black;
+    /* background-color: lightgray; */
+    /* padding: 2px; */
+    /* border-radius: 4px; */
 }
 
 /* h2 used for move "name" subtitle */
@@ -131,4 +145,12 @@ h2 {
 
 #section-more p {
     color: goldenrod;
+}
+
+.key {
+    font-family: "Computerfont", sans-serif;
+    color: black;
+    background-color: lightgray;
+    padding: 2px;
+    border-radius: 4px;
 }

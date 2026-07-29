@@ -55,8 +55,10 @@ body {
 #options-box {
     margin: 5px;
 
+    width: fit-content;
+    /* width: 0%; */
+
     display: inline flex;
-    flex-flow: row nowrap;
 
     /* top & left borders: dark */
     border-left: calc(var(--pixel-size) * 2) solid var(--ship-border-dark);
