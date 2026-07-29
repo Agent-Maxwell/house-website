@@ -15,19 +15,9 @@ body {
     height: 100%;
     overflow: hidden; /* Prevents the body itself from ever scrolling */
 
-    background-color: lightsteelblue;
-
+    background-color: lightblue;
+    background-image: url("/davidpages/img/texture/black-linen.png");
 }
-
-/* notebook-specific styling. */
-/*.blue {
-    background-color: magenta;
-}
-
-.spiral {
-    background-color: magenta;
-}*/
-
 #book-container {
     display: flex;
     flex-direction: column;

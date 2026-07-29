@@ -1,0 +1,60 @@
+body {
+  background-color: lightblue;
+  /* background-color: rgb(51, 57, 84); */
+  background-image: url("/davidpages/img/texture/black-linen.png");
+
+  /* color:lightblue; */
+  color:black;
+}
+
+.home-link {
+  /* color:rgb(0, 80, 80); */
+  background-color: lightblue;
+  padding: 10px;
+  /* border: 1px solid black; */
+  display: inline flex;
+}
+
+#notebook-container {
+  /* background-color: white; */
+  padding: 10px;
+  
+  width: fit-content;
+  margin-inline: auto;
+  display: flex;
+  flex-flow: row wrap;
+}
+
+#notebook-container a {
+  margin:10px;
+  /* border: 1px solid black; */
+}
+
+#notebook-container img:not(.new) {
+  all: revert;
+  height: 100%;
+  max-height: 30vh;
+  display: flex;
+  /* border: 1px solid red; */
+}
+
+#notebook-container a:hover {
+  filter: drop-shadow(0px 0px 10px rgba(255, 255, 255, 0.2)) brightness(130%)
+}
+
+.wrapper {
+  position: relative;
+}
+
+.new {
+  all: revert;
+
+  scale: 200%;
+
+  position: absolute;
+  top: 0;
+  right: 0;
+  transform: translate(15%, -15%);
+
+  pointer-events:none;
+}

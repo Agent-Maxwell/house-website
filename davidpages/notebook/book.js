@@ -283,7 +283,7 @@ const Comic = {
                     this.numTurnPage = 11;
                     this.numFlipCoverToCover = 2;
                     this.numFlipPageToCover = 3;
-                    //this.total = 25;
+                    //this.total = 24;
                     // this.urlTemplate = "aud/blue/blue-";
                     this.urlTemplate = "https://davidsroom.org/notebook/black/aud/black-";
                     break;

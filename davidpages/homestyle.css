@@ -88,12 +88,15 @@ h3 {
     background-color: rgba(145, 255, 214, 0.5);
 
     color: darkcyan;
+
+    cursor: pointer;
 }
 .music-button:hover {
     /*background-color:lightgreen;*/
     background-color: rgba(169, 255, 112, 0.5);
     /* filter: brightness(150%); */
     color: var(--link-hover-color);
+    /* text-decoration: underline; */
 }
 .music-button:active {
     /*background-color:cyan;*/
