@@ -28,7 +28,8 @@
 }
 
 :root {
-  --pixel-size: 1px;
+    /* initial zoom option 2x */
+  --pixel-size: 2px;
 
   --ship-bg: #525252;
   --ship-border-dark: #424242;

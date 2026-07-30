@@ -201,6 +201,13 @@ const ships = [
     }
 ]
 
+// automatically give everything a "max crew" stat, equal to crew except for syreen
+for (ship of ships) {
+    if (ship.name === "Syreen") ship.maxCrew = 42;
+    else ship.maxCrew = ship.crew;
+    // console.log(ship.name + " maxCrew:" + ship.maxCrew);
+}
+
 let order = "ascending";
 let currentSortBy = null;
 sortBy("nameOrder");
@@ -244,9 +251,15 @@ function sortBy(what) {
             case "crew":
                 shipImg.title = "Crew: " + ship[currentSortBy];
                 break;
+            case "maxCrew":
+                shipImg.title = "Max Crew: " + ship[currentSortBy];
+                break;
             case "batt":
                 shipImg.title = "Battery: " + ship[currentSortBy];
                 break;
+            // case "maxBatt":
+            //     shipImg.title = "Max Battery: " + ship[currentSortBy];
+            //     break;
             case "value":
                 shipImg.title = "Point Value: " + ship[currentSortBy];
                 break;

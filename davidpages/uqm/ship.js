@@ -10,7 +10,8 @@ const ships = [
         crew: 20,
         batt: 24,
         value: 15,
-        davidScore: 7
+        davidScore: 7,
+        card: "6b"
     },
     {
         nameOrder: 2,
@@ -18,7 +19,8 @@ const ships = [
         crew: 6,
         batt: 20,
         value: 16,
-        davidScore: 8
+        davidScore: 8,
+        card: "7r"
     },
     {
         nameOrder: 3,
@@ -26,7 +28,8 @@ const ships = [
         crew: 36,
         batt: 30,
         value: 28,
-        davidScore: 11
+        davidScore: 11,
+        card: "Kr"
     },
     {
         nameOrder: 4,
@@ -34,7 +37,8 @@ const ships = [
         crew: 42,
         batt: 42,
         value: 30,
-        davidScore: 13
+        davidScore: 13,
+        card: "Kb"
     },
     {
         nameOrder: 5,
@@ -42,7 +46,8 @@ const ships = [
         crew: 14,
         batt: 32,
         value: 17,
-        davidScore: 18
+        davidScore: 18,
+        card: "8b"
     },
     {
         nameOrder: 6,
@@ -50,7 +55,8 @@ const ships = [
         crew: 18,
         batt: 18,
         value: 11,
-        davidScore: 9
+        davidScore: 9,
+        card: "5b"
     },
     {
         nameOrder: 7,
@@ -58,7 +64,8 @@ const ships = [
         crew: 22,
         batt: 16,
         value: 10,
-        davidScore: 21
+        davidScore: 21,
+        card: "4b"
     },
     {
         nameOrder: 8,
@@ -66,7 +73,8 @@ const ships = [
         crew: 42,
         batt: 42,
         value: 30,
-        davidScore: 25
+        davidScore: 25,
+        card: "Ab"
     },
     {
         nameOrder: 9,
@@ -74,7 +82,8 @@ const ships = [
         crew: 20,
         batt: 42,
         value: 18,
-        davidScore: 19
+        davidScore: 19,
+        card: "9b"
     },
     {
         nameOrder: 10,
@@ -82,7 +91,8 @@ const ships = [
         crew: 20,
         batt: 10,
         value: 19,
-        davidScore: 14
+        davidScore: 14,
+        card: "10b"
     },
     {
         nameOrder: 11,
@@ -90,7 +100,8 @@ const ships = [
         crew: 20,
         batt: 40,
         value: 21,
-        davidScore: 24
+        davidScore: 24,
+        card: "Jr"
     },
     {
         nameOrder: 12,
@@ -98,7 +109,8 @@ const ships = [
         crew: 16,
         batt: 20,
         value: 23,
-        davidScore: 5
+        davidScore: 5,
+        card: "Qb"
     },
     {
         nameOrder: 13,
@@ -106,7 +118,8 @@ const ships = [
         crew: 8,
         batt: 12,
         value: 20,
-        davidScore: 6
+        davidScore: 6,
+        card: "10r"
     },
     {
         nameOrder: 14,
@@ -114,7 +127,8 @@ const ships = [
         crew: 6,
         batt: 4,
         value: 5,
-        davidScore: 10
+        davidScore: 10,
+        card: "2b"
     },
     {
         nameOrder: 15,
@@ -122,7 +136,8 @@ const ships = [
         crew: 12,
         batt: 20,
         value: 17,
-        davidScore: 12
+        davidScore: 12,
+        card: "8r"
     },
     {
         nameOrder: 16,
@@ -130,7 +145,8 @@ const ships = [
         crew: 30,
         batt: 10,
         value: 18,
-        davidScore: 1
+        davidScore: 1,
+        card: "9r"
     },
     {
         nameOrder: 17,
@@ -138,7 +154,8 @@ const ships = [
         crew: 12,
         batt: 16,
         value: 16,
-        davidScore: 20
+        davidScore: 20,
+        card: "7b"
     },
     {
         nameOrder: 18,
@@ -146,7 +163,8 @@ const ships = [
         crew: 12, // syreen funny, max 42
         batt: 16,
         value: 13,
-        davidScore: 3
+        davidScore: 3,
+        card: "6r"
     },
     {
         nameOrder: 19,
@@ -154,7 +172,8 @@ const ships = [
         crew: 8,
         batt: 24,
         value: 10,
-        davidScore: 15
+        davidScore: 15,
+        card: "4r"
     },
     {
         nameOrder: 20,
@@ -162,7 +181,8 @@ const ships = [
         crew: 10,
         batt: 30,
         value: 7,
-        davidScore: 22
+        davidScore: 22,
+        card: "3r"
     },
     {
         nameOrder: 21,
@@ -170,7 +190,8 @@ const ships = [
         crew: 42,
         batt: 42,
         value: 30,
-        davidScore: 16
+        davidScore: 16,
+        card: "Ar"
     },
     {
         nameOrder: 22,
@@ -178,7 +199,8 @@ const ships = [
         crew: 20,
         batt: 10, // utwig funny, max 20
         value: 22,
-        davidScore: 2
+        davidScore: 2,
+        card: "Jb"
     },
     {
         nameOrder: 23,
@@ -186,7 +208,8 @@ const ships = [
         crew: 20,
         batt: 40,
         value: 12,
-        davidScore: 4
+        davidScore: 4,
+        card: "5r"
     },
     {
         nameOrder: 24,
@@ -194,7 +217,8 @@ const ships = [
         crew: 20,
         batt: 10,
         value: 23,
-        davidScore: 23
+        davidScore: 23,
+        card: "Qr"
     },
     {
         nameOrder: 25,
@@ -202,7 +226,8 @@ const ships = [
         crew: 10,
         batt: 10,
         value: 6,
-        davidScore: 17
+        davidScore: 17,
+        card: "3b",
     }
 ]
 
@@ -243,9 +268,17 @@ async function loadPage() {
         const shipImg = document.getElementById("ship-img");
         shipImg.src = "img/ship-stats/" + shipId + ".png";
 
-        // SHIP IMAGE HOVERTEXT
-        // (crew, batt)
-        shipImg.title = "Crew: " + shipObj.crew + ", Batt: " + shipObj.batt;
+        // SHIP IMAGE HOVERTEXT (crew, batt)
+        if (shipObj.name === "Syreen") {
+            // EXCEPTION: syreen (crew/max-crew, batt)
+            shipImg.title = "Crew: " + shipObj.crew + "/42, Batt: " + shipObj.batt;
+
+        } else if (shipObj.name === "Utwig") {
+            // EXCEPTION: utwig (crew, batt/max-batt)
+            shipImg.title = "Crew: " + shipObj.crew + ", Batt: " + shipObj.batt + "/20";
+        } else {
+            shipImg.title = "Crew: " + shipObj.crew + ", Batt: " + shipObj.batt;
+        }
 
         // SHIP HTML -------------------------------------------
 
@@ -285,6 +318,29 @@ async function loadPage() {
             }
 
         });
+
+        // create link to ASSOCIATED CARD
+        const playingCardLink = document.createElement("p");
+        playingCardLink.classList.add("card-link");
+        playingCardLink.title = "Associated cards"
+
+        // extract rank and color from ship's "card" value
+        const cardColor = shipObj.card.slice(-1);
+        const cardRank = shipObj.card.slice(0, -1);
+        // format the two associated card names
+        let cardText;
+        if (cardColor === "b") {
+            cardText = cardRank + "♠ / " + cardRank + "♣";
+        } else if (cardColor === "r") {
+            cardText = cardRank + "♦ / " + cardRank + "♥";
+        } else {
+            cardText = cardRank + "? / " + cardRank + "? wtf is color '" + cardColor + "'??";
+        }
+
+        console.log(cardRank);
+
+        playingCardLink.innerText = cardText;
+        document.body.appendChild(playingCardLink);
 
         // WIKI LINK --------------------
         // note: slightly broken for some, possibly just ur-quan & kohr-ah
