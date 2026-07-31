@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <head>
-  <title>VOL-RADIO</title>
+  <!-- <title>VOL-RADIO</title> -->
     <link rel="icon" type="image/x-icon" href="/davidpages/emoji/radio.gif">
   <link rel="stylesheet" href="/davidpages/style.css">
   <style>
@@ -76,8 +76,8 @@
   // 2. Generate a random integer between MIN and MAX (inclusive)
   const randomNumber = Math.floor(Math.random() * (MAX_NUMBER - MIN_NUMBER + 1)) + MIN_NUMBER;
 
-  // Optional: Update title to match
-  // document.title = "VOL-RADIO-" + randomNumber;
+  // update tab name to match
+  document.title = "VOL-RADIO-" + randomNumber;
 
   // 3. Build the path to the audio file
   const audioPath = `https://davidsroom.org/vol-radio/vol-radio-${randomNumber}.wav`;

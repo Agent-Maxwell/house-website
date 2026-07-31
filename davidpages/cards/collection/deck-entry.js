@@ -25,17 +25,21 @@ async function loadPage() {
     const idHtmlResponse = await fetch("html/" + id + ".html");
     if (idHtmlResponse.status === 404) {
         console.log("missing html for entryID " + id);
-        // const response = await fetch("html/default.html"); //todo
+        // pivot to default
+        const defaultHtmlResponse = await fetch("html/default.html");
+        const rawDefaultHTML = await defaultHtmlResponse.text();
+        document.getElementById("deck-content").innerHTML += rawDefaultHTML;
+
         // rawHTML = await response.text();
     } else {
         // get raw html from the [id].html file
         rawHTML = await idHtmlResponse.text();
+        document.getElementById("deck-content").innerHTML += rawHTML;
     }
 
-    // RENDER PAGE for VALID ID -------------------------------------------------
+    // RENDER PAGE for VALID ID mmoved up there -------------------------------------------------
 
     // add deck html to the deck-content div
-    document.getElementById("deck-content").innerHTML += rawHTML;
 }
 
 await loadPage();
