@@ -111,3 +111,19 @@ h3 {
 .secondary-card h3 {
     cursor: progress;
 }
+
+#welcome {
+    margin-left: 2em;
+    margin-top: 2em;
+    display: inline;
+    max-height: 15em;
+    width: revert;
+
+    cursor: crosshair;
+}
+
+#welcome:hover {
+    /*filter:invert(100%);*/
+    filter:hue-rotate(230deg);
+    rotate: -7deg;
+}
