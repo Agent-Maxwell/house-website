@@ -1,0 +1,11 @@
+body {
+  background-color: #d9e7ff;
+  background-image: url("https://transparenttextures.com/patterns/dark-wall.png");
+  /* This is mostly intended for prototyping; please download the pattern and re-host for production environments. Thank you! */
+  
+}
+
+.vol {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}

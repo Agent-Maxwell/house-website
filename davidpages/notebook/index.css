@@ -1,3 +1,8 @@
+:root {
+  --blue-cover: rgb(70, 189, 211);
+  /* font-size: 2em; */
+}
+
 body {
   background-color: lightblue;
   /* background-color: rgb(51, 57, 84); */
@@ -57,4 +62,31 @@ body {
   transform: translate(15%, -15%);
 
   pointer-events:none;
+}
+
+/* stealing this from notebook css */
+.btn {
+  /* not fixed size tho */
+  /* width: 2.5em; */
+  /* height: 2.5em; */
+  padding: 0.4em;
+
+  border: 2px outset var(--blue-cover);
+  border-radius: 5px;
+
+  background-color: lightblue;
+}
+.btn:not(:disabled) {
+  cursor: pointer;
+}
+.btn:active {
+  background-color: skyblue;
+  border: 2px inset var(--blue-cover);
+  border-radius: 5px;
+}
+.btn:disabled {
+  background-color: silver;
+  border: 2px inset lightgray;
+  border-radius: 5px;
+  cursor: not-allowed;
 }
