@@ -62,6 +62,9 @@ body {
   transform: translate(15%, -15%);
 
   pointer-events:none;
+
+  /* disabled .. not new anymore... */
+  display: none;
 }
 
 /* stealing this from notebook css */
