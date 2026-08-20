@@ -9,13 +9,60 @@ const ctx = canvas.getContext("2d");
 ctx.imageSmoothingEnabled = false;
 //size canvas
 //inner resolution
-canvas.width = 480;
-canvas.height = 360;
+canvas.width = 240;
+canvas.height = 180;
 //rendered resolution
 canvas.style.width = "480px";
 canvas.style.height = "360px";
+//"actual size"
+// canvas.style.width = "240px";
+// canvas.style.height = "180px";
 
-//game constants.
+// #region SPRITE CLASS
+// sprite: just an image with a "center"
+// note: in the future, default hitbox position will be based on sprite center
+class Sprite {
+  constructor(img, centerX, centerY) {
+    // sprites exported directly from scratch will be x2 size
+    this.doubleSize = true;
+
+    this.img = img;
+    if (this.doubleSize) this.centerX = Math.floor(centerX / 2);
+    else this.centerX = centerX;
+    if (this.doubleSize) this.centerY = Math.floor(centerY / 2);
+    else this.centerY = centerY;
+  }
+
+  drawCentered(x, y) {
+    
+
+    ctx.translate(x, y);
+
+    if (this.doubleSize) ctx.drawImage(this.img, -this.centerX, -this.centerY, this.img.width / 2, this.img.height / 2);
+    else ctx.drawImage(this.img, x - this.centerX, y - this.centerY);
+
+    ctx.translate(-x, -y);
+
+  }
+  drawCenteredRotated(x, y, rotation) {
+    
+    ctx.translate(x, y);
+    ctx.rotate(rotation);
+
+    if (this.doubleSize) ctx.drawImage(this.img, -this.centerX, -this.centerY, this.img.width / 2, this.img.height / 2);
+    else ctx.drawImage(this.img, x - this.centerX, y - this.centerY);
+    
+    ctx.rotate(-rotation);
+    ctx.translate(-x, -y);
+  }
+}
+
+// Animation: list of frames and durations, knows whether to loop
+class Animation {
+  constructor() {
+
+  }
+}
 
 // #region CORE -------------------------------------------------------
 // core: handles frames.
@@ -49,35 +96,82 @@ const core = {
 core.init();
 // #endregion
 
-
-
 // #region GAME -------------------------------------------------------
 const game = {
   // #region GAME VARS -----------------------
-  // bitwise guys to track keys being pressed
-  currentKeysPressed: 0,
-  pastKeysPressed: 0,
-  // key repeat timers
-  shootKeyRepeatTimer: null,
-  // #endregion
   assets: {
     images: {},
     audioBuffers: {}
   },
-
   // game objects that need to be updated & rendered. maintained in in Y (render) order. todo
   gameObjects: [],
-
-  // todo uncomment setup in loadeverything
   audioCtx: null,
-
   input: null,
-
   // save a reference to the player gameObject
   player: null,
+  // temp text display
+  text: "starting text",
+  //menu/game
+  scene: "main menu",
+  timer: 0,
+  PLAYER_SPEED: 75,
+  sprites: {},
+
+  // #endregion
+
+  async loadEverything() {
+    console.log("loading...");
+
+    const imagesToLoad = {
+      timUp: "img/tim-up.png",
+      timDown: "img/tim-down.png"
+    };
+
+    const soundsToLoad = {
+      test: 'aud/9943__davepape__boink-0020.wav',
+    };
+
+    try {
+      // Create arrays of Promises
+      const imagePromises = Object.entries(imagesToLoad).map(([name, url]) => 
+          this.loadImage(name, url)
+      );
+
+      const audioPromises = Object.entries(soundsToLoad).map(([name, url]) => 
+          this.loadAudio(name, url)
+      );
+
+      // 2. The Magic Moment: Wait for every single one to resolve
+      await Promise.all([...imagePromises, ...audioPromises]);
+
+      console.log("all assets loaded!");
+      // this.start(); // Launch the game loop
+    } catch (error) {
+      console.error("Failed to load assets:", error);
+    }
+  },
+
+  audioContextSetup() {
+    // create the context immediately (it will start 'suspended')
+    game.audioCtx = new AudioContext();
+
+    // Wake up the audio on the first click
+    // note: sometimes this doesnt run cuz audioCtx is already running
+    window.addEventListener('click', () => {
+      if (game.audioCtx.state === 'suspended') {
+        console.log("audio unsuspended");////////
+        game.audioCtx.resume();
+      } else {
+        console.log("audio already unsuspended");
+      }
+      game.text = "audio unlocked";
+      // Now playSound() will work
+    }, { once: true });
+    // set text display to prompt click now
+    game.text = "click!";
+  },
 
   firstTimeSetup() {
-
     // #region INPUT MANAGER
     class InputManager {
       constructor() {
@@ -148,64 +242,24 @@ const game = {
     }
     // #endregion
     this.input = new InputManager();
+
+    game.sprites.timDown = new Sprite(this.assets.images.timDown, 6, 12);
+    game.sprites.timUp = new Sprite(this.assets.images.timUp, 2, 14);
     
-    //something like this idk
+    // GAME OBJECTS
+    //something like this
     this.player = {
       id: "player",
       x: 0,
       y: 0
     };
     game.gameObjects.push(this.player);
+
     game.gameObjects.push({
       id: "enemy",
       x: 40,
       y: 40
     });
-  },
-
-  async loadEverything() {
-    console.log("loading...");
-    // create the context immediately (it will start 'suspended')
-    game.audioCtx = new AudioContext();
-
-    // todo Wake up the audio on the first click
-    // could just go here i guess
-
-    // window.addEventListener('click', () => {
-    //   if (audioCtx.state === 'suspended') {
-    //     audioCtx.resume();
-    //   }
-    //   // Now playSound() will work perfectly!
-    // }, { once: true });
-
-    const imagesToLoad = {
-      mino1: '../img/gren-mino-1.png',
-      mino2: '../img/gren-mino-2.png',
-      mino3: '../img/gren-mino-3.png',
-    };
-
-    const soundsToLoad = {
-      // move: 'sounds/move.wav',
-    };
-
-    try {
-      // Create arrays of Promises
-      const imagePromises = Object.entries(imagesToLoad).map(([name, url]) => 
-          this.loadImage(name, url)
-      );
-
-      const audioPromises = Object.entries(soundsToLoad).map(([name, url]) => 
-          this.loadAudio(name, url)
-      );
-
-      // 2. The Magic Moment: Wait for every single one to resolve
-      await Promise.all([...imagePromises, ...audioPromises]);
-
-      console.log("all assets loaded!");
-      // this.start(); // Launch the game loop
-    } catch (error) {
-      console.error("Failed to load assets:", error);
-    }
   },
 
   loadImage(name, url) {
@@ -253,50 +307,75 @@ const game = {
   },
 
   update(delta) {
-    // timer ticks up
-    game.timer += delta;
+    game.scene = "game"; ///////////
+    if (game.scene === "main menu") {
+      // menu inputs todo
+      // check if mouse over anything, update button states, etc.
+      // if mouse down on a button, activate it
+      // (maybe arrow keys/ space for menu in future; for now just click)
 
-    // controls ======================================
-    // prep "held", "justpressed", "justreleased" for this frame
-    game.input.update();
 
-    // DEBUG: see inputs in console
-    // const guh = game.input.justReleased;
-    // if (guh !== 0) console.log(guh.toString(2));/////////
 
-    // move player
-    // todo PLAYER_MOVE_SPEED
-    if (game.input.held & game.input.keyFlags.ArrowRight) {
-      this.player.x += 200 * delta;
+    } else {
+      // timer ticks up
+      game.timer += delta;
+  
+      // controls ======================================
+      // prep "held", "justpressed", "justreleased" for this frame
+      game.input.update();
+  
+      // DEBUG: see inputs in console
+      // const guh = game.input.justReleased;
+      // if (guh !== 0) console.log(guh.toString(2));/////////
+  
+      // move player
+      // todo PLAYER_MOVE_SPEED
+      if (game.input.held & game.input.keyFlags.ArrowRight) {
+        this.player.x += game.PLAYER_SPEED * delta;
+      }
+      if (game.input.held & game.input.keyFlags.ArrowLeft) {
+        this.player.x -= game.PLAYER_SPEED * delta;
+      }
+      if (game.input.held & game.input.keyFlags.ArrowDown) {
+        this.player.y += game.PLAYER_SPEED * delta;
+      }
+      if (game.input.held & game.input.keyFlags.ArrowUp) {
+        this.player.y -= game.PLAYER_SPEED * delta;
+      }
+  
+      // space test sound
+      if (game.input.held & game.input.keyFlags.Space) {
+        this.playSound("test");
+      }
+  
+  
+      // handle keydown actions
+  
+      //update gameobjects etcs...  
     }
-    if (game.input.held & game.input.keyFlags.ArrowLeft) {
-      this.player.x -= 200 * delta;
-    }
-    if (game.input.held & game.input.keyFlags.ArrowDown) {
-      this.player.y += 200 * delta;
-    }
-    if (game.input.held & game.input.keyFlags.ArrowUp) {
-      this.player.y -= 200 * delta;
-    }
-
-
-    // handle keydown actions
-
-    //update gameobjects etcs...
-
   },
 
   draw() {
     // clean the slate
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    // ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = "#3b8019";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
     
 
-    drawText(game.score);
+    drawText(game.text);
 
 
-    ctx.fillStyle = "green";
-    // [PIXEL-PERFECT] round coords
-    ctx.fillRect(Math.floor(this.player.x), Math.floor(this.player.y), 10, 10);
+    // ctx.fillStyle = "green";
+    // round coords
+    // ctx.fillRect(Math.floor(this.player.x), Math.floor(this.player.y), 10, 10);
+    
+    // draw player
+    if (Math.round(game.timer / 0.4) % 2 === 0) {
+      game.sprites.timDown.drawCentered(Math.floor(this.player.x), Math.floor(this.player.y));
+    } else {
+      game.sprites.timUp.drawCentered(Math.floor(this.player.x), Math.floor(this.player.y));
+    }
+
   },
 }
 // #endregion
@@ -373,9 +452,9 @@ function drawTestGraphics() {
 }
 
 function drawText(text) {
-  ctx.font = "48px sans-serif";
+  ctx.font = "24px sans-serif";
   ctx.fillStyle = "purple";
-  ctx.fillText(text, 90, 200);
+  ctx.fillText(text, 45, 100);
 }
 
 // draw circle of given color at given coords
@@ -418,12 +497,12 @@ function rand() {
 
 
 
+game.audioContextSetup();
+
 // load stuff..
-// await game.loadEverything();
+await game.loadEverything();
 
-console.log("hi");
-
-// Setup grid
+// setup
 game.firstTimeSetup();
 
 // start game loop
