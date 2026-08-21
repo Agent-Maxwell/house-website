@@ -18,7 +18,9 @@ canvas.style.height = "360px";
 // canvas.style.width = "240px";
 // canvas.style.height = "180px";
 
-// #region SPRITE CLASS
+//debug draw hitboxes
+const DRAW_HITBOXES = true;
+
 // sprite: just an image with a "center"
 // note: in the future, default hitbox position will be based on sprite center
 class Sprite {
@@ -34,7 +36,8 @@ class Sprite {
   }
 
   drawCentered(x, y) {
-    
+    x = Math.round(x);
+    y = Math.round(y);
 
     ctx.translate(x, y);
 
@@ -57,9 +60,111 @@ class Sprite {
   }
 }
 
+class AnimationFrame {
+  constructor(sprite, duration) {
+    this.sprite = sprite;
+    this.duration = duration;
+  }
+}
+
 // Animation: list of frames and durations, knows whether to loop
 class Animation {
-  constructor() {
+  constructor(frames, looping) {
+    this.frames = frames;
+    this.looping = looping;
+  }
+}
+
+class GameObject {
+  constructor(x, y) {
+    // coords of its center btw
+    this.x = x;
+    this.y = y;
+    this.width = 10;
+    this.height = 10;
+    this.markedForDeletion = false;
+  }
+  update(delta) {}
+  draw() {
+    if (DRAW_HITBOXES) {
+      ctx.strokeStyle = "red";
+      ctx.strokeRect(this.x-this.width/2, this.y-this.height/2, this.width, this.height);
+    }
+  }
+}
+
+class Player extends GameObject {
+  constructor(x, y) {
+    super(x, y);
+    this.width = 7;
+    this.height = 12;
+
+    this.currentAnimation =  null;
+    // this.currentAnimation = timWalkAnimation;
+    this.currentFrame = null;
+    this.nextFrameAt = null;
+    this.animTimer = null;
+  }
+  startAnimation(anim) {
+    this.currentAnimation = anim;
+    this.currentFrame = 0;
+    this.nextFrameAt += this.currentAnimation.frames[this.currentFrame].duration;
+    this.animTimer = 0;
+  }
+  update(delta) {
+    //ANIMATION-----------------------------
+    // if current animation not null
+    if (this.currentAnimation) {
+      this.animTimer += delta;
+      if (this.animTimer >= this.nextFrameAt) {
+        this.currentFrame++;
+        // if this is the end of the animation
+        if (this.currentFrame >= this.currentAnimation.frames.length) {
+          // LOOP
+          if (this.currentAnimation.looping) {
+            this.currentFrame = 0;
+            // reset animTimer, keep it smooth
+            this.animTimer -= this.nextFrameAt;
+            this.nextFrameAt = 0;
+          // OR DONT LOOP
+          } else {
+            // animation complete...
+            this.currentAnimation = null;
+          }
+        }
+        if (this.currentAnimation) this.nextFrameAt += this.currentAnimation.frames[this.currentFrame].duration;
+      }
+    }
+
+    // move player
+    // todo PLAYER_MOVE_SPEED
+    if (game.input.held & game.input.keyFlags.ArrowRight) {
+      this.x += game.PLAYER_SPEED * delta;
+    }
+    if (game.input.held & game.input.keyFlags.ArrowLeft) {
+      this.x -= game.PLAYER_SPEED * delta;
+    }
+    if (game.input.held & game.input.keyFlags.ArrowDown) {
+      this.y += game.PLAYER_SPEED * delta;
+    }
+    if (game.input.held & game.input.keyFlags.ArrowUp) {
+      this.y -= game.PLAYER_SPEED * delta;
+    }
+
+    // space test sound
+    if (game.input.held & game.input.keyFlags.Space) {
+      game.playSound("test");
+    }
+  }
+  draw() {
+    if (this.currentAnimation) this.currentAnimation.frames[this.currentFrame].sprite.drawCentered(this.x, this.y);
+    //draw hitboxes..
+    super.draw();
+  }
+}
+
+class Enemy extends GameObject {
+  constructor(x, y) {
 
   }
 }
@@ -243,23 +348,27 @@ const game = {
     // #endregion
     this.input = new InputManager();
 
-    game.sprites.timDown = new Sprite(this.assets.images.timDown, 6, 12);
-    game.sprites.timUp = new Sprite(this.assets.images.timUp, 2, 14);
+    game.sprites.timDown = new Sprite(this.assets.images.timDown, 8, 12);
+    game.sprites.timUp = new Sprite(this.assets.images.timUp, 4, 14);
     
     // GAME OBJECTS
     //something like this
-    this.player = {
-      id: "player",
-      x: 0,
-      y: 0
-    };
+    game.player = new Player(10, 10);
+    const timWalkAnimation = new Animation([
+      new AnimationFrame(game.sprites.timDown, 0.25),
+      new AnimationFrame(game.sprites.timUp, 0.25)
+    ], true);
+    // game.player.currentAnimation = timWalkAnimation;
+    game.player.startAnimation(timWalkAnimation);
     game.gameObjects.push(this.player);
 
-    game.gameObjects.push({
-      id: "enemy",
-      x: 40,
-      y: 40
-    });
+
+
+    //example
+    // const timWalkAnimation = new Animation([
+    //   new AnimationFrame(game.sprites.timDown, 0.2),
+    //   new AnimationFrame(game.sprites.timUp, 0.2)
+    // ], false);
   },
 
   loadImage(name, url) {
@@ -328,25 +437,8 @@ const game = {
       // const guh = game.input.justReleased;
       // if (guh !== 0) console.log(guh.toString(2));/////////
   
-      // move player
-      // todo PLAYER_MOVE_SPEED
-      if (game.input.held & game.input.keyFlags.ArrowRight) {
-        this.player.x += game.PLAYER_SPEED * delta;
-      }
-      if (game.input.held & game.input.keyFlags.ArrowLeft) {
-        this.player.x -= game.PLAYER_SPEED * delta;
-      }
-      if (game.input.held & game.input.keyFlags.ArrowDown) {
-        this.player.y += game.PLAYER_SPEED * delta;
-      }
-      if (game.input.held & game.input.keyFlags.ArrowUp) {
-        this.player.y -= game.PLAYER_SPEED * delta;
-      }
-  
-      // space test sound
-      if (game.input.held & game.input.keyFlags.Space) {
-        this.playSound("test");
-      }
+
+      game.gameObjects.forEach((obj) => obj.update(delta));
   
   
       // handle keydown actions
@@ -369,12 +461,8 @@ const game = {
     // round coords
     // ctx.fillRect(Math.floor(this.player.x), Math.floor(this.player.y), 10, 10);
     
-    // draw player
-    if (Math.round(game.timer / 0.4) % 2 === 0) {
-      game.sprites.timDown.drawCentered(Math.floor(this.player.x), Math.floor(this.player.y));
-    } else {
-      game.sprites.timUp.drawCentered(Math.floor(this.player.x), Math.floor(this.player.y));
-    }
+    game.gameObjects.forEach((obj) => obj.draw());
+
 
   },
 }
