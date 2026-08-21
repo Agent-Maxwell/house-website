@@ -93,6 +93,16 @@ class GameObject {
   }
 }
 
+class MenuButton extends GameObject {
+  constructor(sprite, x, y) {
+    super(x, y);
+    this.sprite = sprite;
+  }
+  update() {
+
+  }
+}
+
 class Player extends GameObject {
   constructor(x, y) {
     super(x, y);
@@ -205,7 +215,7 @@ core.init();
 const game = {
   // #region GAME VARS -----------------------
   assets: {
-    images: {},
+    sprites: {},
     audioBuffers: {}
   },
   // game objects that need to be updated & rendered. maintained in in Y (render) order. todo
@@ -220,33 +230,37 @@ const game = {
   scene: "main menu",
   timer: 0,
   PLAYER_SPEED: 75,
-  sprites: {},
+  // sprites: {},
 
   // #endregion
 
   async loadEverything() {
     console.log("loading...");
 
-    const imagesToLoad = {
-      timUp: "img/tim-up.png",
-      timDown: "img/tim-down.png"
+    // sprite name: {img url, sprite center coordinates}
+    const spritesToLoad = {
+      timDown: {url: "img/tim-down.png", cx: 8, cy: 12},
+      timUp: {url: "img/tim-up.png",     cx: 4, cy: 14},
+      startButton: {url: "img/startButton.png", cx: 5, cy: 12},
+      startButtonHover: {url: "img/startButtonHover.png", cx: 5, cy: 12},
     };
 
+    // sound name: sound url
     const soundsToLoad = {
       test: 'aud/9943__davepape__boink-0020.wav',
     };
 
     try {
       // Create arrays of Promises
-      const imagePromises = Object.entries(imagesToLoad).map(([name, url]) => 
-          this.loadImage(name, url)
+      const imagePromises = Object.entries(spritesToLoad).map(([name, spriteInfo]) => 
+          this.loadSprite(name, spriteInfo)
       );
 
       const audioPromises = Object.entries(soundsToLoad).map(([name, url]) => 
           this.loadAudio(name, url)
       );
 
-      // 2. The Magic Moment: Wait for every single one to resolve
+      // wait for every single one to resolve
       await Promise.all([...imagePromises, ...audioPromises]);
 
       console.log("all assets loaded!");
@@ -254,6 +268,50 @@ const game = {
     } catch (error) {
       console.error("Failed to load assets:", error);
     }
+  },
+
+  loadSprite(name, spriteInfo) {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      // img.crossOrigin = "anonymous"; //if hosting images elswehere
+
+      img.onload = () => {
+        this.assets.sprites[name] = new Sprite(img, spriteInfo.cx, spriteInfo.cy);
+        resolve(img);
+      };
+      img.onerror = () => reject(`failed to load img: ${spriteInfo.url}`);
+      img.src = spriteInfo.url;
+    });
+  },
+
+  async loadAudio(name, url) {
+    const response = await fetch(url);
+    const arrayBuffer = await response.arrayBuffer();
+    // decode binary data into AudioBuffer
+    const decodedData = await game.audioCtx.decodeAudioData(arrayBuffer);
+    // put decoded audio in assets, ready to be played
+    this.assets.audioBuffers[name] = decodedData;
+    return decodedData;
+  },
+
+  // play a one-off sound from assets.audiobuffers[name]
+  playSound(name) {
+    if (!this.audioCtx) {
+      console.log("cannot play sound " + name + "; audio context does not exist");
+      return;
+    }
+
+    // source node ("needle")
+    const source = game.audioCtx.createBufferSource();
+
+    // point the needle to stored buffer ("record")
+    source.buffer = game.assets.audioBuffers[name];
+
+    // connect needle to speakers
+    source.connect(game.audioCtx.destination);
+
+    // play!
+    source.start(0);
   },
 
   audioContextSetup() {
@@ -276,10 +334,21 @@ const game = {
     game.text = "click!";
   },
 
-  firstTimeSetup() {
-    // #region INPUT MANAGER
+  setupInput() {
     class InputManager {
+      updateMouseCoordsFromEvent(e) {
+        // convert coords to internal canvas coordinates
+        // incase the canvas is scaled
+        const rect = canvas.getBoundingClientRect();
+        const scaleX = canvas.width / rect.width;
+        const scaleY = canvas.height / rect.height;
+
+        this.mouseX = Math.floor((e.clientX - rect.left) * scaleX);
+        this.mouseY = Math.floor((e.clientY - rect.top) * scaleY);
+      }
+
       constructor() {
+        // #region KEYS
         this.keyFlags = {
           ArrowLeft:  1<<0,
           ArrowRight: 1<<1,
@@ -329,9 +398,35 @@ const game = {
           //disable flag for this key
           this.physicalKeys &= ~keyFlag;
         });
+        // #endregion
+
+        // #region MOUSE
+        this.mouseX = 0;
+        this.mouseY = 0;
+
+        // true for one frame when mouse is clicked
+        this.mouseClick = false;
+
+        // internal
+        this.mouseLatchedDown = false;
+        // this.mouseLatchedUp = false;
+
+        window.addEventListener("mousemove", e => {
+          this.updateMouseCoordsFromEvent(e);
+        });
+
+        window.addEventListener("mousedown", e => {
+          if (e.button === 0) {
+            this.mouseLatchedDown = true;
+            // update mouse coords cuz stupid mac glitch
+            this.updateMouseCoordsFromEvent(e)
+          }
+        });
+        // #endregion
       }
 
       update() {
+        // #region KEYS
         // "current state" of keys for this frame. counts physically down or briefly tapped keys.
         const current = this.physicalKeys | this.latchedKeys;
         // "held" is kept from last frame
@@ -343,80 +438,53 @@ const game = {
         this.held = current;
         // and latched keys are forgotten
         this.latchedKeys = 0;
+        // #endregion
+
+        // #region MOUSE
+        this.mouseClick = this.mouseLatchedDown;
+        this.mouseLatchedDown = false;
+
+        
+        if (this.mouseClick) {
+          // console.log("click@(" + this.mouseX + ", " + this.mouseY + ")");/////////
+        }
+        // #endregion
       }
     }
-    // #endregion
     this.input = new InputManager();
+  },
 
-    game.sprites.timDown = new Sprite(this.assets.images.timDown, 8, 12);
-    game.sprites.timUp = new Sprite(this.assets.images.timUp, 4, 14);
-    
-    // GAME OBJECTS
-    //something like this
+  setupMenu() {
+
+  },
+
+  spawnPlayer() {
     game.player = new Player(10, 10);
+
     const timWalkAnimation = new Animation([
-      new AnimationFrame(game.sprites.timDown, 0.25),
-      new AnimationFrame(game.sprites.timUp, 0.25)
+      new AnimationFrame(game.assets.sprites.timDown, 0.25),
+      new AnimationFrame(game.assets.sprites.timUp, 0.25)
     ], true);
+
     // game.player.currentAnimation = timWalkAnimation;
     game.player.startAnimation(timWalkAnimation);
     game.gameObjects.push(this.player);
-
-
-
-    //example
-    // const timWalkAnimation = new Animation([
-    //   new AnimationFrame(game.sprites.timDown, 0.2),
-    //   new AnimationFrame(game.sprites.timUp, 0.2)
-    // ], false);
-  },
-
-  loadImage(name, url) {
-    return new Promise((resolve, reject) => {
-      const img = new Image();
-      // img.crossOrigin = "anonymous"; //if hosting images elswehere
-
-      img.onload = () => {
-        this.assets.images[name] = img;
-        resolve(img);
-      };
-      img.onerror = () => reject(`failed to load img: ${url}`);
-      img.src = url;
-    });
-  },
-
-  async loadAudio(name, url) {
-    const response = await fetch(url);
-    const arrayBuffer = await response.arrayBuffer();
-    // decode binary data into AudioBuffer
-    const decodedData = await game.audioCtx.decodeAudioData(arrayBuffer);
-    // put decoded audio in assets, ready to be played
-    this.assets.audioBuffers[name] = decodedData;
-    return decodedData;
-  },
-
-  // play a one-off sound from assets.audiobuffers[name]
-  playSound(name) {
-    if (!this.audioCtx) {
-      console.log("cannot play sound " + name + "; audio context does not exist");
-      return;
-    }
-
-    // source node ("needle")
-    const source = game.audioCtx.createBufferSource();
-
-    // point the needle to stored buffer ("record")
-    source.buffer = game.assets.audioBuffers[name];
-
-    // connect needle to speakers
-    source.connect(game.audioCtx.destination);
-
-    // play!
-    source.start(0);
   },
 
   update(delta) {
-    game.scene = "game"; ///////////
+    // regardless of current scene..
+    // controls ======================================
+    // prep "held", "justpressed", "justreleased" for this frame
+    // also "mouseClick"
+    game.input.update();
+
+    // DEBUG: see inputs in console
+    // const guh = game.input.justReleased;
+    // if (guh !== 0) console.log(guh.toString(2));/////////
+
+
+
+    // game.scene = "game"; ///////////
     if (game.scene === "main menu") {
       // menu inputs todo
       // check if mouse over anything, update button states, etc.
@@ -429,13 +497,6 @@ const game = {
       // timer ticks up
       game.timer += delta;
   
-      // controls ======================================
-      // prep "held", "justpressed", "justreleased" for this frame
-      game.input.update();
-  
-      // DEBUG: see inputs in console
-      // const guh = game.input.justReleased;
-      // if (guh !== 0) console.log(guh.toString(2));/////////
   
 
       game.gameObjects.forEach((obj) => obj.update(delta));
@@ -591,7 +652,8 @@ game.audioContextSetup();
 await game.loadEverything();
 
 // setup
-game.firstTimeSetup();
+game.setupInput();
+game.spawnPlayer();
 
 // start game loop
 core.frame();
