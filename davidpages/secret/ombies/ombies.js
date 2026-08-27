@@ -76,12 +76,12 @@ class Animation {
 }
 
 class GameObject {
-  constructor(x, y) {
+  constructor(x, y, width, height) {
     // coords of its center btw
     this.x = x;
     this.y = y;
-    this.width = 10;
-    this.height = 10;
+    this.width = width;
+    this.height = height;
     this.markedForDeletion = false;
   }
   update(delta) {}
@@ -94,20 +94,37 @@ class GameObject {
 }
 
 class MenuButton extends GameObject {
-  constructor(sprite, x, y) {
-    super(x, y);
+  constructor(sprite, spriteHovered, x, y) {
+    // width height auto from image
+    super(x, y, sprite.img.width, sprite.img.height);
     this.sprite = sprite;
+    this.spriteHovered = spriteHovered;
+    this.hovered = false;
   }
   update() {
-
+    //check if mouse over
+    const leftBound = this.x - this.width/2;
+    const rightBound = this.x + this.width/2;
+    const topBound = this.y - this.height/2;
+    const bottomBound = this.y + this.height/2;
+    this.hovered = (game.input.mouseX > leftBound &&
+      game.input.mouseX < rightBound &&
+      game.input.mouseY > topBound &&
+      game.input.mouseY < bottomBound);
+    // if (this.hovered) console.log(leftBound);
+  }
+  draw() {
+    //d raw button
+    const currentSprite = this.hovered ? this.spriteHovered : this.sprite;
+    currentSprite.drawCentered(this.x, this.y);
+    //hitbox
+    super.draw();
   }
 }
 
 class Player extends GameObject {
   constructor(x, y) {
-    super(x, y);
-    this.width = 7;
-    this.height = 12;
+    super(x, y, 7, 12);
 
     this.currentAnimation =  null;
     // this.currentAnimation = timWalkAnimation;
@@ -444,7 +461,7 @@ const game = {
         this.mouseClick = this.mouseLatchedDown;
         this.mouseLatchedDown = false;
 
-        
+
         if (this.mouseClick) {
           // console.log("click@(" + this.mouseX + ", " + this.mouseY + ")");/////////
         }
@@ -455,7 +472,8 @@ const game = {
   },
 
   setupMenu() {
-
+    const startButton = new MenuButton(game.assets.sprites.startButton, game.assets.sprites.startButtonHover, 100, 100);
+    game.gameObjects.push(startButton);
   },
 
   spawnPlayer() {
@@ -486,6 +504,9 @@ const game = {
 
     // game.scene = "game"; ///////////
     if (game.scene === "main menu") {
+
+      //menu buttons are gameobjects too >:(
+      game.gameObjects.forEach((obj) => obj.update(delta));
       // menu inputs todo
       // check if mouse over anything, update button states, etc.
       // if mouse down on a button, activate it
@@ -653,7 +674,9 @@ await game.loadEverything();
 
 // setup
 game.setupInput();
-game.spawnPlayer();
+// create start button
+game.setupMenu();
+// game.spawnPlayer();
 
 // start game loop
 core.frame();
