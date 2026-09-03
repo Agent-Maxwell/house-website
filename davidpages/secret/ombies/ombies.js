@@ -96,7 +96,7 @@ class GameObject {
 class MenuButton extends GameObject {
   constructor(sprite, spriteHovered, x, y) {
     // width height auto from image
-    super(x, y, sprite.img.width, sprite.img.height);
+    super(x, y, sprite.img.width/2, sprite.img.height/2);
     this.sprite = sprite;
     this.spriteHovered = spriteHovered;
     this.hovered = false;
@@ -258,8 +258,8 @@ const game = {
     const spritesToLoad = {
       timDown: {url: "img/tim-down.png", cx: 8, cy: 12},
       timUp: {url: "img/tim-up.png",     cx: 4, cy: 14},
-      startButton: {url: "img/startButton.png", cx: 5, cy: 12},
-      startButtonHover: {url: "img/startButtonHover.png", cx: 5, cy: 12},
+      startButton: {url: "img/startButton.png", cx: 24, cy: 10},
+      startButtonHover: {url: "img/startButtonHover.png", cx: 24, cy: 10},
     };
 
     // sound name: sound url
