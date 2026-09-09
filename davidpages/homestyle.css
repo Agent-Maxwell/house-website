@@ -123,7 +123,7 @@ h3 {
 }
 
 #welcome:hover {
-    /*filter:invert(100%);*/
-    filter:hue-rotate(230deg);
+    filter:invert(100%) hue-rotate(60deg);
+    /* filter:hue-rotate(230deg); */
     rotate: -7deg;
 }

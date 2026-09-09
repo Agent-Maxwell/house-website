@@ -93,3 +93,31 @@ body {
   border-radius: 5px;
   cursor: not-allowed;
 }
+
+#photo-container {
+  /* background-color: white; */
+  padding: 10px;
+  box-sizing: border-box;
+  
+  width: 100%;
+  margin: 0;
+  /* spacing */
+  margin-top: 100px;
+
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: center;
+}
+
+#photo-container img {
+  all:revert;
+  
+  flex-shrink: 1;   /* Allows images to shrink to fit the row */
+  min-width: 0;
+  max-height: 300px;
+  height: auto;     /* Maintains aspect ratio */
+  margin: 10px;     /* Works seamlessly within the layout calculation */
+
+  border: 10px sienna ridge;
+}
