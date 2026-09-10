@@ -105,7 +105,7 @@ h3 {
 }
 
 .card h3 {
-    cursor: nesw-resize;
+    cursor: nwse-resize;
 }
 
 .secondary-card h3 {
@@ -126,4 +126,23 @@ h3 {
     filter:invert(100%) hue-rotate(60deg);
     /* filter:hue-rotate(230deg); */
     rotate: -7deg;
+}
+
+/* rainbow animation copied from global stylesheet */
+@keyframes rainbow-shift {
+    /* another rainbow test */
+    /* from { filter: hue-rotate(0deg); }
+    to { filter: hue-rotate(360deg); } */
+
+    000% {filter: hue-rotate(calc(72deg * 0));}
+    020% {filter: hue-rotate(calc(72deg * -1));}
+    040% {filter: hue-rotate(calc(72deg * -2));}
+    060% {filter: hue-rotate(calc(72deg * -3));}
+    080% {filter: hue-rotate(calc(72deg * -4));}
+    100% {filter: hue-rotate(calc(72deg * -5));}
+}
+/* for main photo */
+#main-photo:hover {
+    animation: rainbow-shift 17s linear infinite;
+    cursor: vertical-text;
 }
