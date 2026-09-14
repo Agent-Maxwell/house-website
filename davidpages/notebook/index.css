@@ -64,7 +64,7 @@ body {
   pointer-events:none;
 
   /* disabled .. not new anymore... */
-  display: none;
+  /* display: none; */
 }
 
 /* stealing this from notebook css */
