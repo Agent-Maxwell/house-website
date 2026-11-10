@@ -676,7 +676,8 @@ await game.loadEverything();
 game.setupInput();
 // create start button
 game.setupMenu();
-// game.spawnPlayer();
+// star tgame does this:
+game.spawnPlayer();
 
 // start game loop
 core.frame();

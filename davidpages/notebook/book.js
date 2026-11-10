@@ -6,7 +6,7 @@ const Comic = {
     // (index 0 is cover, index 1 is pages 0-1, index 2 is p2-3, index 3 is p4-5)
     currentIndex: 0,
     // 0 is right side up; 1 is 90° clockwise, 2 is upside down, 3 is 270° clockwise
-    currentRotation: 0, // todo check this when displaying images
+    currentRotation: 0, //todo usingthis?
 
     SoundEngine: {},
 
@@ -25,11 +25,13 @@ const Comic = {
         // this.notebookID = document.body.getAttribute("data-notebookID");
         // console.log("notebookid: " + this.notebookID);
 
-        // new: notebookID from url param
+        // new: notebookID from url param. also 
         const queryString = window.location.search;
         const urlParams = new URLSearchParams(queryString);
         this.notebookID = urlParams.get('id');
+        
         //todo could check if id is valid and not show broken page
+
 
         // set tab name
         document.title = this.notebookID.toUpperCase();
@@ -181,7 +183,7 @@ const Comic = {
             numTurnPage: null,
             numTurnOpen: null,
             numTurnOpen: null,
-            total: null, // total figured out implicitly from individual totals
+            total: null, // total, figured out implicitly from individual totals
             loaded: 0,
 
             context: new (window.AudioContext || window.webkitAudioContext)(),
@@ -382,68 +384,66 @@ const Comic = {
         }
         this.SoundEngine.loadSounds();
 
-        // link buttons to their actions (also un-focus the button)
-        document.getElementById('btn-first').onclick = () => {
-            document.getElementById('btn-first').blur();
-            this.firstButton()
-        };
-        document.getElementById('btn-last').onclick = () => {
-            document.getElementById('btn-last').blur();
-            this.lastButton()
-        };
-        document.getElementById('btn-prev').onclick = () => {
-            document.getElementById('btn-prev').blur();
-            this.prevButton();
-        }
-        document.getElementById('btn-next').onclick = () => {
-            document.getElementById('btn-next').blur();
-            this.nextButton();
-        }
-        function holdTilt() {
-            window.addEventListener('pointerup', releaseTilt);
-            window.addEventListener('pointercancel', releaseTilt);
-            window.addEventListener('blur', releaseTilt);
-        }
-        function releaseTilt() {
-            // console.log("hi");
-            Comic.setRotation(0);
-            window.removeEventListener('pointerup', releaseTilt);
-            window.removeEventListener('pointercancel', releaseTilt);
-            window.removeEventListener('blur', releaseTilt);
-        }
-        // TILT LEFT
-        const tiltLeftBtn = document.getElementById('btn-tilt-left')
-        tiltLeftBtn.addEventListener("pointerdown", (e) => {
-            if (e.button !== 0) return; // only if left-clicked
-            this.setRotation(3);
-            holdTilt();
+        // prevent buttons from ever gaining focus that can show up won subsequent space/arrow inputs)
+        // (onclick still works.)
+        document.querySelectorAll('.btn').forEach(btn => {
+            btn.addEventListener('mousedown', (e) => {
+                // Tells the browser: "Do not give this button focus."
+                e.preventDefault(); 
+            });
         });
-        // TILT RIGHT
-        const tiltRightBtn = document.getElementById('btn-tilt-right')
-        tiltRightBtn.addEventListener("pointerdown", (e) => {
-            if (e.button !== 0) return; // only if left-clicked
-            this.setRotation(1);
-            holdTilt();
-        });
-        // TILT (UPDSIDE) DOWN
-        const tiltDownBtn = document.getElementById('btn-tilt-down')
-        tiltDownBtn.addEventListener("pointerdown", (e) => {
-            if (e.button !== 0) return; // only if left-clicked
-            this.setRotation(2);
-            holdTilt();
-        });
+        // relic: blurring manually should now be obselete with above mousedown preventdefault but heres how it was done
+        // document.getElementById('btn-back').onclick = () => {
+        //     document.getElementById('btn-back').blur();
+        // };
 
+        // link buttons to their actions
+        document.getElementById('btn-first').onclick = () => this.firstButton();
+        document.getElementById('btn-last').onclick = () => this.lastButton();
+        document.getElementById('btn-prev').onclick = () => this.prevButton();
+        document.getElementById('btn-next').onclick = () => this.nextButton();
+        // RIP: tilt button stuff was here. hope you dont need to reference it.
+        // NEW: rotate and stay. note; resets when you leave notebook.
+        document.getElementById('btn-rotate').onclick = () => {
+            document.getElementById('btn-rotate').blur();
+
+            const newRotation = (this.currentRotation + 1) % 4;
+            this.setRotation(newRotation);
+            // todo add into url.
+
+            // smooth rotation transition: will take some effort. todo if you feel like it.
+            // this.canvas.style.transform = `rotate(${this.currentRotation*90}deg)`;
+        };
+
+        // KEYDOWN LISTENER
         // link left/right arrows to actions
+        // also space=rotate
         window.addEventListener('keydown', (e) => {
             if (e.key === "ArrowLeft") this.prevButton();
             if (e.key === "ArrowRight") this.nextButton();
+            if (e.key == " ") { //space
+                e.preventDefault(); // dont scroll
+                // todo duplicated logic here and in rotateBtn (above).
+                // make function (that also updates url with rotation).
+                const newRotation = (this.currentRotation + 1) % 4;
+                this.setRotation(newRotation);
+            }
         });
+        
+        //helpers for getting page# or rotation from hash string
+        function pageIndexFromHash(hash) {
+            ///todo
+        }
+        function rotationFromHash(hash) {
 
-        // Check if there is a hash in the URL on load; go to that page, otherwise default to page 1
+        }
+
+        //HASH PARSING (PAGE, ROTATION
+        // //todo use helpers here to set rotation
+        // Check if there is a hash in the URL on load; go to that page&rotation, otherwise default to page 1, default rot
         const hash = window.location.hash.substring(1); // remove the '#'
         const startingIndex = hash ? parseInt(hash) : 0;
         this.goTo(startingIndex);
-
         // also update page when user types new id in url
         window.addEventListener('hashchange', (event) => {
             const hash = window.location.hash.substring(1); // remove the '#'
@@ -456,7 +456,6 @@ const Comic = {
         const resizeObserver = new ResizeObserver(() => {
             this.displayCurrentImage();
         });
-        // todo this is getting annoying, make stage Comic-level var
         resizeObserver.observe(this.stage);
     },
 
@@ -520,60 +519,123 @@ const Comic = {
         }
     },
 
+    // go to (lowest level of navigation. also updates url)
     goTo(index) {
         clampedIndex = this.clampIndex(index);
         this.currentIndex = clampedIndex;
         this.updateDisplay();
-        history.replaceState(null, "", "#" + this.currentIndex)
+        history.replaceState(null, "", "#" + this.currentIndex) //todo add rotation in here
     },
 
-    updateDisplay() {
-        // // if image is loaded, size canvas and draw it.
-        // const loadedImage = this.ImageLoader.images[this.currentIndex];
-        // if (loadedImage) this.displayImage(loadedImage);
-        this.displayCurrentImage();
-
-
-        // set page number display
-        const pageLabel = document.getElementById('page-label');
-        switch (this.currentIndex) {
+    // helpers to translate between INDEX (clean internal metric, starts at 0)
+    // and PAGE NUMBER (special "front" and "back" strings, then 2 page numbers per spread
+    // (ie, both page 1 and page 2 map to index 1).
+    // occasional skips or exceptions.)
+    // inputs: index, boolean whether you want left-hand(true) or right-hand(false) page number
+    indexToPage(inputIndex, leftPage) {
+        // following copied from updateDisplay. todo replace it.
+        switch (inputIndex) {
         case 0:
-            pageLabel.innerText = "front";
-            break;
+            return "front";
         case this.ImageLoader.totalImages - 1:
-            pageLabel.innerText = "back";
-            break;
+            return "back";
         default:
-            // NOTEBOOK DEPENDENT EXCEPTIONS for page number label
+            // NOTEBOOK DEPENDENT EXCEPTIONS for page number
             switch (Comic.notebookID) {
             // black exceptions (non-front or back)
             case "black":
                 let indexForPageNumbering;
                 if (this.currentIndex == 25) {
-                    // special string for this case (p49-50 is a missing page)
-                    pageLabel.innerText = "p48,51";
-                    break;
+                    // (p49-50 is a missing page)
+                    // note: page label is "p48,51";
+                    return leftPage ? 48 : 51;
                 } else if (this.currentIndex > 25) {
                     // past index 25: account for missing page
-                    indexForPageNumbering = this.currentIndex + 1;
+                    indexForPageNumbering = inputIndex + 1;
                 } else {
                     // otherwise normal
-                    indexForPageNumbering = this.currentIndex;
+                    indexForPageNumbering = inputIndex;
                 }
                 const leftPageNumForBlack = (indexForPageNumbering - 1) * 2;
                 const rightPageNumForBlack = leftPageNumForBlack + 1;
-                pageLabel.innerText = `p${leftPageNumForBlack}-${rightPageNumForBlack}`;
-                break;
-            // execptions done, label page normal way
+                return leftPage ? leftPageNumForBlack : rightPageNumForBlack;
+            // execptions done, count pages normal way
             default:
-                const leftPageNum = (this.currentIndex - 1) * 2;
+                const leftPageNum = (inputIndex - 1) * 2;
                 const rightPageNum = leftPageNum + 1;
-                pageLabel.innerText = `p${leftPageNum}-${rightPageNum}`;
+                return leftPage ? leftPageNum : rightPageNum;
             }
+        }
+    
+    },
+    pageToIndex() {
+
+    },
+
+    updateDisplay() {
+        // if image is loaded, size canvas and draw it.
+        this.displayCurrentImage();
+
+        // set page number display // TODO replacing this using helper function.
+        // future david: you can probably delete this if page number display has been working.
+        // im not zen enough rn.
+        // see directly after this commented wall for new version.
+
+        // const pageLabel = document.getElementById('page-label');
+        // switch (this.currentIndex) {
+        // case 0:
+        //     pageLabel.innerText = "front";
+        //     break;
+        // case this.ImageLoader.totalImages - 1:
+        //     pageLabel.innerText = "back";
+        //     break;
+        // default:
+        //     // NOTEBOOK DEPENDENT EXCEPTIONS for page number label
+        //     switch (Comic.notebookID) {
+        //     // black exceptions (non-front or back)
+        //     case "black":
+        //         let indexForPageNumbering;
+        //         if (this.currentIndex == 25) {
+        //             // special string for this case (p49-50 is a missing page)
+        //             pageLabel.innerText = "p48,51";
+        //             break;
+        //         } else if (this.currentIndex > 25) {
+        //             // past index 25: account for missing page
+        //             indexForPageNumbering = this.currentIndex + 1;
+        //         } else {
+        //             // otherwise normal
+        //             indexForPageNumbering = this.currentIndex;
+        //         }
+        //         const leftPageNumForBlack = (indexForPageNumbering - 1) * 2;
+        //         const rightPageNumForBlack = leftPageNumForBlack + 1;
+        //         pageLabel.innerText = `p${leftPageNumForBlack}-${rightPageNumForBlack}`;
+        //         break;
+        //     // execptions done, label page normal way
+        //     default:
+        //         const leftPageNum = (this.currentIndex - 1) * 2;
+        //         const rightPageNum = leftPageNum + 1;
+        //         pageLabel.innerText = `p${leftPageNum}-${rightPageNum}`;
+        //     }
+        // }
+
+        // new version of above, using helpers to translate.
+        // new feature: automatically use a comma instead of a hyphen if... theres a missing page
+        const pageLabel = document.getElementById('page-label');
+        // first handle front or back
+        if (this.currentIndex == 0) {
+            pageLabel.innerText = "front";
+        } else if (this.currentIndex == this.ImageLoader.totalImages - 1) {
+            pageLabel.innerText = "back";
+        } else {
+            // ok we're somewhere normal
+            const leftPageNum = this.indexToPage(this.currentIndex, true);
+            const rightPageNum = this.indexToPage(this.currentIndex, false);
+            // consecutive page numbers: hyphen. jump in numbering: comma.
+            const punc = (rightPageNum - leftPageNum == 1) ? "-" : ",";
+            pageLabel.innerText = `p${leftPageNum}${punc}${rightPageNum}`;
         }
 
         // disable buttons at the edges
-
         document.getElementById('btn-prev').disabled = (this.currentIndex === 0);
         document.getElementById('btn-first').disabled = (this.currentIndex === 0);
         document.getElementById('btn-next').disabled = (this.currentIndex === this.ImageLoader.totalImages - 1);
@@ -644,7 +706,6 @@ const Comic = {
 
 
         //if currentRotation !== 0, draw rotated image
-        //todo
         this.ctx.save();
         // Move the origin (0, 0) to the center of the canvas
         this.ctx.translate(this.canvas.width / 2, this.canvas.height / 2);
@@ -668,8 +729,6 @@ Comic.init();
 
 // todo stuff that will be different across notebooks:
 // perhaps background color
-// images, total num of images
 // page turn sounds
-// perhaps page display? although for now i really like just "p0-1"
 
-// todo maybe bonus elements under comic page
+// todo maybe bonus elements under comic page (scroll to see)

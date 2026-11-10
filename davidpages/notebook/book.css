@@ -66,6 +66,23 @@ body {
 
 /* CONTROLS */
 
+/* globally remove defaul focus outline */
+/* i guess not if you press tab. whatever */
+/* .btn:focus {
+  outline: none;
+} */
+/* show a custom focus ring ONLY when navigating via keyboard (ie tab) */
+/* .btn:focus-visible {
+  outline: 2px dotted #b4ff11;
+  outline-offset: 2px;
+} */
+
+#btn-back {
+    /* this is for removing the button element from the back button and just styling the "a" just like the other buttons. only problem is centering the icon. returning to nested button in "a"; figure out later todo */
+    /* justify-content: center; */
+    /* align-items: center; */
+}
+
 .btn {
     width: 2.5em;
     height: 2.5em;
@@ -108,8 +125,6 @@ body {
     font-family: 'Courier New', monospace;
 }
 
-/* TILTS */
-
 /* NOTEBOOK IMAGE AREA */
 
 #stage {
@@ -124,6 +139,7 @@ body {
     overflow: hidden;
 }
 
+/* obselete. canvas used instead (for rotating) */
 #page-image {
     /* Undo default img style */
     all: revert;
@@ -141,6 +157,9 @@ body {
     display: block;
     /* max-width: 100%; */
     /* max-height: 100%; */
+
+    /* smooth transition for rotations. prob wont work how i want lol but gotta see */
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 #navbar img {

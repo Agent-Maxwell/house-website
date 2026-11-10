@@ -13,7 +13,13 @@
         <div class="nav-item" id="left">
             <!-- <div id="back-holder"><a href="index.html">Back to Notebooks</a></div> -->
             <!-- <div id="back-holder"><a href="index.html"><img class="emoji no-spin" src="/davidpages/emoji/return.gif"> Back to Notebooks</a></div> -->
+
+            <!-- old: button nested in link -->
             <div id="back-holder"><a href="index.html"><button id="btn-back" class="btn"><img class="emoji no-spin" src="/davidpages/emoji/return.gif"></button></a></div>
+
+            <!-- new: just a link, styled same as buttons -->
+            <!-- formatting not behaving. figure out later todo -->
+            <!-- <div id="back-holder"><a href="index.html" id="btn-back" class="btn"><img class="emoji no-spin" src="/davidpages/emoji/return.gif"></a></div> -->
 
         </div>
         <div class="nav-item" id="center">
@@ -28,9 +34,10 @@
         </div>
         <div class="nav-item" id="right">
             <div id="tilts-holder">
-                <button id="btn-tilt-left" class="btn"><img class="emoji no-spin" src="/davidpages/emoji/arrow-left-down.gif"></button>
-                <button id="btn-tilt-down" class="btn"><img class="emoji no-spin" src="/davidpages/emoji/refresh-orange.gif"></button>
-                <button id="btn-tilt-right" class="btn"><img class="emoji no-spin" src="/davidpages/emoji/arrow-right-down.gif"></button>    
+                <!-- no more tilt left/right. one clockwise rotate button for now -->
+                <!-- <button id="btn-tilt-left" class="btn"><img class="emoji no-spin" src="/davidpages/emoji/arrow-left-down.gif"></button> -->
+                <button id="btn-rotate" class="btn"><img class="emoji no-spin" src="/davidpages/emoji/refresh-orange.gif"></button>
+                <!-- <button id="btn-tilt-right" class="btn"><img class="emoji no-spin" src="/davidpages/emoji/arrow-right-down.gif"></button>     -->
             </div>
         </div>
     </div>
