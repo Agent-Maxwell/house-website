@@ -124,9 +124,11 @@ h3 {
 
 #welcome:hover {
     /* filter:invert(100%) hue-rotate(270deg); */
-    filter:hue-rotate(100deg);
+    /* filter:hue-rotate(100deg); */
+    filter:invert(52%);
     /* rotate: -7deg; */
-    rotate: 180deg;
+    /* rotate: 180deg; */
+    /* rotate: 180deg; */
 }
 
 /* rainbow animation copied from global stylesheet */

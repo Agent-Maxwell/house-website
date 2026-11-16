@@ -357,15 +357,15 @@ const Comic = {
                     //this.total = 26;
                     this.urlTemplate = "https://davidsroom.org/notebook/brown/aud/brown-";
                     break;
-                    // case "purple": //todo
-                    //     this.numTurnOpen = ;
-                    //     this.numTurnClosed = ;
-                    //     this.numTurnPage = ;
-                    //     this.numFlipCoverToCover = ;
-                    //     this.numFlipPageToCover = ;
-                    //     //this.total = ;
-                    //     this.urlTemplate = "https://davidsroom.org/notebook/purple/aud/purple-";
-                    //     break;
+                case "purple":
+                    this.numTurnOpen = 3;
+                    this.numTurnClosed = 4;
+                    this.numTurnPage = 11;
+                    this.numFlipCoverToCover = 5;
+                    this.numFlipPageToCover = 4;
+                    //this.total = 27;
+                    this.urlTemplate = "https://davidsroom.org/notebook/purple/aud/purple-";
+                    break;
                     // case "rainbow": //todo
                     //     this.numTurnOpen = ;
                     //     this.numTurnClosed = ;

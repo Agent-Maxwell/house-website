@@ -108,6 +108,7 @@ body {
   flex-wrap: nowrap;
   align-items: center;
   justify-content: center;
+  gap: 20px;
 }
 
 #photo-container img {
@@ -117,7 +118,14 @@ body {
   min-width: 0;
   max-height: 300px;
   height: auto;     /* Maintains aspect ratio */
-  margin: 10px;     /* Works seamlessly within the layout calculation */
+  margin: 0px;
+  /* margin: 10px; */
+
+  display: block;
 
   border: 10px sienna ridge;
+}
+
+#photo-container a {
+  display: block;
 }
