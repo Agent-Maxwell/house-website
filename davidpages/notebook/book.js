@@ -359,22 +359,22 @@ const Comic = {
                     break;
                 case "purple":
                     this.numTurnOpen = 3;
-                    this.numTurnClosed = 4;
+                    this.numTurnClosed = 3;
                     this.numTurnPage = 11;
                     this.numFlipCoverToCover = 5;
                     this.numFlipPageToCover = 4;
-                    //this.total = 27;
+                    //this.total = 26;
                     this.urlTemplate = "https://davidsroom.org/notebook/purple/aud/purple-";
                     break;
-                    // case "rainbow": //todo
-                    //     this.numTurnOpen = ;
-                    //     this.numTurnClosed = ;
-                    //     this.numTurnPage = ;
-                    //     this.numFlipCoverToCover = ;
-                    //     this.numFlipPageToCover = ;
-                    //     //this.total = ;
-                    //     this.urlTemplate = "https://davidsroom.org/notebook/purple/aud/purple-";
-                    //     break;
+                case "rainbow":
+                    this.numTurnOpen = 5;
+                    this.numTurnClosed = 5;
+                    this.numTurnPage = 13;
+                    this.numFlipCoverToCover = 4;
+                    this.numFlipPageToCover = 4;
+                    //this.total = 31;
+                    this.urlTemplate = "https://davidsroom.org/notebook/rainbow/aud/rainbow-";
+                    break;
                     // case "template": //todo
                     //     this.numTurnOpen = ;
                     //     this.numTurnClosed = ;
